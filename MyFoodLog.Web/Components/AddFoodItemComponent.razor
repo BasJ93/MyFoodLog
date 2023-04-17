@@ -1,0 +1,64 @@
+@namespace MyFoodLog.Web.Components
+@inherits MyFoodLog.Web.ViewModels.AddFoodItemViewModel
+
+<EditForm Model="@CreateDto" OnSubmit="@(async () => await SendCreateFoodItem())">
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBTextField @bind-Value="@CreateDto.Name"
+                     Label="Product Name"
+                     TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBTextField @bind-Value="@CreateDto.EAN13"
+                     Label="Barcode"
+                     HelperText="EAN13"
+                     HelperTextPersistent="true"
+                     TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBTextField @bind-Value="@CreateDto.QuantityUnit"
+                     Label="Quantity unit"
+                     HelperText="Piece, gram, milliliter, ..."
+                     TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBNumericDecimalField @bind-Value="@CreateDto.Energy"
+                              DecimalPlaces="4"
+                              Label="Energy"
+                              HelperText="kcal/quantity unit"
+                              TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBNumericDecimalField @bind-Value="@CreateDto.Fat"
+                               DecimalPlaces="4"
+                               Label="Fat"
+                               HelperText="g/quantity unit"
+                               TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBNumericDecimalField @bind-Value="@CreateDto.Carbohydrates"
+                               DecimalPlaces="4"
+                               Label="Carbohydrates"
+                               HelperText="g/quantity unit"
+                               TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBNumericDecimalField @bind-Value="@CreateDto.Protein"
+                               DecimalPlaces="4"
+                               Label="Protein"
+                               HelperText="g/quantity unit"
+                               TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="text-align: left;">
+        <MBButton Label="submit"
+                  style="margin: 0.75em 0.25em 0.25em 0.25em;"
+                  type="submit"/>
+    </div>
+</EditForm>

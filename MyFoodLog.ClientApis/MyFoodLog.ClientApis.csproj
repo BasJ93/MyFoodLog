@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="7.0.0" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
+      <PackageReference Include="NSwag.MSBuild" Version="13.18.2">
+        <PrivateAssets>all</PrivateAssets>
+        <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="OpenApiSpecifications" />
+    </ItemGroup>
+
+    <Target Name="NSwag" BeforeTargets="CoreCompile">
+        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net60) openapi2csclient /input:OpenApiSpecifications/grocy.json /classname:GrocyClient /namespace:MyFoodLog.ClientApis /GenerateClientInterfaces:true /ClientBaseClass:MyFoodLog.ClientApis.BaseClients.APIKeyBaseClient /InjectHttpClient:false /UseHttpClientCreationMethod:true /GenerateClientClasses:true /output:GrocyClient.cs /contractsoutput:Interfaces/IgrocyClient.cs /GenerateContractsOutput:true /ContractsNamespace:MyFoodLog.ClientApis.Interfaces /excludedTypeNames:ExposedEntity_IncludingUserEntities_NotIncludingNotEditable" />
+    </Target>
+    
+</Project>

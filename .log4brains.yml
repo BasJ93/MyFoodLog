@@ -1,0 +1,11 @@
+project:
+  name: MyFoodLog
+  tz: Europe/Amsterdam
+  adrFolder: ./docs/adr
+  packages:
+    - name: MyFoodLog.API
+      path: ./MyFoodLog.API
+      adrFolder: ./MyFoodLog.API/docs/adr
+    - name: MyFoodLog.Web
+      path: ./MyFoodLog.Web
+      adrFolder: ./MyFoodLog.Web/docs/adr

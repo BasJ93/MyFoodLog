@@ -1,0 +1,33 @@
+@page "/"
+@inherits MyFoodLog.Web.ViewModels.EnterFoodConsumptionViewModel
+@using MyFoodLog.Web.Components
+<h3>Enter Food Consumption</h3>
+
+<div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+
+    <MBTextField TextInputStyle="MBTextInputStyle.Outlined" @bind-Value="@SearchInput"/>
+    <MBIconButton Icon="qr_code_scanner"/><MBButton ButtonStyle="@MBButtonStyle.ContainedRaised" Label="Search" @onclick="@(async () => await Search())"/>
+
+    <div hidden="@HideResultSet">
+        <p>
+            <MBList Items="@FoodItems"
+                    Context="item"
+                    ListStyle="MBListStyle.Outlined"
+                    ListType="MBListType.Regular">
+
+                <Title>@item.Name</Title>
+                <LineTwo>Energy: @item.Energy.ToString("0.####") kcal/@item.QuantityUnit</LineTwo>
+
+                <!-- TODO: Handle a click event to switch to the entry form. -->
+            </MBList>
+        </p>
+    </div>
+
+    <MBDialog @ref="CreateFoodItemDialog"
+              Title="Add new item">
+        <Body>
+        <AddFoodItemComponent/>
+        </Body>
+    </MBDialog>
+
+</div>

@@ -1,0 +1,32 @@
+@using MyFoodLog.Core.Models
+@using System.Dynamic
+@namespace MyFoodLog.Web.Components
+
+<EditForm Model="@AddConsumptionRequestDto">
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
+                     Label="Product Name"
+                     TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBNumericDecimalField @bind-Value="@AddConsumptionRequestDto.Amount"
+                               DecimalPlaces="2"
+                               Label="Amount"
+                               HelperText=""
+                               TextInputStyle="MBTextInputStyle.Outlined"/>
+    </div>
+
+    <div class="mdc-layout-grid__cell--span-12" style="text-align: left;">
+        <MBButton Label="submit"
+                  style="margin: 0.75em 0.25em 0.25em 0.25em;"
+                  type="submit"/>
+    </div>
+</EditForm>
+
+@code{
+
+    public AddConsumptionRequestDto AddConsumptionRequestDto { get; set; } = new();
+
+}
