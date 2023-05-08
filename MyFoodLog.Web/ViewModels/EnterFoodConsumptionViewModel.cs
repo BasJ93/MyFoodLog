@@ -53,11 +53,16 @@ public class EnterFoodConsumptionViewModel : ComponentBase
         }
     }
     
-    public void FoodItemClicked(int index)
+    public async Task FoodItemClicked(int index)
     {
-        //var result = await CreateFoodItemDialog.ShowAsync();
+        if (_stateContainer != null)
+        {
+            _stateContainer.SelectedFoodItem = FoodItems?[index];
+        }
         
-        ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({index})", level: MBToastLevel.Success, showIcon: false);
+        var result = await AddFoodConsumptionDialog.ShowAsync();
+        
+        //ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({index})", level: MBToastLevel.Success, showIcon: false);
     }
     
     public async Task FoodItemClicked(Guid id)
@@ -69,6 +74,6 @@ public class EnterFoodConsumptionViewModel : ComponentBase
         
         var result = await AddFoodConsumptionDialog.ShowAsync();
 
-        ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({id})", level: MBToastLevel.Success, showIcon: false);
+        //ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({id})", level: MBToastLevel.Success, showIcon: false);
     }
 }
