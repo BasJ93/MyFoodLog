@@ -1,4 +1,4 @@
-namespace MyFoodLog.Core.Models.FoodItem;
+namespace MyFoodLog.Models.FoodItem;
 
 public class FoodItemDto
 {

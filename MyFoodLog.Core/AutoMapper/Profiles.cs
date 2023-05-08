@@ -1,5 +1,5 @@
 using AutoMapper;
-using MyFoodLog.Core.Models.FoodItem;
+using MyFoodLog.Models.FoodItem;
 using MyFoodLog.Database.Models;
 
 namespace MyFoodLog.Core.AutoMapper;

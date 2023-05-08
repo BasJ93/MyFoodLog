@@ -1,6 +1,6 @@
 using AutoMapper;
-using MyFoodLog.Core.Models.FoodConsumption;
-using MyFoodLog.Core.Models.FoodItem;
+using MyFoodLog.Models.FoodConsumption;
+using MyFoodLog.Models.FoodItem;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Database.Models;
 using MyFoodLog.Database.Repositories.Interfaces;

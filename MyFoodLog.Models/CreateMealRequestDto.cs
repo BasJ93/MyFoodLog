@@ -1,4 +1,4 @@
-namespace MyFoodLog.Core.Models;
+namespace MyFoodLog.Models;
 
 public class CreateMealRequestDto
 {

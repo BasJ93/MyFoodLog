@@ -1,6 +1,7 @@
 using Material.Blazor;
 using Microsoft.AspNetCore.Components;
-using MyFoodLog.Core.Models.FoodItem;
+using MyFoodLog.Models.FoodItem;
+using MyFoodLog.Web.State;
 using Newtonsoft.Json;
 
 namespace MyFoodLog.Web.ViewModels;
@@ -8,11 +9,19 @@ namespace MyFoodLog.Web.ViewModels;
 public class EnterFoodConsumptionViewModel : ComponentBase
 {
     [Inject]
-    private IConfiguration _configuration { get; set; }
+    private IConfiguration? Configuration { get; set; }
 
+    [Inject]
+    private IMBToastService? ToastService { get; set; }
+    
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+    
     private HttpClient _httpClient = new();
 
     public MBDialog CreateFoodItemDialog { get; set; } = new();
+    
+    public MBDialog AddFoodConsumptionDialog { get; set; } = new();
     
     public string? SearchInput { get; set; }
 
@@ -22,7 +31,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
 
     public async Task Search(CancellationToken ctx = default)
     {
-        string baseUrl = _configuration["baseUrl"] ?? string.Empty;
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
 
 
         if (SearchInput != null)
@@ -42,5 +51,24 @@ public class EnterFoodConsumptionViewModel : ComponentBase
                 await InvokeAsync(StateHasChanged);
             }
         }
+    }
+    
+    public void FoodItemClicked(int index)
+    {
+        //var result = await CreateFoodItemDialog.ShowAsync();
+        
+        ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({index})", level: MBToastLevel.Success, showIcon: false);
+    }
+    
+    public async Task FoodItemClicked(Guid id)
+    {
+        if (_stateContainer != null)
+        {
+            _stateContainer.SelectedFoodItem = FoodItems?.FirstOrDefault(f => f.Id == id);
+        }
+        
+        var result = await AddFoodConsumptionDialog.ShowAsync();
+
+        ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({id})", level: MBToastLevel.Success, showIcon: false);
     }
 }

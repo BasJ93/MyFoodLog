@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MyFoodLog.Core.Models.FoodItem;
+namespace MyFoodLog.Models.FoodItem;
 
 /// <summary>
 /// DTO to create a new <see cref="FoodItem"/>.

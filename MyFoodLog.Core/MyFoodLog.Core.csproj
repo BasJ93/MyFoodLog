@@ -8,6 +8,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MyFoodLog.Database\MyFoodLog.Database.csproj" />
+      <ProjectReference Include="..\MyFoodLog.Models\MyFoodLog.Models.csproj" />
     </ItemGroup>
 
     <ItemGroup>

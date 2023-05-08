@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MyFoodLog.Core.Models.FoodConsumption;
+namespace MyFoodLog.Models.FoodConsumption;
 
 public class SearchFoodDto
 {

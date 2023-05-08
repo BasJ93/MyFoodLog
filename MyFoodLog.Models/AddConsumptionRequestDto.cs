@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MyFoodLog.Core.Models;
+namespace MyFoodLog.Models;
 
 // TODO: Replace the name by the id? How are times from Grocy handled? 
 public class AddConsumptionRequestDto

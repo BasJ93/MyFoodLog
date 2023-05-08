@@ -1,5 +1,6 @@
 @page "/"
 @inherits MyFoodLog.Web.ViewModels.EnterFoodConsumptionViewModel
+
 @using MyFoodLog.Web.Components
 <h3>Enter Food Consumption</h3>
 
@@ -11,23 +12,31 @@
     <div hidden="@HideResultSet">
         <p>
             <MBList Items="@FoodItems"
-                    Context="item"
+                    Context="foodItem"
                     ListStyle="MBListStyle.Outlined"
-                    ListType="MBListType.Regular">
+                    ListType="MBListType.Regular"
+                    OnClick="@FoodItemClicked">
 
-                <Title>@item.Name</Title>
-                <LineTwo>Energy: @item.Energy.ToString("0.####") kcal/@item.QuantityUnit</LineTwo>
-
-                <!-- TODO: Handle a click event to switch to the entry form. -->
+                <Title>@foodItem.Name</Title>
+                <LineTwo>Energy: @foodItem.Energy.ToString("0.####") kcal/@foodItem.QuantityUnit</LineTwo>
+                <SecondaryActions>
+                    <MBButton Label="Add" @onclick="@(async () => await FoodItemClicked(foodItem.Id))"></MBButton>
+                </SecondaryActions>
             </MBList>
         </p>
     </div>
-
-    <MBDialog @ref="CreateFoodItemDialog"
-              Title="Add new item">
-        <Body>
-        <AddFoodItemComponent/>
-        </Body>
-    </MBDialog>
-
 </div>
+
+<MBDialog @ref="CreateFoodItemDialog"
+          Title="Add new item">
+    <Body>
+    <AddFoodItemComponent />
+    </Body>
+</MBDialog>
+
+<MBDialog @ref="AddFoodConsumptionDialog"
+          Title="Add consumption">
+    <Body>
+    <AddFoodConsumptionComponent />
+    </Body>
+</MBDialog>

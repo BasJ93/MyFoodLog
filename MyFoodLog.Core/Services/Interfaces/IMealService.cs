@@ -1,4 +1,4 @@
-using MyFoodLog.Core.Models;
+using MyFoodLog.Models;
 
 namespace MyFoodLog.Core.Services.Interfaces;
 

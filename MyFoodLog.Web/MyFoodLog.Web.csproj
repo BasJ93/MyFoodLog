@@ -15,7 +15,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\MyFoodLog.Core\MyFoodLog.Core.csproj" />
+      <ProjectReference Include="..\MyFoodLog.Models\MyFoodLog.Models.csproj" />
     </ItemGroup>
 
 </Project>

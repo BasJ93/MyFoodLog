@@ -1,6 +1,6 @@
-using MyFoodLog.Core.Models.FoodConsumption;
-using MyFoodLog.Core.Models.FoodItem;
 using MyFoodLog.Database.Models;
+using MyFoodLog.Models.FoodConsumption;
+using MyFoodLog.Models.FoodItem;
 
 namespace MyFoodLog.Core.Services.Interfaces;
 

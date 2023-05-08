@@ -1,6 +1,5 @@
 using Microsoft.Extensions.Logging;
-using MyFoodLog.Core.Models;
-using MyFoodLog.Core.Models.FoodConsumption;
+using MyFoodLog.Models;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Database.Models;
 using MyFoodLog.Database.Repositories.Interfaces;

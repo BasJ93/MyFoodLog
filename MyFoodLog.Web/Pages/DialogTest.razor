@@ -1,0 +1,26 @@
+@page "/DialogTest"
+<h3>DialogTest</h3>
+
+<MBButton @onclick="@ShowDialog" Label="Test dialog" />
+
+<!-- TODO: For some reason this does not work? -->
+<MBDialog @ref="CreateFoodItemDialog"
+          Title="Add new item">
+    <Buttons>
+        <MBButton DialogAction="ok"
+                          Label="OK" />
+                <MBButton ButtonStyle="@MBButtonStyle.Text"
+                          Label="Cancel"
+                          DialogAction="cancel" />
+    </Buttons>
+</MBDialog>
+
+@code {
+    private MBDialog CreateFoodItemDialog { get; set; } = new();
+
+    private async Task ShowDialog()
+    {
+        var result = await CreateFoodItemDialog.ShowAsync();
+    }
+
+}

@@ -1,5 +1,6 @@
-@using MyFoodLog.Core.Models
+@using MyFoodLog.Models
 @using System.Dynamic
+@using MyFoodLog.Web.State
 @namespace MyFoodLog.Web.Components
 
 <EditForm Model="@AddConsumptionRequestDto">
@@ -7,7 +8,8 @@
     <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
         <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
                      Label="Product Name"
-                     TextInputStyle="MBTextInputStyle.Outlined"/>
+                     TextInputStyle="MBTextInputStyle.Outlined"
+                     Disabled="@NameWasProvided"/>
     </div>
 
     <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
@@ -18,8 +20,21 @@
                                TextInputStyle="MBTextInputStyle.Outlined"/>
     </div>
 
+    <!--
+    TODO:
+    - Put the unit of the amount in the HelperText
+    - Submit the ConsumptionDto to the backend
+-->
+    
+    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <MBSelect @bind-Value="@AddConsumptionRequestDto.MealId"
+                  Items="@Meals"
+                  ItemValidation="MBItemValidation.NoSelection"
+                  Label="Meal"></MBSelect>
+    </div>
+    
     <div class="mdc-layout-grid__cell--span-12" style="text-align: left;">
-        <MBButton Label="submit"
+        <MBButton Label="Add"
                   style="margin: 0.75em 0.25em 0.25em 0.25em;"
                   type="submit"/>
     </div>
@@ -27,6 +42,30 @@
 
 @code{
 
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+
+    public bool NameWasProvided { get; set; }
+    
     public AddConsumptionRequestDto AddConsumptionRequestDto { get; set; } = new();
 
+    public MBSelectElement<Guid>[] Meals = {
+        new() { SelectedValue = Guid.Parse("1607D880-0070-4663-8C8D-459351D85403"), Label = "Breakfast" },
+        new() { SelectedValue = Guid.Parse("32A7550D-B9CC-41EE-A302-D82A648DCDD1"), Label = "Lunch" },
+        new() { SelectedValue = Guid.Parse("84560A45-DD4D-425F-BF13-44EBF3F7615B"), Label = "Dinner" },
+    };
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        if (_stateContainer != null)
+        {
+            Console.WriteLine("stateContainer was not empty");
+            if (_stateContainer.SelectedFoodItem != null && !string.IsNullOrEmpty(_stateContainer.SelectedFoodItem.Name))
+            {
+                AddConsumptionRequestDto.Name = _stateContainer.SelectedFoodItem.Name;
+                NameWasProvided = true;
+            }
+        }
+    }
 }

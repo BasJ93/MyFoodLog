@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MyFoodLog.Core.Models.FoodConsumption;
-using MyFoodLog.Core.Models.FoodItem;
+using MyFoodLog.Models.FoodConsumption;
+using MyFoodLog.Models.FoodItem;
 using MyFoodLog.Core.Services.Interfaces;
 
 namespace MyFoodLog.API.Controllers;
