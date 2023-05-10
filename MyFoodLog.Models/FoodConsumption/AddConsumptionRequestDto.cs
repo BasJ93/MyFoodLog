@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace MyFoodLog.Models;
+namespace MyFoodLog.Models.FoodConsumption;
 
 // TODO: Replace the name by the id? How are times from Grocy handled? 
 public class AddConsumptionRequestDto
@@ -18,7 +18,7 @@ public class AddConsumptionRequestDto
     public decimal Amount { get; set; }
     
     /// <summary>
-    /// The Id for the meal to add this item to.
+    /// The Id for the meal type to add this item to.
     /// </summary>
-    public Guid MealId { get; set; }
+    public Guid? MealTypeId { get; set; }
 }

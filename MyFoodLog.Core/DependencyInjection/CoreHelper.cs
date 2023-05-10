@@ -11,6 +11,7 @@ public static class CoreHelper
         services.AddScoped<IFoodConsumptionService, FoodConsumptionService>();
         services.AddScoped<IFoodItemService, FoodItemService>();
         services.AddScoped<IMealService, MealService>();
+        services.AddScoped<IMealTypeService, MealTypeService>();
         
         return services;
     }

@@ -9,7 +9,7 @@ public class FoodItemConsumption : BaseId
     /// The Id for the <see cref="Meal"/> that this consumption is part of.
     /// </summary>
     public Guid MealId { get; set; }
-
+    
     //TODO: Is this a required key? If so, how do we handle stuff coming from Grocy?
     /// <summary>
     /// The Id for the <see cref="FoodItem"/> that is consumed.

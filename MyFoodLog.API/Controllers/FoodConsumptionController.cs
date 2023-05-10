@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Models;
 using MyFoodLog.Core.Services.Interfaces;
+using MyFoodLog.Models.FoodConsumption;
 
 namespace MyFoodLog.API.Controllers;
 
@@ -19,6 +20,7 @@ public class FoodConsumptionController : ControllerBase
     }
 
     [HttpPost("create")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] AddConsumptionRequestDto consumptionDto, CancellationToken ctx)
     {
         await _foodConsumptionService.AddConsumption(consumptionDto, ctx);

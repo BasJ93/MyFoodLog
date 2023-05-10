@@ -1,71 +1,129 @@
 @using MyFoodLog.Models
 @using System.Dynamic
+@using MyFoodLog.Models.FoodConsumption
+@using MyFoodLog.Models.MealTypes
 @using MyFoodLog.Web.State
+@using Newtonsoft.Json
 @namespace MyFoodLog.Web.Components
 
 <EditForm Model="@AddConsumptionRequestDto">
+    <div class="mdc-layout-grid__inner">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
+                         Label="Product Name"
+                         TextInputStyle="MBTextInputStyle.Outlined"
+                         Disabled="@NameWasProvided"
+                         style="width: 100%; margin-top: 1em"/>
+        </div>
 
-    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
-        <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
-                     Label="Product Name"
-                     TextInputStyle="MBTextInputStyle.Outlined"
-                     Disabled="@NameWasProvided"/>
-    </div>
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <MBNumericDecimalField @bind-Value="@AddConsumptionRequestDto.Amount"
+                                   DecimalPlaces="2"
+                                   Label="Amount"
+                                   HelperText=""
+                                   TextInputStyle="MBTextInputStyle.Outlined"
+                                   style="width: 100%"/>
+        </div>
 
-    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
-        <MBNumericDecimalField @bind-Value="@AddConsumptionRequestDto.Amount"
-                               DecimalPlaces="2"
-                               Label="Amount"
-                               HelperText=""
-                               TextInputStyle="MBTextInputStyle.Outlined"/>
-    </div>
+        <!--
+        TODO:
+        - Put the unit of the amount in the HelperText
+        - Submit the ConsumptionDto to the backend
+        -->
 
-    <!--
-    TODO:
-    - Put the unit of the amount in the HelperText
-    - Submit the ConsumptionDto to the backend
--->
-    
-    <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
-        <MBSelect @bind-Value="@AddConsumptionRequestDto.MealId"
-                  Items="@Meals"
-                  ItemValidation="MBItemValidation.NoSelection"
-                  Label="Meal"></MBSelect>
-    </div>
-    
-    <div class="mdc-layout-grid__cell--span-12" style="text-align: left;">
-        <MBButton Label="Add"
-                  style="margin: 0.75em 0.25em 0.25em 0.25em;"
-                  type="submit"/>
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <MBSelect @bind-Value="@AddConsumptionRequestDto.MealTypeId"
+                      Items="@Meals"
+                      ItemValidation="MBItemValidation.NoSelection"
+                      Label="Meal"
+                      style="width: 100%"/>
+        </div>
+
+        <div class="mdc-layout-grid__cell--span-10-desktop mdc-layout-grid__cell--span-7-tablet mdc-layout-grid__cell--span-3-phone"></div>
+        <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: left;">
+            <MBButton Label="Add"
+                      style="margin: 0.75em 0.25em 0.25em 0.25em;"
+                      type="submit"
+                      @onclick="@(async () => await SubmitConsumption())"/>
+        </div>
     </div>
 </EditForm>
 
 @code{
 
     [Inject]
-    private StateContainer? _stateContainer { get; set; }
+    private IConfiguration? Configuration { get; set; }
+
+    [Inject]
+    private StateContainer? StateContainer { get; set; }
+
+    [Inject]
+    private IMBToastService? ToastService { get; set; }
+
+    private HttpClient _httpClient = new();
 
     public bool NameWasProvided { get; set; }
-    
+
     public AddConsumptionRequestDto AddConsumptionRequestDto { get; set; } = new();
 
-    public MBSelectElement<Guid>[] Meals = {
-        new() { SelectedValue = Guid.Parse("1607D880-0070-4663-8C8D-459351D85403"), Label = "Breakfast" },
-        new() { SelectedValue = Guid.Parse("32A7550D-B9CC-41EE-A302-D82A648DCDD1"), Label = "Lunch" },
-        new() { SelectedValue = Guid.Parse("84560A45-DD4D-425F-BF13-44EBF3F7615B"), Label = "Dinner" },
-    };
+    public List<MBSelectElement<Guid?>> Meals { get; set; } = new ();
 
+    protected override async Task OnInitializedAsync()
+    {
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
+
+        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/types", CancellationToken.None);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string listAsString = await response.Content.ReadAsStringAsync(CancellationToken.None);
+
+            List<MealTypeDto> mealTypes = JsonConvert.DeserializeObject<List<MealTypeDto>>(listAsString) ?? new();
+
+            Meals.Clear();
+
+            foreach (MealTypeDto mealType in mealTypes)
+            {
+                Meals.Add(new MBSelectElement<Guid?>(){SelectedValue = mealType.Id, Label = mealType.Name});
+            }
+        }
+        
+        await base.OnInitializedAsync();
+    }
+    
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (_stateContainer != null)
+        try
         {
-            Console.WriteLine("stateContainer was not empty");
-            if (_stateContainer.SelectedFoodItem != null && !string.IsNullOrEmpty(_stateContainer.SelectedFoodItem.Name))
+            if (StateContainer != null)
             {
-                AddConsumptionRequestDto.Name = _stateContainer.SelectedFoodItem.Name;
-                NameWasProvided = true;
+                Console.WriteLine("stateContainer was not empty");
+                if (StateContainer.SelectedFoodItem != null && !string.IsNullOrEmpty(StateContainer.SelectedFoodItem.Name))
+                {
+                    Console.WriteLine("SelectedFoodItem was not empty, and has a name");
+                    AddConsumptionRequestDto.Name = StateContainer.SelectedFoodItem.Name;
+                    NameWasProvided = true;
+                }
             }
         }
+        catch (Exception)
+        {
+            Console.WriteLine("This somehow works but also throws an exception.");
+        }
     }
+
+    private async Task SubmitConsumption(CancellationToken ctx = default)
+    {
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
+
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{baseUrl}/api/v1/foodconsumption/create", AddConsumptionRequestDto, ctx);
+
+        if (response.IsSuccessStatusCode)
+        {
+            ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {AddConsumptionRequestDto.Amount} {StateContainer?.SelectedFoodItem?.QuantityUnit ?? string.Empty} of {AddConsumptionRequestDto.Name} to {Meals.First(m => m.SelectedValue == AddConsumptionRequestDto.MealTypeId).Label}.", timeout: 1500);
+            StateHasChanged();
+        }
+    }
+
 }

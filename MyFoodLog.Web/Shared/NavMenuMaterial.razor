@@ -1,6 +1,7 @@
 <MBDrawer @ref="Drawer" IsDismissible="true">
     <nav class="mdc-list">
         <MBListItem Label="Log Consumption" @onclick="@(() => ListItemClickHandler(""))" />
+        <MBListItem Label="Today's Consumption" @onclick="@(() => ListItemClickHandler("DayOverview"))" />
         <MBListItem Label="Add food" @onclick="@(() => ListItemClickHandler("AddFoodItemPage"))" />
         <MBListItem Label="Macros" @onclick="@(() => ListItemClickHandler("Macros"))" />
     </nav>

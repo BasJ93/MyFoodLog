@@ -8,10 +8,10 @@ namespace MyFoodLog.Web.ViewModels;
 public class AddFoodItemViewModel : ComponentBase
 {
     [Inject]
-    private IConfiguration Configuration { get; set; }
+    private IConfiguration? Configuration { get; set; }
 
     [Inject]
-    private IMBToastService ToastService { get; set; }
+    private IMBToastService? ToastService { get; set; }
     
     private HttpClient _httpClient = new();
     
@@ -19,12 +19,12 @@ public class AddFoodItemViewModel : ComponentBase
 
     public async Task SendCreateFoodItem(CancellationToken ctx = default)
     {
-        string baseUrl = Configuration["baseUrl"] ?? string.Empty;
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
         HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{baseUrl}/api/v1/fooditem/create", CreateDto, ctx);
 
         if (response.IsSuccessStatusCode)
         {
-            ToastService.ShowToast(MBToastLevel.Success, $"Successfully added {CreateDto.Name}.", timeout: 1500);
+            ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {CreateDto.Name}.", timeout: 1500);
             StateHasChanged();
         }
     }

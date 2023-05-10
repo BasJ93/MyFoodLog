@@ -13,6 +13,7 @@ public static class DatabaseHelper
         services.AddScoped<IFoodItemConsumptionRepository, FoodItemConsumptionRepository>();
         services.AddScoped<IFoodItemRepository, FoodItemRepository>();
         services.AddScoped<IMealRepository, MealRepository>();
+        services.AddScoped<IMealTypeRepository, MealTypeRepository>();
         
         return services;
     }

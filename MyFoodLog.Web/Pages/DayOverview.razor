@@ -1,0 +1,68 @@
+@page "/DayOverview"
+@using MyFoodLog.Models.Meals
+@using Newtonsoft.Json
+
+<div class="mdc-layout-grid__cell--span-12">
+    <h3>DayOverview</h3>
+</div>
+
+@foreach (MealDto meal in Meals)
+{
+    <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+
+        <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+                <h2 class="mb-card__title mdc-typography mdc-typography--headline6">
+                    @meal.Name
+                </h2>
+            </div>
+
+            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-3-phone">
+                <MBDataTable Context="item"
+                             Items="meal.ConsumedFood">
+
+                    <TableHeader>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Item</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Amount</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Energy</th>
+                    </TableHeader>
+
+                    <TableRow>
+                        <td class="mdc-data-table__cell" scope="row">@item.Name</td>
+                        <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
+                        <td class="mdc-data-table__cell">@item.Energy.ToString("0.##") kCal</td>
+                    </TableRow>
+
+                </MBDataTable>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+
+    [Inject]
+    private IConfiguration? Configuration { get; set; }
+
+    private HttpClient _httpClient = new();
+
+    private List<MealDto> Meals { get; set; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
+
+        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/meals", CancellationToken.None);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string listAsString = await response.Content.ReadAsStringAsync(CancellationToken.None);
+
+            Meals = JsonConvert.DeserializeObject<List<MealDto>>(listAsString) ?? new();
+        }
+
+        await base.OnInitializedAsync();
+    }
+
+}
+
