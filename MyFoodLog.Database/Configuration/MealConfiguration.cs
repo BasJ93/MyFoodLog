@@ -15,8 +15,8 @@ public class MealConfiguration : IEntityTypeConfiguration<Meal>
             .IsRequired();
 
         builder.HasOne(b => b.MealType)
-            .WithOne()
-            .HasForeignKey<Meal>(m => m.MealTypeId)
+            .WithMany()
+            .HasForeignKey(m => m.MealTypeId)
             .HasConstraintName($"FK_{nameof(Meal)}_{nameof(MealType)}");
     }
 }

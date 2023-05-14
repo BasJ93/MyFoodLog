@@ -1,6 +1,7 @@
 using AutoMapper;
 using Microsoft.Extensions.Logging;
 using MyFoodLog.Core.Services.Interfaces;
+using MyFoodLog.Database.Models;
 using MyFoodLog.Database.Repositories.Interfaces;
 using MyFoodLog.Models.MealTypes;
 
@@ -19,8 +20,21 @@ public class MealTypeService : IMealTypeService
         _mapper = mapper;
     }
 
-    public async Task<IEnumerable<MealTypeDto>> GetAll(CancellationToken ctx)
+    public async Task<IEnumerable<MealTypeDto>> GetAll(CancellationToken ctx = default)
     {
         return _mapper.Map<IEnumerable<MealTypeDto>>(await _mealTypeRepository.All(ctx));
+    }
+
+    public async Task Create(CreateMealTypeDto request, CancellationToken ctx = default)
+    {
+        if (await _mealTypeRepository.ByName(request.Name, ctx) == null)
+        {
+            MealType mealType = new()
+            {
+                Name = request.Name
+            };
+
+            await _mealTypeRepository.InsertAndSave(mealType, ctx);
+        }
     }
 }

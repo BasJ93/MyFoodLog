@@ -13,18 +13,20 @@ public class FoodConsumptionService : IFoodConsumptionService
     
     private readonly IFoodItemConsumptionRepository _foodItemConsumption;
 
-    private readonly IMealRepository _meals;
-
-    
     // TODO: replace with the service?
     private readonly IFoodItemRepository _foodItems;
+    
+    private readonly IMealRepository _meals;
+    
+    private readonly IMealTypeRepository _mealTypes;
 
-    public FoodConsumptionService(IFoodItemConsumptionRepository foodItemConsumption, ILogger<FoodConsumptionService> logger, IFoodItemRepository foodItems, IMealRepository meals)
+    public FoodConsumptionService(IFoodItemConsumptionRepository foodItemConsumption, ILogger<FoodConsumptionService> logger, IFoodItemRepository foodItems, IMealRepository meals, IMealTypeRepository mealTypes)
     {
         _foodItemConsumption = foodItemConsumption;
         _logger = logger;
         _foodItems = foodItems;
         _meals = meals;
+        _mealTypes = mealTypes;
     }
 
     // TODO: Add a response model to tell the controller what it's response should be. Maybe borrow the one from Carlo (Elephant on nuget)
@@ -49,17 +51,28 @@ public class FoodConsumptionService : IFoodConsumptionService
         // Find the meal for the type and today, otherwise create a new meal for the type.
         if (requestDto.MealTypeId != null && requestDto.MealTypeId != Guid.Empty)
         {
-            meal = await _meals.TodayByMealType(requestDto.MealTypeId.Value, ctx);
-            
-            if (meal == null)
+            meal = await _meals.TodayByMealType(requestDto.MealTypeId.Value, ctx) ?? new()
             {
-                meal = new Meal
+                Date = DateTime.Today,
+                MealTypeId = requestDto.MealTypeId.Value
+            };
+        }
+        else
+        {
+            // No meal type was provided. See if we can find one that fits the time range
+            MealType? mealType = await _mealTypes.GetByTimeRange(ctx);
+
+            if (mealType != null)
+            {
+                // Let's see if we already have a meal for that type.
+                meal = await _meals.TodayByMealType(mealType.Id, ctx) ?? new()
                 {
                     Date = DateTime.Today,
-                    MealTypeId = requestDto.MealTypeId.Value
+                    MealTypeId = mealType.Id
                 };
             }
         }
+        
         
         //TODO: Check if the food was already added to the meal. If so, do ???
         

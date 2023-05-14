@@ -33,6 +33,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
     {
         string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
 
+        FoodItems?.Clear();
 
         if (SearchInput != null)
         {
@@ -43,37 +44,34 @@ public class EnterFoodConsumptionViewModel : ComponentBase
                 string listAsString = await response.Content.ReadAsStringAsync(ctx);
 
                 FoodItems = JsonConvert.DeserializeObject<List<FoodItemDto>>(listAsString);
-
-                // TODO: Handle adding a placeholder item that indicates no items were found. This item should then trigger showing the "create new item" form.
-                
-                HideResultSet = false;
-
-                await InvokeAsync(StateHasChanged);
             }
+            
+            // No items were found, so let's put the notification in.
+            if (!FoodItems.Any())
+            {
+                FoodItems.Add(new(){Name = "No items found, click to add new.", Id = Guid.Empty});
+            }
+                
+            HideResultSet = false;
+
+            await InvokeAsync(StateHasChanged);
         }
     }
     
     public async Task FoodItemClicked(int index)
     {
-        if (_stateContainer != null)
+        if (FoodItems?[index].Id == Guid.Empty)
         {
-            _stateContainer.SelectedFoodItem = FoodItems?[index];
+            await CreateFoodItemDialog.ShowAsync();
         }
-        
-        var result = await AddFoodConsumptionDialog.ShowAsync();
-        
-        //ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({index})", level: MBToastLevel.Success, showIcon: false);
-    }
-    
-    public async Task FoodItemClicked(Guid id)
-    {
-        if (_stateContainer != null)
+        else
         {
-            _stateContainer.SelectedFoodItem = FoodItems?.FirstOrDefault(f => f.Id == id);
-        }
-        
-        var result = await AddFoodConsumptionDialog.ShowAsync();
+            if (_stateContainer != null)
+            {
+                _stateContainer.SelectedFoodItem = FoodItems?[index];
+            }
 
-        //ToastService?.ShowToast(heading: "General Dialog", message: $"Value: ({id})", level: MBToastLevel.Success, showIcon: false);
+            await AddFoodConsumptionDialog.ShowAsync();
+        }
     }
 }

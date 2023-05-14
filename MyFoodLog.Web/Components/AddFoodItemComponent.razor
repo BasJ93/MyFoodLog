@@ -1,16 +1,16 @@
 @namespace MyFoodLog.Web.Components
 @inherits MyFoodLog.Web.ViewModels.AddFoodItemViewModel
 
-<div class="mdc-layout-grid__inner">
-    <EditForm Model="@CreateDto" OnSubmit="@(async () => await SendCreateFoodItem())">
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+<EditForm Model="@CreateDto" OnSubmit="@(async () => await SendCreateFoodItem())">
+    <div class="mdc-layout-grid__inner">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBTextField @bind-Value="@CreateDto.Name"
                          Label="Product Name"
                          TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBTextField @bind-Value="@CreateDto.EAN13"
                          Label="Barcode"
                          HelperText="EAN13"
@@ -18,14 +18,14 @@
                          TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBTextField @bind-Value="@CreateDto.QuantityUnit"
                          Label="Quantity unit"
                          HelperText="Piece, gram, milliliter, ..."
                          TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBNumericDecimalField @bind-Value="@CreateDto.Energy"
                                    DecimalPlaces="4"
                                    Label="Energy"
@@ -33,7 +33,7 @@
                                    TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBNumericDecimalField @bind-Value="@CreateDto.Fat"
                                    DecimalPlaces="4"
                                    Label="Fat"
@@ -41,7 +41,7 @@
                                    TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBNumericDecimalField @bind-Value="@CreateDto.Carbohydrates"
                                    DecimalPlaces="4"
                                    Label="Carbohydrates"
@@ -49,7 +49,7 @@
                                    TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="margin-top: 10px;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
             <MBNumericDecimalField @bind-Value="@CreateDto.Protein"
                                    DecimalPlaces="4"
                                    Label="Protein"
@@ -57,10 +57,10 @@
                                    TextInputStyle="MBTextInputStyle.Outlined"/>
         </div>
 
-        <div class="mdc-layout-grid__cell--span-12" style="text-align: left;">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="text-align: left;">
             <MBButton Label="Add"
                       style="margin: 0.75em 0.25em 0.25em 0.25em;"
                       type="submit"/>
         </div>
-    </EditForm>
-</div>
+    </div>
+</EditForm>

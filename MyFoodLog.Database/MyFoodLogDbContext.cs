@@ -21,7 +21,8 @@ public sealed class MyFoodLogDbContext : DbContext
     
     public MyFoodLogDbContext(DbContextOptions<MyFoodLogDbContext> options) : base(options)
     {
-        Database.EnsureCreated();
+        //Database.EnsureCreated();
+        Database.Migrate();
     }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
