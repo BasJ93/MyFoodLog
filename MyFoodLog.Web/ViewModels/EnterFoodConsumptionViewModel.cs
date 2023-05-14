@@ -45,6 +45,11 @@ public class EnterFoodConsumptionViewModel : ComponentBase
 
                 FoodItems = JsonConvert.DeserializeObject<List<FoodItemDto>>(listAsString);
             }
+
+            if (FoodItems == null)
+            {
+                FoodItems = new();
+            }
             
             // No items were found, so let's put the notification in.
             if (!FoodItems.Any())

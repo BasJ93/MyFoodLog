@@ -20,6 +20,9 @@ public class Profiles : Profile
         CreateMap<FoodItemConsumption, FoodConsumptionDto>()
             .ForMember(dest => dest.Name, opt => opt.MapFrom(source => source.FoodItem.Name))
             .ForMember(dest => dest.QuantityUnit, opt => opt.MapFrom(source => source.FoodItem.QuantityUnit))
-            .ForMember(dest => dest.Energy, opt => opt.MapFrom<decimal>(source => source.Amount * source.FoodItem.Energy));
+            .ForMember(dest => dest.Energy, opt => opt.MapFrom<decimal>(source => source.Amount * source.FoodItem.Energy))
+            .ForMember(dest => dest.Carbohydrates, opt => opt.MapFrom<decimal>(source => source.Amount * source.FoodItem.Carbohydrates))
+            .ForMember(dest => dest.Fat, opt => opt.MapFrom<decimal>(source => source.Amount * source.FoodItem.Fat))
+            .ForMember(dest => dest.Protein, opt => opt.MapFrom<decimal>(source => source.Amount * source.FoodItem.Protein));
     }
 }

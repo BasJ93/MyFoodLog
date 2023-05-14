@@ -28,11 +28,4 @@ public interface IMealRepository : IGenericCrudRepository<Meal>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>A collection of meals. Empty if none are found for that date.</returns>
     Task<IEnumerable<Meal>> AllByDate(DateTime date, CancellationToken ctx = default);
-    
-    /// <summary>
-    /// Get all meals for today.
-    /// </summary>
-    /// <param name="ctx">Cancellation token.</param>
-    /// <returns>A collection of meals. Empty if none are found.</returns>
-    Task<IEnumerable<Meal>> AllForToday(CancellationToken ctx = default);
 }

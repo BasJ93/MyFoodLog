@@ -7,7 +7,7 @@ namespace MyFoodLog.API.Controllers;
 
 [ApiController]
 [Route("/api/v1/foodconsumption")]
-public class FoodConsumptionController : ControllerBase
+public sealed class FoodConsumptionController : ControllerBase
 {
     private readonly ILogger<FoodConsumptionController> _logger;
 
