@@ -6,7 +6,7 @@ namespace MyFoodLog.API.Controllers;
 
 [ApiController]
 [Route("/api/v1/barcode")]
-public class BarcodeController : Controller
+public sealed class BarcodeController : Controller
 {
     private readonly ILogger<BarcodeController> _logger;
     

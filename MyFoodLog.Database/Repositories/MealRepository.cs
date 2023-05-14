@@ -31,10 +31,4 @@ public class MealRepository : GenericCrudRepository<Meal>, IMealRepository
             .ThenInclude(c => c.FoodItem)
             .ToListAsync(ctx);
     }
-
-    /// <inheritdoc />
-    public async Task<IEnumerable<Meal>> AllForToday(CancellationToken ctx = default)
-    {
-        return await AllByDate(DateTime.Today, ctx);
-    }
 }
