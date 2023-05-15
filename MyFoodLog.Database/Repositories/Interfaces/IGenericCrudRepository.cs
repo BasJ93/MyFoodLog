@@ -28,12 +28,20 @@ public interface IGenericCrudRepository<T> where T : class
     Task<T?> ById(int id, CancellationToken ctx = default);
 
     /// <summary>
-    /// 
+    /// Delete an entity by id.
     /// </summary>
     /// <param name="id"></param>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns></returns>
     Task Delete(int id, CancellationToken ctx = default);
+    
+    /// <summary>
+    /// Delete an entity by guid id.
+    /// </summary>
+    /// <param name="id"></param>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns></returns>
+    Task Delete(Guid id, CancellationToken ctx = default);
     
     /// <summary>
     /// 
@@ -50,6 +58,14 @@ public interface IGenericCrudRepository<T> where T : class
     /// <param name="ctx">Cancellation token.</param>
     /// <returns></returns>
     Task<int> DeleteAndSave(int id, CancellationToken ctx = default);
+    
+    /// <summary>
+    /// Delete an entity and save the changes.
+    /// </summary>
+    /// <param name="id">The guid id.</param>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns></returns>
+    Task<int> DeleteAndSave(Guid id, CancellationToken ctx = default);
     
     /// <summary>
     /// 

@@ -3,7 +3,8 @@
 <NavMenuMaterial @ref="navbar"/>
 
 <div class="mdc-drawer-app-content">
-    <MBTopAppBar Title="MyFoodLog"
+    <MBTopAppBar @ref="TopAppBar"
+                 Title="MyFoodLog"
                  NavIcon="menu"
                  ScrollTarget="#main-content"
                  @onclick="@SideBarToggle">
@@ -28,6 +29,8 @@
 </div>
 
 @code {
+    public MBTopAppBar TopAppBar { get; set; } = new();
+    
     private NavMenuMaterial navbar { get; set; } = new();
     
     private void SideBarToggle()

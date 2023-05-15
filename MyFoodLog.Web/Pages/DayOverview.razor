@@ -1,6 +1,13 @@
 @page "/DayOverview"
 @using MyFoodLog.Models.Meals
 @using Newtonsoft.Json
+@using MyFoodLog.Models.FoodConsumption
+
+<style>
+    table.mdc-data-table__table {
+        white-space: normal;!important;
+    }
+</style>
 
 <div class="mdc-layout-grid__cell--span-12">
     <h3>DayOverview</h3>
@@ -9,28 +16,36 @@
 @foreach (MealDto meal in Meals)
 {
     <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-
+        
         <div class="mdc-layout-grid__inner">
-            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            
+            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
+            <div class="mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
                 <h2 class="mb-card__title mdc-typography mdc-typography--headline6">
                     @meal.Name
                 </h2>
             </div>
+            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
 
-            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-3-phone">
+            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
+
+            <div class="mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
                 <MBDataTable Context="item"
-                             Items="meal.ConsumedFood">
+                             Items="meal.ConsumedFood"
+                             style="white-space: normal">
 
                     <TableHeader>
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Item</th>
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Amount</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Energy</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Energy [kCal]</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col"></th>
                     </TableHeader>
 
                     <TableRow>
                         <td class="mdc-data-table__cell" scope="row">@item.Name</td>
                         <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
-                        <td class="mdc-data-table__cell">@item.Energy.ToString("0.##") kCal</td>
+                        <td class="mdc-data-table__cell">@item.Energy.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell"><MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/></td>
                     </TableRow>
 
                 </MBDataTable>
@@ -43,6 +58,9 @@
 
     [Inject]
     private IConfiguration? Configuration { get; set; }
+    
+    [Inject]
+    private IMBToastService? ToastService { get; set; }
 
     private HttpClient _httpClient = new();
 
@@ -50,19 +68,51 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/meals", CancellationToken.None);
-
-        if (response.IsSuccessStatusCode)
-        {
-            string listAsString = await response.Content.ReadAsStringAsync(CancellationToken.None);
-
-            Meals = JsonConvert.DeserializeObject<List<MealDto>>(listAsString) ?? new();
-        }
+        await GetDayOverview();
 
         await base.OnInitializedAsync();
     }
 
+
+    private async Task DeleteConsumption(Guid id, CancellationToken ctx = default)
+    {
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
+
+        DeleteFoodConsumptionRequestDto dto = new()
+        {
+            Id = id
+        };
+
+        HttpRequestMessage request = new()
+        {
+            Content = JsonContent.Create(dto),
+            Method = HttpMethod.Delete,
+            RequestUri = new($"{baseUrl}/api/v1/foodconsumption/delete")
+        };
+
+        HttpResponseMessage response = await _httpClient.SendAsync(request, ctx);
+
+        if (response.IsSuccessStatusCode)
+        {
+            await GetDayOverview(ctx);
+            
+            ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private async Task GetDayOverview(CancellationToken ctx = default)
+    {
+        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
+
+        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/meals", ctx);
+
+        if (response.IsSuccessStatusCode)
+        {
+            string listAsString = await response.Content.ReadAsStringAsync(ctx);
+
+            Meals = JsonConvert.DeserializeObject<List<MealDto>>(listAsString) ?? new();
+        }
+    }
 }
 

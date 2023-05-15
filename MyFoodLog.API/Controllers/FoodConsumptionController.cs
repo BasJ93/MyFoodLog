@@ -28,13 +28,18 @@ public sealed class FoodConsumptionController : ControllerBase
         return Ok();
     }
     
-    [HttpPost("delete")]
-    public async Task<IActionResult> Delete(CancellationToken ctx)
+    [HttpDelete("delete")]
+    public async Task<IActionResult> Delete([FromBody] DeleteFoodConsumptionRequestDto request, CancellationToken ctx)
     {
-        throw new NotImplementedException();
+        if (await _foodConsumptionService.DeleteConsumption(request.Id, ctx))
+        {
+            return Ok();
+        }
+
+        return NotFound();
     }
 
-    [HttpPost("update")]
+    [HttpPatch("update")]
     public async Task<IActionResult> Update(CancellationToken ctx)
     {
         throw new NotImplementedException();

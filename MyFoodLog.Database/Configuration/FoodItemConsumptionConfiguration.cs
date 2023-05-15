@@ -27,8 +27,8 @@ public class FoodItemConsumptionConfiguration : IEntityTypeConfiguration<FoodIte
             .HasConstraintName($"FK_{nameof(Meal)}_{nameof(FoodItemConsumption)}");
 
         builder.HasOne(b => b.FoodItem)
-            .WithOne()
-            .HasForeignKey<FoodItemConsumption>(f => f.FoodItemId)
+            .WithMany()
+            .HasForeignKey(f => f.FoodItemId)
             .HasConstraintName($"FK_{nameof(FoodItemConsumption)}_{nameof(FoodItem)}");
 
     }
