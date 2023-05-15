@@ -34,6 +34,11 @@ public sealed class MealController : ControllerBase
         throw new NotImplementedException();
     }
 
+    /// <summary>
+    /// Get the meal types the system knows about.
+    /// </summary>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>A list of known <see cref="MyFoodLog.Database.Models.MealType"/>s.</returns>
     [HttpGet("types")]
     [ProducesResponseType(typeof(IEnumerable<MealTypeDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMealTypes(CancellationToken ctx)

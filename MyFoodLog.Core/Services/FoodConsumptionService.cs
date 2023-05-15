@@ -92,8 +92,12 @@ public class FoodConsumptionService : IFoodConsumptionService
         throw new NotImplementedException();
     }
 
-    public async Task DeleteConsumption(CancellationToken ctx)
+    public async Task<bool> DeleteConsumption(Guid id, CancellationToken ctx)
     {
-        throw new NotImplementedException();
+        _logger.LogInformation("Attempting to remove food consumption entry {id}", id);
+
+        int changes = await _foodItemConsumption.DeleteAndSave(id, ctx);
+
+        return changes > 0;
     }
 }

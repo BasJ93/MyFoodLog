@@ -16,5 +16,11 @@ public interface IFoodConsumptionService
     
     Task UpdateConsumption(CancellationToken ctx);
 
-    Task DeleteConsumption(CancellationToken ctx);
+    /// <summary>
+    /// Remove a <see cref="MyFoodLog.Database.Models.FoodItemConsumption"/> from the database.
+    /// </summary>
+    /// <param name="id">The id of the entry to delete.</param>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>A bool indicating success.</returns>
+    Task<bool> DeleteConsumption(Guid id, CancellationToken ctx);
 }
