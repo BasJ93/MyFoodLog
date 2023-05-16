@@ -15,7 +15,13 @@ public sealed class MealTypeController : ControllerBase
         _mealTypeService = mealTypeService;
     }
     
-    [HttpPost("create")]
+    /// <summary>
+    /// Create a new <see cref="MyFoodLog.Database.Models.MealType"/> that can be assigned to meals during the day.
+    /// </summary>
+    /// <param name="requestDto">The request model.</param>
+    /// <param name="ctx">Cancellation token</param>
+    [HttpPost("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateMealTypeDto requestDto, CancellationToken ctx)
     {
         await _mealTypeService.Create(requestDto, ctx);

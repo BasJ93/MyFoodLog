@@ -78,19 +78,7 @@
     {
         string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
 
-        DeleteFoodConsumptionRequestDto dto = new()
-        {
-            Id = id
-        };
-
-        HttpRequestMessage request = new()
-        {
-            Content = JsonContent.Create(dto),
-            Method = HttpMethod.Delete,
-            RequestUri = new($"{baseUrl}/api/v1/foodconsumption/delete")
-        };
-
-        HttpResponseMessage response = await _httpClient.SendAsync(request, ctx);
+        HttpResponseMessage response = await _httpClient.DeleteAsync($"{baseUrl}/api/v1/foodconsumption/{id}", ctx);
 
         if (response.IsSuccessStatusCode)
         {

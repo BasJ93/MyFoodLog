@@ -117,7 +117,7 @@
     {
         string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
 
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{baseUrl}/api/v1/foodconsumption/create", AddConsumptionRequestDto, ctx);
+        HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{baseUrl}/api/v1/foodconsumption", AddConsumptionRequestDto, ctx);
 
         if (response.IsSuccessStatusCode)
         {

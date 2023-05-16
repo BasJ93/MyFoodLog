@@ -20,7 +20,13 @@ public sealed class MealController : ControllerBase
         _mealTypeService = mealTypeService;
     }
 
-    [HttpPost("create")]
+    /// <summary>
+    /// Create a new meal entry in the database.
+    /// </summary>
+    /// <param name="requestDto">The request dto.</param>
+    /// <param name="ctx">Cancellation token.</param>
+    [HttpPost("")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateMealRequestDto requestDto, CancellationToken ctx)
     {
         await _mealService.Create(requestDto, ctx);
@@ -28,8 +34,8 @@ public sealed class MealController : ControllerBase
         return Ok();
     }
 
-    [HttpPost("delete")]
-    public Task<IActionResult> Delete(CancellationToken ctx)
+    [HttpDelete("{id:guid}")]
+    public Task<IActionResult> Delete(Guid id, CancellationToken ctx)
     {
         throw new NotImplementedException();
     }
@@ -49,9 +55,7 @@ public sealed class MealController : ControllerBase
     /// <summary>
     /// Get the meals for today, containing their respective food consumptions.
     /// </summary>
-    /// <param name="ctx"></param>
-    /// <returns></returns>
-    /// <exception cref="NotImplementedException"></exception>
+    /// <param name="ctx">Cancellation token</param>
     [HttpGet("meals")]
     [ProducesResponseType(typeof(IEnumerable<MealDto?>), StatusCodes.Status200OK)]
     [ProducesResponseType((StatusCodes.Status404NotFound))]
