@@ -1,4 +1,4 @@
-using MyFoodLog.Models.FoodItem;
+using MyFoodLog.Web.API.Client.Interfaces;
 
 namespace MyFoodLog.Web.State;
 

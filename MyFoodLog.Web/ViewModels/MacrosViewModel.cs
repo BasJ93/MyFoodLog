@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Components;
-using MyFoodLog.Models;
+using MyFoodLog.Web.API.Client.Interfaces;
 using MyFoodLog.Web.Support;
-using Newtonsoft.Json;
 using PSC.Blazor.Components.Chartjs;
 using PSC.Blazor.Components.Chartjs.Enums;
 using PSC.Blazor.Components.Chartjs.Models.Pie;
@@ -11,7 +10,7 @@ namespace MyFoodLog.Web.ViewModels;
 public class MacrosViewModel : ComponentBase
 {
     [Inject]
-    private IConfiguration? Configuration { get; set; }
+    private IMyFoodLogApi? FoodLogApi { get; set; }
 
     private HttpClient _httpClient = new();
 
@@ -37,18 +36,18 @@ public class MacrosViewModel : ComponentBase
     {
         MacrosDto macros = new();
 
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response =
-            await _httpClient.GetAsync($"{baseUrl}/api/v1/day/macros", CancellationToken.None);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            string listAsString = await response.Content.ReadAsStringAsync(CancellationToken.None);
-
-            macros = JsonConvert.DeserializeObject<MacrosDto>(listAsString) ?? new();
+            if (FoodLogApi != null)
+            {
+                macros = await FoodLogApi.Day_MacrosForDayAsync(null, CancellationToken.None);
+            }
         }
-
+        catch (ApiException)
+        {
+            
+        }
+        
         // Updating the data in the chart requires the creation of a new configuration.
         PieChartConfig = new()
         {
