@@ -55,17 +55,21 @@ namespace MyFoodLog.Web.API.Client
         partial void ProcessResponse(MyFoodLog.Web.API.Client.Interfaces.ICustomHttpClient client, System.Net.Http.HttpResponseMessage response);
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode)
+        public virtual System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, string version)
         {
-            return Barcode_SearchForBarcodeAsync(barcode, System.Threading.CancellationToken.None);
+            return Barcode_SearchForBarcodeAsync(barcode, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, string version, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/barcode/search?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/barcode/search?");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
             if (barcode != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("barcode") + "=").Append(System.Uri.EscapeDataString(ConvertToString(barcode, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -135,9 +139,9 @@ namespace MyFoodLog.Web.API.Client
         /// <param name="date">The date to look for. If no date is provided, today is assumed.</param>
         /// <returns>The macro values.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date)
+        public virtual System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, string version)
         {
-            return Day_MacrosForDayAsync(date, System.Threading.CancellationToken.None);
+            return Day_MacrosForDayAsync(date, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -147,10 +151,14 @@ namespace MyFoodLog.Web.API.Client
         /// <param name="date">The date to look for. If no date is provided, today is assumed.</param>
         /// <returns>The macro values.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, string version, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/day/macros?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/day/macros?");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
             if (date != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("date") + "=").Append(System.Uri.EscapeDataString(date.Value.ToString("s", System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -221,9 +229,9 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="consumptionDto">Request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task FoodConsumption_CreateAsync(AddConsumptionRequestDto consumptionDto)
+        public virtual System.Threading.Tasks.Task FoodConsumption_CreateAsync(string version, AddConsumptionRequestDto consumptionDto)
         {
-            return FoodConsumption_CreateAsync(consumptionDto, System.Threading.CancellationToken.None);
+            return FoodConsumption_CreateAsync(version, consumptionDto, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -232,13 +240,17 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="consumptionDto">Request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task FoodConsumption_CreateAsync(AddConsumptionRequestDto consumptionDto, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task FoodConsumption_CreateAsync(string version, AddConsumptionRequestDto consumptionDto, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             if (consumptionDto == null)
                 throw new System.ArgumentNullException("consumptionDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/foodconsumption");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -303,9 +315,9 @@ namespace MyFoodLog.Web.API.Client
         /// <param name="id">The id of the FoodItemConsumption</param>
         /// <returns>200 OK or 404 NotFound.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, string version)
         {
-            return FoodConsumption_DeleteAsync(id, System.Threading.CancellationToken.None);
+            return FoodConsumption_DeleteAsync(id, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -315,14 +327,18 @@ namespace MyFoodLog.Web.API.Client
         /// <param name="id">The id of the FoodItemConsumption</param>
         /// <returns>200 OK or 404 NotFound.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/foodconsumption/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -388,21 +404,25 @@ namespace MyFoodLog.Web.API.Client
         }
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version)
         {
-            return FoodConsumption_UpdateAsync(id, System.Threading.CancellationToken.None);
+            return FoodConsumption_UpdateAsync(id, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/foodconsumption/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -462,21 +482,35 @@ namespace MyFoodLog.Web.API.Client
             }
         }
 
+        /// <summary>
+        /// Create a new FoodItem.
+        /// </summary>
+        /// <param name="dto">The food item to create.</param>
+        /// <returns>Returns the created food item.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task FoodItem_CreateFoodItemAsync(CreateFoodItemDto dto)
+        public virtual System.Threading.Tasks.Task<FoodItemDto> FoodItem_CreateFoodItemAsync(string version, CreateFoodItemDto dto)
         {
-            return FoodItem_CreateFoodItemAsync(dto, System.Threading.CancellationToken.None);
+            return FoodItem_CreateFoodItemAsync(version, dto, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Create a new FoodItem.
+        /// </summary>
+        /// <param name="dto">The food item to create.</param>
+        /// <returns>Returns the created food item.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task FoodItem_CreateFoodItemAsync(CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FoodItemDto> FoodItem_CreateFoodItemAsync(string version, CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             if (dto == null)
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/create");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/fooditem");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -489,6 +523,94 @@ namespace MyFoodLog.Web.API.Client
                     content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
                     request_.Content = content_;
                     request_.Method = new System.Net.Http.HttpMethod("POST");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<FoodItemDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Delete a FoodItem by id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task FoodItem_DeleteFoodItemAsync(System.Guid id, string version)
+        {
+            return FoodItem_DeleteFoodItemAsync(id, version, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Delete a FoodItem by id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task FoodItem_DeleteFoodItemAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/fooditem/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -535,18 +657,217 @@ namespace MyFoodLog.Web.API.Client
             }
         }
 
+        /// <summary>
+        /// Get a food item by its Id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString)
+        public virtual System.Threading.Tasks.Task<FoodItemDto> FoodItem_GetFoodItemAsync(System.Guid id, string version)
         {
-            return FoodItem_SearchAsync(searchString, System.Threading.CancellationToken.None);
+            return FoodItem_GetFoodItemAsync(id, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get a food item by its Id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FoodItemDto> FoodItem_GetFoodItemAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
         {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/search?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/fooditem/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<FoodItemDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Update a food item.
+        /// </summary>
+        /// <param name="id">The id of the item to update.</param>
+        /// <param name="dto">The new values for the item.</param>
+        /// <returns>The updated item.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<FoodItemDto> FoodItem_UpdateFoodItemAsync(System.Guid id, string version, CreateFoodItemDto dto)
+        {
+            return FoodItem_UpdateFoodItemAsync(id, version, dto, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update a food item.
+        /// </summary>
+        /// <param name="id">The id of the item to update.</param>
+        /// <param name="dto">The new values for the item.</param>
+        /// <returns>The updated item.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<FoodItemDto> FoodItem_UpdateFoodItemAsync(System.Guid id, string version, CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
+            if (dto == null)
+                throw new System.ArgumentNullException("dto");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/fooditem/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    var json_ = Newtonsoft.Json.JsonConvert.SerializeObject(dto, _settings.Value);
+                    var content_ = new System.Net.Http.StringContent(json_);
+                    content_.Headers.ContentType = System.Net.Http.Headers.MediaTypeHeaderValue.Parse("application/json");
+                    request_.Content = content_;
+                    request_.Method = new System.Net.Http.HttpMethod("PATCH");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<FoodItemDto>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Search for a food item by name or by barcode.
+        /// </summary>
+        /// <returns>A list of items that match the search input.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, string version)
+        {
+            return FoodItem_SearchAsync(searchString, version, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Search for a food item by name or by barcode.
+        /// </summary>
+        /// <returns>A list of items that match the search input.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, string version, System.Threading.CancellationToken cancellationToken)
+        {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/fooditem/search?");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
             if (searchString != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("SearchString") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchString, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -593,6 +914,16 @@ namespace MyFoodLog.Web.API.Client
                             return objectResponse_.Object;
                         }
                         else
+                        if (status_ == 404)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<ProblemDetails>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            throw new ApiException<ProblemDetails>("A server side error occurred.", status_, objectResponse_.Text, headers_, objectResponse_.Object, null);
+                        }
+                        else
                         {
                             var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
                             throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
@@ -617,9 +948,9 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="requestDto">The request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task Meal_CreateAsync(CreateMealRequestDto requestDto)
+        public virtual System.Threading.Tasks.Task Meal_CreateAsync(string version, CreateMealRequestDto requestDto)
         {
-            return Meal_CreateAsync(requestDto, System.Threading.CancellationToken.None);
+            return Meal_CreateAsync(version, requestDto, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -628,13 +959,17 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="requestDto">The request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task Meal_CreateAsync(CreateMealRequestDto requestDto, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task Meal_CreateAsync(string version, CreateMealRequestDto requestDto, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             if (requestDto == null)
                 throw new System.ArgumentNullException("requestDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/meal");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -694,21 +1029,25 @@ namespace MyFoodLog.Web.API.Client
         }
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id)
+        public virtual System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, string version)
         {
-            return Meal_DeleteAsync(id, System.Threading.CancellationToken.None);
+            return Meal_DeleteAsync(id, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
 
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/meal/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -772,9 +1111,9 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <returns>A list of known MealTypes.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(string version)
         {
-            return Meal_GetMealTypesAsync(System.Threading.CancellationToken.None);
+            return Meal_GetMealTypesAsync(version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -783,10 +1122,14 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <returns>A list of known MealTypes.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(string version, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/types");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/meal/types");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -851,9 +1194,9 @@ namespace MyFoodLog.Web.API.Client
         /// Get the meals for today, containing their respective food consumptions.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync()
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(string version)
         {
-            return Meal_GetMealsAsync(System.Threading.CancellationToken.None);
+            return Meal_GetMealsAsync(version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -861,10 +1204,14 @@ namespace MyFoodLog.Web.API.Client
         /// Get the meals for today, containing their respective food consumptions.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(string version, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/meals");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/meal/meals");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -940,9 +1287,9 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="requestDto">The request model.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task MealType_CreateAsync(CreateMealTypeDto requestDto)
+        public virtual System.Threading.Tasks.Task MealType_CreateAsync(string version, CreateMealTypeDto requestDto)
         {
-            return MealType_CreateAsync(requestDto, System.Threading.CancellationToken.None);
+            return MealType_CreateAsync(version, requestDto, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
@@ -951,13 +1298,17 @@ namespace MyFoodLog.Web.API.Client
         /// </summary>
         /// <param name="requestDto">The request model.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task MealType_CreateAsync(CreateMealTypeDto requestDto, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task MealType_CreateAsync(string version, CreateMealTypeDto requestDto, System.Threading.CancellationToken cancellationToken)
         {
+            if (version == null)
+                throw new System.ArgumentNullException("version");
+
             if (requestDto == null)
                 throw new System.ArgumentNullException("requestDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/mealtype");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/mealtype");
+            urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
             var disposeClient_ = false;

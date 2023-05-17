@@ -27,6 +27,8 @@ builder.Services.AddProblemDetails(options =>
     options.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment();
 });
 
+builder.Services.AddApiVersioning();
+
 builder.Services.AddControllers();
 builder.Services.AddOpenFoodFacts();
 

@@ -21,7 +21,7 @@ public class AddFoodItemViewModel : ComponentBase
         {
             if (FoodLogApi != null)
             {
-                await FoodLogApi.FoodItem_CreateFoodItemAsync(CreateDto, ctx);
+                await FoodLogApi.FoodItem_CreateFoodItemAsync("1", CreateDto, ctx);
                 
                 ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {CreateDto.Name}.", timeout: 1500);
                 StateHasChanged();

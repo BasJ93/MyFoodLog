@@ -2,8 +2,6 @@ using Material.Blazor;
 using Microsoft.AspNetCore.Components;
 using MyFoodLog.Web.API.Client.Interfaces;
 using MyFoodLog.Web.State;
-using Newtonsoft.Json;
-using FoodItemDto = MyFoodLog.Web.API.Client.Interfaces.FoodItemDto;
 
 namespace MyFoodLog.Web.ViewModels;
 
@@ -38,7 +36,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
             {
                 if (FoodLogApi != null)
                 {
-                    FoodItems = (await FoodLogApi.FoodItem_SearchAsync(SearchInput, ctx)).ToList();
+                    FoodItems = (await FoodLogApi.FoodItem_SearchAsync(SearchInput, "1", ctx)).ToList();
                 }
             }
             catch (ApiException)

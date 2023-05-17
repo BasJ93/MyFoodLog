@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Models;
 using MyFoodLog.Core.Services.Interfaces;
@@ -7,7 +8,8 @@ using MyFoodLog.Models.MealTypes;
 namespace MyFoodLog.API.Controllers;
 
 [ApiController]
-[Route("/api/v1/meal")]
+[Route("/api/{version:apiVersion}/meal")]
+[ApiVersion("1.0")]
 public sealed class MealController : ControllerBase
 {
     private readonly IMealService _mealService;
@@ -29,6 +31,7 @@ public sealed class MealController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateMealRequestDto requestDto, CancellationToken ctx)
     {
+        // TODO: Return the created object
         await _mealService.Create(requestDto, ctx);
 
         return Ok();

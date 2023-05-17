@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Models.FoodConsumption;
 using MyFoodLog.Models.FoodItem;
@@ -6,7 +7,8 @@ using MyFoodLog.Core.Services.Interfaces;
 namespace MyFoodLog.API.Controllers;
 
 [ApiController]
-[Route("/api/v1/fooditem")]
+[Route("/api/{version:apiVersion}/fooditem")]
+[ApiVersion("1.0")]
 public sealed class FoodItemController : ControllerBase
 {
     private readonly IFoodItemService _foodItems;

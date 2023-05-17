@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.ClientApis.Interfaces;
 using MyFoodLog.ClientApis.Models.OpenFoodFacts;
@@ -5,7 +6,8 @@ using MyFoodLog.ClientApis.Models.OpenFoodFacts;
 namespace MyFoodLog.API.Controllers;
 
 [ApiController]
-[Route("/api/v1/barcode")]
+[Route("/api/{version:apiVersion}/barcode")]
+[ApiVersion("1.0")]
 public sealed class BarcodeController : Controller
 {
     private readonly ILogger<BarcodeController> _logger;

@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Models.FoodConsumption;
@@ -8,7 +9,8 @@ namespace MyFoodLog.API.Controllers;
 /// API endpoints to manage food consumption.
 /// </summary>
 [ApiController]
-[Route("/api/v1/foodconsumption")]
+[Route("/api/{version:apiVersion}/foodconsumption")]
+[ApiVersion("1.0")]
 public sealed class FoodConsumptionController : ControllerBase
 {
     private readonly ILogger<FoodConsumptionController> _logger;
@@ -30,6 +32,7 @@ public sealed class FoodConsumptionController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] AddConsumptionRequestDto consumptionDto, CancellationToken ctx)
     {
+        // TODO: Return the created object
         await _foodConsumptionService.AddConsumption(consumptionDto, ctx);
 
         return Ok();

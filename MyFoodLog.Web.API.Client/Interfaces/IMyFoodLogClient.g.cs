@@ -22,11 +22,11 @@ namespace MyFoodLog.Web.API.Client.Interfaces
     public partial interface IMyFoodLogApi
     {
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode);
+        System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the macronutrient values consumed on the specified date.
@@ -34,7 +34,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// <param name="date">The date to look for. If no date is provided, today is assumed.</param>
         /// <returns>The macro values.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date);
+        System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -43,14 +43,14 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// <param name="date">The date to look for. If no date is provided, today is assumed.</param>
         /// <returns>The macro values.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<MacrosDto> Day_MacrosForDayAsync(System.DateTimeOffset? date, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Create a new consumption of a FoodItem.
         /// </summary>
         /// <param name="consumptionDto">Request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodConsumption_CreateAsync(AddConsumptionRequestDto consumptionDto);
+        System.Threading.Tasks.Task FoodConsumption_CreateAsync(string version, AddConsumptionRequestDto consumptionDto);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -58,7 +58,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// </summary>
         /// <param name="consumptionDto">Request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodConsumption_CreateAsync(AddConsumptionRequestDto consumptionDto, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task FoodConsumption_CreateAsync(string version, AddConsumptionRequestDto consumptionDto, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Delete a consumption of a FoodItem by id.
@@ -66,7 +66,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// <param name="id">The id of the FoodItemConsumption</param>
         /// <returns>200 OK or 404 NotFound.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id);
+        System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -75,35 +75,102 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// <param name="id">The id of the FoodItemConsumption</param>
         /// <returns>200 OK or 404 NotFound.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id);
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
-
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodItem_CreateFoodItemAsync(CreateFoodItemDto dto);
+        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task FoodItem_CreateFoodItemAsync(CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Create a new FoodItem.
+        /// </summary>
+        /// <param name="dto">The food item to create.</param>
+        /// <returns>Returns the created food item.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString);
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_CreateFoodItemAsync(string version, CreateFoodItemDto dto);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Create a new FoodItem.
+        /// </summary>
+        /// <param name="dto">The food item to create.</param>
+        /// <returns>Returns the created food item.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_CreateFoodItemAsync(string version, CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Delete a FoodItem by id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FoodItem_DeleteFoodItemAsync(System.Guid id, string version);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Delete a FoodItem by id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task FoodItem_DeleteFoodItemAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Get a food item by its Id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_GetFoodItemAsync(System.Guid id, string version);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get a food item by its Id.
+        /// </summary>
+        /// <param name="id">The id of the food item.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_GetFoodItemAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Update a food item.
+        /// </summary>
+        /// <param name="id">The id of the item to update.</param>
+        /// <param name="dto">The new values for the item.</param>
+        /// <returns>The updated item.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_UpdateFoodItemAsync(System.Guid id, string version, CreateFoodItemDto dto);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update a food item.
+        /// </summary>
+        /// <param name="id">The id of the item to update.</param>
+        /// <param name="dto">The new values for the item.</param>
+        /// <returns>The updated item.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<FoodItemDto> FoodItem_UpdateFoodItemAsync(System.Guid id, string version, CreateFoodItemDto dto, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
+        /// Search for a food item by name or by barcode.
+        /// </summary>
+        /// <returns>A list of items that match the search input.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, string version);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Search for a food item by name or by barcode.
+        /// </summary>
+        /// <returns>A list of items that match the search input.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Create a new meal entry in the database.
         /// </summary>
         /// <param name="requestDto">The request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task Meal_CreateAsync(CreateMealRequestDto requestDto);
+        System.Threading.Tasks.Task Meal_CreateAsync(string version, CreateMealRequestDto requestDto);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -111,21 +178,21 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// </summary>
         /// <param name="requestDto">The request dto.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task Meal_CreateAsync(CreateMealRequestDto requestDto, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task Meal_CreateAsync(string version, CreateMealRequestDto requestDto, System.Threading.CancellationToken cancellationToken);
 
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id);
+        System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the meal types the system knows about.
         /// </summary>
         /// <returns>A list of known MealTypes.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -133,27 +200,27 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// </summary>
         /// <returns>A list of known MealTypes.</returns>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get the meals for today, containing their respective food consumptions.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync();
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
         /// Get the meals for today, containing their respective food consumptions.
         /// </summary>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Create a new MealType that can be assigned to meals during the day.
         /// </summary>
         /// <param name="requestDto">The request model.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MealType_CreateAsync(CreateMealTypeDto requestDto);
+        System.Threading.Tasks.Task MealType_CreateAsync(string version, CreateMealTypeDto requestDto);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -161,7 +228,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// </summary>
         /// <param name="requestDto">The request model.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MealType_CreateAsync(CreateMealTypeDto requestDto, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MealType_CreateAsync(string version, CreateMealTypeDto requestDto, System.Threading.CancellationToken cancellationToken);
 
     }
 
@@ -224,14 +291,13 @@ namespace MyFoodLog.Web.API.Client.Interfaces
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class CreateFoodItemDto
+    public partial class FoodItemDto
     {
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
-        [System.ComponentModel.DataAnnotations.Required]
-        public string Name { get; set; }
+        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public System.Guid Id { get; set; }
 
-        [Newtonsoft.Json.JsonProperty("eaN13", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public string EaN13 { get; set; }
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string Name { get; set; }
 
         [Newtonsoft.Json.JsonProperty("quantityUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string QuantityUnit { get; set; }
@@ -251,13 +317,14 @@ namespace MyFoodLog.Web.API.Client.Interfaces
     }
 
     [System.CodeDom.Compiler.GeneratedCode("NJsonSchema", "13.19.0.0 (NJsonSchema v10.9.0.0 (Newtonsoft.Json v13.0.0.0))")]
-    public partial class FoodItemDto
+    public partial class CreateFoodItemDto
     {
-        [Newtonsoft.Json.JsonProperty("id", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
-        public System.Guid Id { get; set; }
-
-        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        [Newtonsoft.Json.JsonProperty("name", Required = Newtonsoft.Json.Required.Always)]
+        [System.ComponentModel.DataAnnotations.Required]
         public string Name { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("eaN13", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public string EaN13 { get; set; }
 
         [Newtonsoft.Json.JsonProperty("quantityUnit", Required = Newtonsoft.Json.Required.Default, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public string QuantityUnit { get; set; }
