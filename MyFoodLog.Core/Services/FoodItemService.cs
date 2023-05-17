@@ -21,7 +21,23 @@ public class FoodItemService : IFoodItemService
     }
 
     /// <inheritdoc />
-    public async Task Create(CreateFoodItemDto dto, CancellationToken ctx)
+    public async Task<ICollection<FoodItemDto>> All(CancellationToken ctx = default)
+    {
+        IEnumerable<FoodItem> items = await _foodItems.All(ctx);
+
+        return _mapper.Map<IEnumerable<FoodItemDto>>(items).ToList();
+    }
+
+    /// <inheritdoc />
+    public async Task<FoodItemDto?> ById(Guid id, CancellationToken ctx = default)
+    {
+        FoodItem? item = await _foodItems.ById(id, ctx);
+
+        return _mapper.Map<FoodItemDto>(item);
+    }
+
+    /// <inheritdoc />
+    public async Task<FoodItemDto> Create(CreateFoodItemDto dto, CancellationToken ctx = default)
     {
         /*bool canConvert = long.TryParse(dto.EAN13, out long ean13);
         
@@ -39,10 +55,18 @@ public class FoodItemService : IFoodItemService
         FoodItem newFoodItem = _mapper.Map<FoodItem>(dto);
         
         await _foodItems.InsertAndSave(newFoodItem, ctx);
+
+        return _mapper.Map<FoodItemDto>(newFoodItem);
     }
 
     /// <inheritdoc />
-    public async Task<ICollection<FoodItemDto>> Search(SearchFoodDto searchDto, CancellationToken ctx)
+    public async Task<bool> Delete(Guid id, CancellationToken ctx = default)
+    {
+        throw new NotImplementedException();
+    }
+
+    /// <inheritdoc />
+    public async Task<ICollection<FoodItemDto>> Search(SearchFoodDto searchDto, CancellationToken ctx = default)
     {
         List<FoodItem> matches = new();
         
@@ -71,7 +95,13 @@ public class FoodItemService : IFoodItemService
 
         return _mapper.Map<List<FoodItemDto>>(matches);
     }
-    
+
+    /// <inheritdoc />
+    public async Task<FoodItemDto> Update(Guid id, CreateFoodItemDto updateDto, CancellationToken ctx = default)
+    {
+        throw new NotImplementedException();
+    }
+
     private bool IsDigitsOnly(string str)
     {
         foreach (char c in str)

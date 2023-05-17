@@ -28,6 +28,14 @@ public interface IGenericCrudRepository<T> where T : class
     Task<T?> ById(int id, CancellationToken ctx = default);
 
     /// <summary>
+    /// Get an entity by it's id.
+    /// </summary>
+    /// <param name="id">Id of the entity.</param>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>The entity, or default if not found.</returns>
+    Task<T?> ById(Guid id, CancellationToken ctx = default);
+    
+    /// <summary>
     /// Delete an entity by id.
     /// </summary>
     /// <param name="id"></param>
