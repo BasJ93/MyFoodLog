@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\MyFoodLog.Models\MyFoodLog.Models.csproj" />
+      <ProjectReference Include="..\MyFoodLog.Web.API.Client\MyFoodLog.Web.API.Client.csproj" />
     </ItemGroup>
 
 </Project>

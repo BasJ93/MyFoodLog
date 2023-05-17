@@ -1,7 +1,6 @@
 @page "/DayOverview"
-@using MyFoodLog.Models.Meals
-@using Newtonsoft.Json
-@using MyFoodLog.Models.FoodConsumption
+@using MyFoodLog.Web.API.Client.Interfaces
+@using MealDto = MyFoodLog.Web.API.Client.Interfaces.MealDto
 
 <style>
     table.mdc-data-table__table {
@@ -42,7 +41,7 @@
                     </TableHeader>
 
                     <TableRow>
-                        <td class="mdc-data-table__cell" scope="row">@item.Name</td>
+                        <th class="mdc-data-table__cell" scope="row">@item.Name</th>
                         <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
                         <td class="mdc-data-table__cell">@item.Energy.ToString("0.##")</td>
                         <td class="mdc-data-table__cell"><MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/></td>
@@ -57,12 +56,10 @@
 @code {
 
     [Inject]
-    private IConfiguration? Configuration { get; set; }
+    private IMyFoodLogApi? FoodLogApi { get; set; }
     
     [Inject]
     private IMBToastService? ToastService { get; set; }
-
-    private HttpClient _httpClient = new();
 
     private List<MealDto> Meals { get; set; } = new();
 
@@ -76,30 +73,36 @@
 
     private async Task DeleteConsumption(Guid id, CancellationToken ctx = default)
     {
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response = await _httpClient.DeleteAsync($"{baseUrl}/api/v1/foodconsumption/{id}", ctx);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            await GetDayOverview(ctx);
+            if (FoodLogApi != null)
+            {
+                await FoodLogApi.FoodConsumption_DeleteAsync(id, ctx);
+                
+                await GetDayOverview(ctx);
             
-            ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
-            await InvokeAsync(StateHasChanged);
+                ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
+                await InvokeAsync(StateHasChanged);
+            }
+        }
+        catch (ApiException)
+        {
+            
         }
     }
 
     private async Task GetDayOverview(CancellationToken ctx = default)
     {
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/meals", ctx);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            string listAsString = await response.Content.ReadAsStringAsync(ctx);
-
-            Meals = JsonConvert.DeserializeObject<List<MealDto>>(listAsString) ?? new();
+            if (FoodLogApi != null)
+            {
+                Meals = (await FoodLogApi.Meal_GetMealsAsync(ctx)).ToList();
+            }
+        }
+        catch (ApiException)
+        {
+            
         }
     }
 }

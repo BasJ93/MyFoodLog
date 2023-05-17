@@ -1,9 +1,10 @@
 @using MyFoodLog.Models
 @using System.Dynamic
-@using MyFoodLog.Models.FoodConsumption
-@using MyFoodLog.Models.MealTypes
+@using MyFoodLog.Web.API.Client.Interfaces
 @using MyFoodLog.Web.State
 @using Newtonsoft.Json
+@using AddConsumptionRequestDto = MyFoodLog.Web.API.Client.Interfaces.AddConsumptionRequestDto
+@using MealTypeDto = MyFoodLog.Web.API.Client.Interfaces.MealTypeDto
 @namespace MyFoodLog.Web.Components
 
 <EditForm Model="@AddConsumptionRequestDto">
@@ -52,15 +53,13 @@
 @code{
 
     [Inject]
-    private IConfiguration? Configuration { get; set; }
-
-    [Inject]
     private StateContainer? StateContainer { get; set; }
 
     [Inject]
     private IMBToastService? ToastService { get; set; }
-
-    private HttpClient _httpClient = new();
+    
+    [Inject]
+    private IMyFoodLogApi? FoodLogApi { get; set; }
 
     public bool NameWasProvided { get; set; }
 
@@ -70,24 +69,25 @@
 
     protected override async Task OnInitializedAsync()
     {
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response = await _httpClient.GetAsync($"{baseUrl}/api/v1/meal/types", CancellationToken.None);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            string listAsString = await response.Content.ReadAsStringAsync(CancellationToken.None);
-
-            List<MealTypeDto> mealTypes = JsonConvert.DeserializeObject<List<MealTypeDto>>(listAsString) ?? new();
-
-            Meals.Clear();
-
-            foreach (MealTypeDto mealType in mealTypes)
+            if (FoodLogApi != null)
             {
-                Meals.Add(new MBSelectElement<Guid?>(){SelectedValue = mealType.Id, Label = mealType.Name});
+                ICollection<MealTypeDto> mealTypes = await FoodLogApi.Meal_GetMealTypesAsync(CancellationToken.None) ?? new List<MealTypeDto>();
+
+                Meals.Clear();
+
+                foreach (MealTypeDto mealType in mealTypes)
+                {
+                    Meals.Add(new MBSelectElement<Guid?>() { SelectedValue = mealType.Id, Label = mealType.Name });
+                }
             }
         }
-        
+        catch (ApiException)
+        {
+            
+        }
+
         await base.OnInitializedAsync();
     }
     
@@ -115,14 +115,18 @@
 
     private async Task SubmitConsumption(CancellationToken ctx = default)
     {
-        string baseUrl = Configuration?["baseUrl"] ?? string.Empty;
-
-        HttpResponseMessage response = await _httpClient.PostAsJsonAsync($"{baseUrl}/api/v1/foodconsumption", AddConsumptionRequestDto, ctx);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {AddConsumptionRequestDto.Amount} {StateContainer?.SelectedFoodItem?.QuantityUnit ?? string.Empty} of {AddConsumptionRequestDto.Name} to {Meals.First(m => m.SelectedValue == AddConsumptionRequestDto.MealTypeId).Label}.", timeout: 1500);
-            StateHasChanged();
+            if (FoodLogApi != null)
+            {
+                await FoodLogApi.FoodConsumption_CreateAsync(AddConsumptionRequestDto, ctx);
+                ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {AddConsumptionRequestDto.Amount} {StateContainer?.SelectedFoodItem?.QuantityUnit ?? string.Empty} of {AddConsumptionRequestDto.Name} to {Meals.First(m => m.SelectedValue == AddConsumptionRequestDto.MealTypeId).Label}.", timeout: 1500);
+                StateHasChanged();
+            }
+        }
+        catch (ApiException)
+        {
+            
         }
     }
 
