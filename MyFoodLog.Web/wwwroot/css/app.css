@@ -1,5 +1,24 @@
 ﻿@import url('open-iconic/font/css/open-iconic-bootstrap.min.css');
 
+@media screen and (min-width: 840px) {
+    .mdc-layout-grid__cell--span-0-desktop {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 480px) and (max-width: 840px) {
+    .mdc-layout-grid__cell--span-0-tablet {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 0px) and (max-width: 480px) {
+    .mdc-layout-grid__cell--span-0-phone {
+        display: none;
+    }
+}
+
+
 html, body {
     font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }

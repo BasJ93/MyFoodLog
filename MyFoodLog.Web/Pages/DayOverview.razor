@@ -1,5 +1,6 @@
 @page "/DayOverview"
 @using MyFoodLog.Web.API.Client.Interfaces
+@using MyFoodLog.Web.Components
 
 <style>
     table.mdc-data-table__table {
@@ -18,34 +19,7 @@
 
         @foreach (MealDto meal in Meals)
         {
-            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-                <h2 class="mb-card__title mdc-typography mdc-typography--headline6">
-                    @meal.Name
-                </h2>
-            </div>
-
-            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-                <MBDataTable Context="item"
-                             Items="meal.ConsumedFood">
-
-                    <TableHeader>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Item</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Amount</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Energy [kCal]</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col"></th>
-                    </TableHeader>
-
-                    <TableRow>
-                        <th class="mdc-data-table__cell" scope="row">@item.Name</th>
-                        <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
-                        <td class="mdc-data-table__cell">@item.Energy.ToString("0.##")</td>
-                        <td class="mdc-data-table__cell">
-                            <MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/>
-                        </td>
-                    </TableRow>
-
-                </MBDataTable>
-            </div>
+            <MealOverviewComponent Meal="meal" /> 
         }
 
     </div>
@@ -67,26 +41,6 @@
         await GetDayOverview();
 
         await base.OnInitializedAsync();
-    }
-
-
-    private async Task DeleteConsumption(Guid id, CancellationToken ctx = default)
-    {
-        try
-        {
-            if (FoodLogApi != null)
-            {
-                await FoodLogApi.FoodConsumption_DeleteAsync(id, "1", ctx);
-
-                await GetDayOverview(ctx);
-
-                ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
-                await InvokeAsync(StateHasChanged);
-            }
-        }
-        catch (ApiException)
-        {
-        }
     }
 
     private async Task GetDayOverview(CancellationToken ctx = default)
