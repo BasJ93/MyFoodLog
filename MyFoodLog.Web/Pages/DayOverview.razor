@@ -5,33 +5,29 @@
 <style>
     table.mdc-data-table__table {
         white-space: normal;!important;
+        width: 100%;
     }
 </style>
 
-<div class="mdc-layout-grid__cell--span-12">
-    <h3>DayOverview</h3>
-</div>
+<div class="mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-2-tablet"></div>
+<div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+    <div class="mdc-layout-grid__inner">
 
-@foreach (MealDto meal in Meals)
-{
-    <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-        
-        <div class="mdc-layout-grid__inner">
-            
-            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
-            <div class="mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+        <div class="mdc-layout-grid__cell--span-12">
+            <h3 class="mdc-typography--headline6">Day Overview</h3>
+        </div>
+
+        @foreach (MealDto meal in Meals)
+        {
+            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
                 <h2 class="mb-card__title mdc-typography mdc-typography--headline6">
                     @meal.Name
                 </h2>
             </div>
-            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
 
-            <div class="mdc-layout-grid__cell--span-2-desktop"></div>
-
-            <div class="mdc-layout-grid__cell--span-8-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
                 <MBDataTable Context="item"
-                             Items="meal.ConsumedFood"
-                             style="white-space: normal">
+                             Items="meal.ConsumedFood">
 
                     <TableHeader>
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Item</th>
@@ -44,20 +40,24 @@
                         <th class="mdc-data-table__cell" scope="row">@item.Name</th>
                         <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
                         <td class="mdc-data-table__cell">@item.Energy.ToString("0.##")</td>
-                        <td class="mdc-data-table__cell"><MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/></td>
+                        <td class="mdc-data-table__cell">
+                            <MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/>
+                        </td>
                     </TableRow>
 
                 </MBDataTable>
             </div>
-        </div>
+        }
+
     </div>
-}
+</div>
+<div class="mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-2-tablet"></div>
 
 @code {
 
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
-    
+
     [Inject]
     private IMBToastService? ToastService { get; set; }
 
@@ -78,16 +78,15 @@
             if (FoodLogApi != null)
             {
                 await FoodLogApi.FoodConsumption_DeleteAsync(id, ctx);
-                
+
                 await GetDayOverview(ctx);
-            
+
                 ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
                 await InvokeAsync(StateHasChanged);
             }
         }
         catch (ApiException)
         {
-            
         }
     }
 
@@ -102,8 +101,7 @@
         }
         catch (ApiException)
         {
-            
         }
     }
-}
 
+}

@@ -8,13 +8,16 @@ namespace MyFoodLog.API.Controllers;
 /// API endpoints to manage food consumption.
 /// </summary>
 [ApiController]
-[Route("/api/v1/foodconsumption")]
+[Route("/api/v1/food-consumptions")]
 public sealed class FoodConsumptionController : ControllerBase
 {
     private readonly ILogger<FoodConsumptionController> _logger;
 
     private readonly IFoodConsumptionService _foodConsumptionService;
 
+    /// <summary>
+    /// Constructor
+    /// </summary>
     public FoodConsumptionController(ILogger<FoodConsumptionController> logger, IFoodConsumptionService foodConsumptionService)
     {
         _logger = logger;

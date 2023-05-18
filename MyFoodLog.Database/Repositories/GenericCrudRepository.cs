@@ -34,6 +34,12 @@ public class GenericCrudRepository<T> : IGenericCrudRepository<T> where T : clas
     }
 
     /// <inheritdoc />
+    public async Task<T?> ById(Guid id, CancellationToken ctx = default)
+    {
+        return await Table.FindAsync(new object[] { id }, ctx);
+    }
+
+    /// <inheritdoc />
     public async Task Delete(int id, CancellationToken ctx = default)
     {
         T? existing = await Table.FindAsync(new object[] { id }, ctx);
