@@ -17,6 +17,18 @@ public sealed class FoodItemController : ControllerBase
     }
 
     /// <summary>
+    /// Get all known <see cref="MyFoodLog.Database.Models.FoodItem"/>s.
+    /// </summary>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>The collection of known food items.</returns>
+    [HttpGet("all")]
+    [ProducesResponseType(typeof(ICollection<FoodItemDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetAll(CancellationToken ctx)
+    {
+        return new JsonResult(await _foodItems.All(ctx));
+    }
+    
+    /// <summary>
     /// Create a new <see cref="MyFoodLog.Database.Models.FoodItem"/>.
     /// </summary>
     /// <param name="dto">The food item to create.</param>

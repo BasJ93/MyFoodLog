@@ -1,32 +1,42 @@
 @page "/"
 @inherits MyFoodLog.Web.ViewModels.EnterFoodConsumptionViewModel
-
 @using MyFoodLog.Web.Components
-<div class="mdc-layout-grid__cell--span-12">
-<h3>Enter Food Consumption</h3>
-</div>
 
 <div class="mdc-layout-grid__cell--span-3-desktop"></div>
 <div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
 
     <div class="mdc-layout-grid__inner">
-        <div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-2-phone"><MBTextField TextInputStyle="MBTextInputStyle.Outlined" @bind-Value="@SearchInput" style="width: 100%"/></div>
-        <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone"><MBIconButton Icon="qr_code_scanner"/></div>
-        <div class="mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-3-tablet mdc-layout-grid__cell--span-1-phone"><MBButton ButtonStyle="@MBButtonStyle.ContainedRaised" Label="Search" @onclick="@(async () => await Search())" style="width: 100%"/></div>
-    </div>
-    <div hidden="@HideResultSet">
-        <p>
-            <MBList Items="@FoodItems"
-                    Context="foodItem"
-                    ListStyle="MBListStyle.Outlined"
-                    ListType="MBListType.Regular"
-                    KeyboardInteractions="true"
-                    OnClick="@FoodItemClicked">
 
-                <Title>@foodItem.Name</Title>
-                <LineTwo>Energy: @foodItem.Energy.ToString("0.####") kcal/@foodItem.QuantityUnit</LineTwo>
-            </MBList>
-        </p>
+        <div class="mdc-layout-grid__cell--span-12 mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <h3 class="mdc-typography--headline6">Enter Food Consumption</h3>
+        </div>
+
+        <div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-2-phone">
+            <MBTextField TextInputStyle="MBTextInputStyle.Outlined" @bind-Value="@SearchInput" style="width: 100%"/>
+        </div>
+        <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone">
+            <MBIconButton Icon="qr_code_scanner"/>
+        </div>
+        <div class="mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-3-tablet mdc-layout-grid__cell--span-1-phone">
+            <MBButton ButtonStyle="@MBButtonStyle.ContainedRaised" Label="Search" @onclick="@(async () => await Search())" style="width: 100%"/>
+        </div>
+
+        <div class="mdc-layout-grid__cell--span-12 mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <div hidden="@HideResultSet">
+                <p>
+                    <MBList Items="@FoodItems"
+                            Context="foodItem"
+                            ListStyle="MBListStyle.Outlined"
+                            ListType="MBListType.Regular"
+                            KeyboardInteractions="true"
+                            OnClick="FoodItemClicked">
+
+                        <Title>@foodItem.Name</Title>
+                        <LineTwo>Energy: @foodItem.Energy.ToString("0.####") kcal/@foodItem.QuantityUnit</LineTwo>
+                    </MBList>
+                </p>
+            </div>
+        </div>
     </div>
 </div>
 <div class="mdc-layout-grid__cell--span-3-desktop"></div>
@@ -34,13 +44,13 @@
 <MBDialog @ref="CreateFoodItemDialog"
           Title="Add new item">
     <Body>
-    <AddFoodItemComponent />
+    <AddFoodItemComponent FormHandler="CreateFoodItem"/>
     </Body>
 </MBDialog>
 
 <MBDialog @ref="AddFoodConsumptionDialog"
           Title="Add consumption">
     <Body>
-    <AddFoodConsumptionComponent />
+    <AddFoodConsumptionComponent/>
     </Body>
 </MBDialog>
