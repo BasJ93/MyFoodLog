@@ -2,8 +2,8 @@
     <nav class="mdc-list">
         <MBListItem Label="Log Consumption" @onclick="@(() => ListItemClickHandler(""))" />
         <MBListItem Label="Today's Consumption" @onclick="@(() => ListItemClickHandler("DayOverview"))" />
-        <MBListItem Label="Add food" @onclick="@(() => ListItemClickHandler("AddFoodItemPage"))" />
         <MBListItem Label="Macros" @onclick="@(() => ListItemClickHandler("Macros"))" />
+        <MBListItem Label="Food Items" @onclick="@(() => ListItemClickHandler("FoodItemOverview"))" />
     </nav>
 </MBDrawer>
 
@@ -13,10 +13,10 @@
 
     private MBDrawer Drawer { get; set; } = new();
 
-    private void ListItemClickHandler(string NavigationReference)
+    private void ListItemClickHandler(string navigationReference)
     {
         Drawer.NotifyNavigation();
-        NavigationService?.NavigateTo(NavigationReference);
+        NavigationService?.NavigateTo(navigationReference);
     }
 
     public void Toggle()

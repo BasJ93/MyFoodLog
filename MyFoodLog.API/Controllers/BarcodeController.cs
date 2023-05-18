@@ -14,6 +14,9 @@ public sealed class BarcodeController : Controller
     
     private readonly IOpenFoodFactsClient _openFoodFactsClient;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public BarcodeController(IOpenFoodFactsClient openFoodFactsClient, ILogger<BarcodeController> logger)
     {
         _openFoodFactsClient = openFoodFactsClient;

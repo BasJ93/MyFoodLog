@@ -5,16 +5,34 @@ using MyFoodLog.Models.MealTypes;
 
 namespace MyFoodLog.API.Controllers;
 
+/// <summary>
+/// Controller to interact with <see cref="MyFoodLog.Database.Models.MealType"/>s.
+/// </summary>
 [ApiController]
-[Route("/api/{version:apiVersion}/mealtype")]
+[Route("/api/{version:apiVersion}/meal-types")]
 [ApiVersion("1.0")]
 public sealed class MealTypeController : ControllerBase
 {
     private readonly IMealTypeService _mealTypeService;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public MealTypeController(IMealTypeService mealTypeService)
     {
         _mealTypeService = mealTypeService;
+    }
+    
+    /// <summary>
+    /// Get the meal types the system knows about.
+    /// </summary>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>A list of known <see cref="MyFoodLog.Database.Models.MealType"/>s.</returns>
+    [HttpGet("")]
+    [ProducesResponseType(typeof(IEnumerable<MealTypeDto>), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetMealTypes(CancellationToken ctx)
+    {
+        return new JsonResult(await _mealTypeService.GetAll(ctx));
     }
     
     /// <summary>

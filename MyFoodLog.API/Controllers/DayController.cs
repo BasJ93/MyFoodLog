@@ -5,6 +5,9 @@ using MyFoodLog.Models;
 
 namespace MyFoodLog.API.Controllers;
 
+/// <summary>
+/// Controller to interact with data about a day.
+/// </summary>
 [ApiController]
 [Route("/api/{version:apiVersion}/day")]
 [ApiVersion("1.0")]
@@ -12,6 +15,9 @@ public sealed class DayController : ControllerBase
 {
     private readonly IMealService _mealService;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public DayController(IMealService mealService)
     {
         _mealService = mealService;
