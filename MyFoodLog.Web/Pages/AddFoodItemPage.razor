@@ -8,7 +8,7 @@
     {
         try
         {
-            await foodLogApi.FoodItem_CreateFoodItemAsync(createDto, ctx);
+            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
 
             toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
             StateHasChanged();

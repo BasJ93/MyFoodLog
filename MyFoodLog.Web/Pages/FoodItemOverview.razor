@@ -46,7 +46,7 @@
         {
             try
             {
-                await foodLogApi.FoodItem_UpdateFoodItemAsync(_stateContainer.SelectedFoodItem.Id, createDto, ctx);
+                await foodLogApi.FoodItem_UpdateFoodItemAsync(_stateContainer.SelectedFoodItem.Id, "1", createDto, ctx);
 
                 toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
                 
@@ -70,7 +70,7 @@
     {
         try
         {
-            await foodLogApi.FoodItem_CreateFoodItemAsync(createDto, ctx);
+            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
 
             toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
 
@@ -100,7 +100,7 @@
     {
         if (FoodLogApi != null)
         {
-            FoodItems = (await FoodLogApi.FoodItem_GetAllAsync(ctx)).ToList();
+            FoodItems = (await FoodLogApi.FoodItem_GetAllAsync("1", ctx)).ToList();
         }
     }
 

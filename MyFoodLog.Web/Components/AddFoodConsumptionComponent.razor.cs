@@ -28,7 +28,7 @@ public partial class AddFoodConsumptionComponent : ComponentBase
         {
             if (FoodLogApi != null)
             {
-                ICollection<MealTypeDto> mealTypes = await FoodLogApi.MealType_GetMealTypesAsync(CancellationToken.None) ?? new List<MealTypeDto>();
+                ICollection<MealTypeDto> mealTypes = await FoodLogApi.MealType_GetMealTypesAsync("1", CancellationToken.None) ?? new List<MealTypeDto>();
 
                 Meals.Clear();
 
@@ -74,7 +74,7 @@ public partial class AddFoodConsumptionComponent : ComponentBase
         {
             if (FoodLogApi != null)
             {
-                await FoodLogApi.FoodConsumption_CreateAsync(AddConsumptionRequestDto, ctx);
+                await FoodLogApi.FoodConsumption_CreateAsync("1", AddConsumptionRequestDto, ctx);
                 ToastService?.ShowToast(MBToastLevel.Success, $"Successfully added {AddConsumptionRequestDto.Amount} {StateContainer?.SelectedFoodItem?.QuantityUnit ?? string.Empty} of {AddConsumptionRequestDto.Name} to {Meals.First(m => m.SelectedValue == AddConsumptionRequestDto.MealTypeId).Label}.", timeout: 1500);
                 StateHasChanged();
             }

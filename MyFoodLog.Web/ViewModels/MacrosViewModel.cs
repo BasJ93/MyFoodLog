@@ -12,8 +12,6 @@ public class MacrosViewModel : ComponentBase
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
 
-    private HttpClient _httpClient = new();
-
     public PieChartConfig? PieChartConfig { get; set; }
 
     public Chart? MacrosPieChart { get; set; } = new();
@@ -40,7 +38,7 @@ public class MacrosViewModel : ComponentBase
         {
             if (FoodLogApi != null)
             {
-                macros = await FoodLogApi.Day_MacrosForDayAsync(null, CancellationToken.None);
+                macros = await FoodLogApi.Day_MacrosForDayAsync(null, "1", CancellationToken.None);
             }
         }
         catch (ApiException)

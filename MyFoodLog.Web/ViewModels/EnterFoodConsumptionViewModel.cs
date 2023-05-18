@@ -33,7 +33,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
             {
                 if (FoodLogApi != null)
                 {
-                    FoodItems = (await FoodLogApi.FoodItem_SearchAsync(SearchInput, ctx)).ToList();
+                    FoodItems = (await FoodLogApi.FoodItem_SearchAsync(SearchInput, "1", ctx)).ToList();
                 }
             }
             catch (ApiException)
@@ -62,7 +62,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
     {
         try
         {
-            await foodLogApi.FoodItem_CreateFoodItemAsync(createDto, ctx);
+            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
 
             toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
 

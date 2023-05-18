@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Models;
@@ -8,7 +9,8 @@ namespace MyFoodLog.API.Controllers;
 /// Controller to interact with data about a day.
 /// </summary>
 [ApiController]
-[Route("/api/v1/day")]
+[Route("/api/{version:apiVersion}/day")]
+[ApiVersion("1.0")]
 public sealed class DayController : ControllerBase
 {
     private readonly IMealService _mealService;

@@ -1,3 +1,4 @@
+using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Models;
 using MyFoodLog.Core.Services.Interfaces;
@@ -9,7 +10,8 @@ namespace MyFoodLog.API.Controllers;
 /// Controller to interact with <see cref="MyFoodLog.Database.Models.Meal"/>s.
 /// </summary>
 [ApiController]
-[Route("/api/v1/meals")]
+[Route("/api/{version:apiVersion}/meals")]
+[ApiVersion("1.0")]
 public sealed class MealController : ControllerBase
 {
     private readonly IMealService _mealService;
@@ -31,6 +33,7 @@ public sealed class MealController : ControllerBase
     [ProducesResponseType(StatusCodes.Status200OK)]
     public async Task<IActionResult> Create([FromBody] CreateMealRequestDto requestDto, CancellationToken ctx)
     {
+        // TODO: Return the created object
         await _mealService.Create(requestDto, ctx);
 
         return Ok();
