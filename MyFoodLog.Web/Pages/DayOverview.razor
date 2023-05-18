@@ -57,4 +57,11 @@
         }
     }
 
+    private async Task DayItemsModified()
+    {
+        await GetDayOverview();
+
+        await InvokeAsync(StateHasChanged);
+    }
+
 }
