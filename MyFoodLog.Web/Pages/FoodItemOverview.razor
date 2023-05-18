@@ -51,6 +51,9 @@
                 toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
                 
                 await EditFoodItemDialog.HideAsync();
+                
+                await UpdateFoodItems(ctx);
+                
                 StateHasChanged();
 
                 return true;
@@ -72,6 +75,9 @@
             toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
 
             await CreateFoodItemDialog.HideAsync();
+
+            await UpdateFoodItems(ctx);
+            
             StateHasChanged();
 
             return true;
@@ -85,12 +91,17 @@
     
     protected override async Task OnInitializedAsync()
     {
-        if (FoodLogApi != null)
-        {
-            FoodItems = (await FoodLogApi.FoodItem_GetAllAsync(CancellationToken.None)).ToList();
-        }
+        await UpdateFoodItems(CancellationToken.None);
 
         await base.OnInitializedAsync();
+    }
+
+    private async Task UpdateFoodItems(CancellationToken ctx = default)
+    {
+        if (FoodLogApi != null)
+        {
+            FoodItems = (await FoodLogApi.FoodItem_GetAllAsync(ctx)).ToList();
+        }
     }
 
 }
