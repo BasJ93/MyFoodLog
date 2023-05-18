@@ -97,9 +97,28 @@ public class FoodItemService : IFoodItemService
     }
 
     /// <inheritdoc />
-    public async Task<FoodItemDto> Update(Guid id, CreateFoodItemDto updateDto, CancellationToken ctx = default)
+    public async Task<FoodItemDto?> Update(Guid id, CreateFoodItemDto updateDto, CancellationToken ctx = default)
     {
-        throw new NotImplementedException();
+        FoodItem? item = await _foodItems.ById(id, ctx);
+
+        if (item != null)
+        {
+            item.Name = updateDto.Name;
+            item.Energy = updateDto.Energy;
+            item.QuantityUnit = updateDto.QuantityUnit;
+            item.Fat = updateDto.Fat;
+            item.Carbohydrates = updateDto.Carbohydrates;
+            item.Protein = updateDto.Protein;
+            
+            int result = await _foodItems.UpdateAndSave(item, ctx);
+
+            if (result == 1)
+            {
+                return _mapper.Map<FoodItemDto>(item);
+            }
+        }
+
+        return null;
     }
 
     private bool IsDigitsOnly(string str)

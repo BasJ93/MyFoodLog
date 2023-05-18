@@ -238,7 +238,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("consumptionDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-consumptions");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -321,7 +321,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-consumptions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -401,7 +401,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/foodconsumption/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-consumptions/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -481,7 +481,7 @@ namespace MyFoodLog.Web.API.Client
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_GetAllAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/all");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -566,7 +566,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -653,7 +653,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -731,7 +731,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("id");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -822,7 +822,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("dto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items/{id}");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
 
             var client_ = _httpClient;
@@ -907,7 +907,7 @@ namespace MyFoodLog.Web.API.Client
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<FoodItemDto>> FoodItem_SearchAsync(string searchString, System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/fooditem/search?");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/food-items/search?");
             if (searchString != null)
             {
                 urlBuilder_.Append(System.Uri.EscapeDataString("SearchString") + "=").Append(System.Uri.EscapeDataString(ConvertToString(searchString, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
@@ -1005,7 +1005,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("requestDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meals");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1064,160 +1064,6 @@ namespace MyFoodLog.Web.API.Client
             }
         }
 
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id)
-        {
-            return Meal_DeleteAsync(id, System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
-        {
-            if (id == null)
-                throw new System.ArgumentNullException("id");
-
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/{id}");
-            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
-                        {
-                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
-                            return fileResponse_;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
-        /// <summary>
-        /// Get the meal types the system knows about.
-        /// </summary>
-        /// <returns>A list of known MealTypes.</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync()
-        {
-            return Meal_GetMealTypesAsync(System.Threading.CancellationToken.None);
-        }
-
-        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
-        /// <summary>
-        /// Get the meal types the system knows about.
-        /// </summary>
-        /// <returns>A list of known MealTypes.</returns>
-        /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> Meal_GetMealTypesAsync(System.Threading.CancellationToken cancellationToken)
-        {
-            var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/types");
-
-            var client_ = _httpClient;
-            var disposeClient_ = false;
-            try
-            {
-                using (var request_ = new System.Net.Http.HttpRequestMessage())
-                {
-                    request_.Method = new System.Net.Http.HttpMethod("GET");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
-
-                    PrepareRequest(client_, request_, urlBuilder_);
-
-                    var url_ = urlBuilder_.ToString();
-                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
-
-                    PrepareRequest(client_, request_, url_);
-
-                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
-                    var disposeResponse_ = true;
-                    try
-                    {
-                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
-                        if (response_.Content != null && response_.Content.Headers != null)
-                        {
-                            foreach (var item_ in response_.Content.Headers)
-                                headers_[item_.Key] = item_.Value;
-                        }
-
-                        ProcessResponse(client_, response_);
-
-                        var status_ = (int)response_.StatusCode;
-                        if (status_ == 200)
-                        {
-                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<MealTypeDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
-                            if (objectResponse_.Object == null)
-                            {
-                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
-                            }
-                            return objectResponse_.Object;
-                        }
-                        else
-                        {
-                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
-                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
-                        }
-                    }
-                    finally
-                    {
-                        if (disposeResponse_)
-                            response_.Dispose();
-                    }
-                }
-            }
-            finally
-            {
-                if (disposeClient_)
-                    client_.Dispose();
-            }
-        }
-
         /// <summary>
         /// Get the meals for today, containing their respective food consumptions.
         /// </summary>
@@ -1235,7 +1081,7 @@ namespace MyFoodLog.Web.API.Client
         public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealDto>> Meal_GetMealsAsync(System.Threading.CancellationToken cancellationToken)
         {
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal/meals");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meals");
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -1306,6 +1152,160 @@ namespace MyFoodLog.Web.API.Client
             }
         }
 
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id)
+        {
+            return Meal_DeleteAsync(id, System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<FileResponse> Meal_DeleteAsync(System.Guid id, System.Threading.CancellationToken cancellationToken)
+        {
+            if (id == null)
+                throw new System.ArgumentNullException("id");
+
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meals/{id}");
+            urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("DELETE");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200 || status_ == 206)
+                        {
+                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
+                            var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
+                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
+                            return fileResponse_;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
+        /// <summary>
+        /// Get the meal types the system knows about.
+        /// </summary>
+        /// <returns>A list of known MealTypes.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> MealType_GetMealTypesAsync()
+        {
+            return MealType_GetMealTypesAsync(System.Threading.CancellationToken.None);
+        }
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Get the meal types the system knows about.
+        /// </summary>
+        /// <returns>A list of known MealTypes.</returns>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        public virtual async System.Threading.Tasks.Task<System.Collections.Generic.ICollection<MealTypeDto>> MealType_GetMealTypesAsync(System.Threading.CancellationToken cancellationToken)
+        {
+            var urlBuilder_ = new System.Text.StringBuilder();
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal-types");
+
+            var client_ = _httpClient;
+            var disposeClient_ = false;
+            try
+            {
+                using (var request_ = new System.Net.Http.HttpRequestMessage())
+                {
+                    request_.Method = new System.Net.Http.HttpMethod("GET");
+                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/json"));
+
+                    PrepareRequest(client_, request_, urlBuilder_);
+
+                    var url_ = urlBuilder_.ToString();
+                    request_.RequestUri = new System.Uri(url_, System.UriKind.RelativeOrAbsolute);
+
+                    PrepareRequest(client_, request_, url_);
+
+                    var response_ = await client_.SendAsync(request_, System.Net.Http.HttpCompletionOption.ResponseHeadersRead, cancellationToken).ConfigureAwait(false);
+                    var disposeResponse_ = true;
+                    try
+                    {
+                        var headers_ = System.Linq.Enumerable.ToDictionary(response_.Headers, h_ => h_.Key, h_ => h_.Value);
+                        if (response_.Content != null && response_.Content.Headers != null)
+                        {
+                            foreach (var item_ in response_.Content.Headers)
+                                headers_[item_.Key] = item_.Value;
+                        }
+
+                        ProcessResponse(client_, response_);
+
+                        var status_ = (int)response_.StatusCode;
+                        if (status_ == 200)
+                        {
+                            var objectResponse_ = await ReadObjectResponseAsync<System.Collections.Generic.ICollection<MealTypeDto>>(response_, headers_, cancellationToken).ConfigureAwait(false);
+                            if (objectResponse_.Object == null)
+                            {
+                                throw new ApiException("Response was null which was not expected.", status_, objectResponse_.Text, headers_, null);
+                            }
+                            return objectResponse_.Object;
+                        }
+                        else
+                        {
+                            var responseData_ = response_.Content == null ? null : await response_.Content.ReadAsStringAsync().ConfigureAwait(false);
+                            throw new ApiException("The HTTP status code of the response was not expected (" + status_ + ").", status_, responseData_, headers_, null);
+                        }
+                    }
+                    finally
+                    {
+                        if (disposeResponse_)
+                            response_.Dispose();
+                    }
+                }
+            }
+            finally
+            {
+                if (disposeClient_)
+                    client_.Dispose();
+            }
+        }
+
         /// <summary>
         /// Create a new MealType that can be assigned to meals during the day.
         /// </summary>
@@ -1328,7 +1328,7 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("requestDto");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/mealtype");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/v1/meal-types");
 
             var client_ = _httpClient;
             var disposeClient_ = false;

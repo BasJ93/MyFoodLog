@@ -5,12 +5,18 @@ using MyFoodLog.Core.Services.Interfaces;
 
 namespace MyFoodLog.API.Controllers;
 
+/// <summary>
+/// Controller to interact with <see cref="MyFoodLog.Database.Models.FoodItem"/>s.
+/// </summary>
 [ApiController]
-[Route("/api/v1/fooditem")]
+[Route("/api/v1/food-items")]
 public sealed class FoodItemController : ControllerBase
 {
     private readonly IFoodItemService _foodItems;
 
+    /// <summary>
+    /// Constructor.
+    /// </summary>
     public FoodItemController(IFoodItemService foodItems)
     {
         _foodItems = foodItems;
@@ -21,7 +27,7 @@ public sealed class FoodItemController : ControllerBase
     /// </summary>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>The collection of known food items.</returns>
-    [HttpGet("all")]
+    [HttpGet("")]
     [ProducesResponseType(typeof(ICollection<FoodItemDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken ctx)
     {
@@ -80,7 +86,12 @@ public sealed class FoodItemController : ControllerBase
     [ProducesResponseType(typeof(FoodItemDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> UpdateFoodItem(Guid id, [FromBody] CreateFoodItemDto dto, CancellationToken ctx)
     {
-        FoodItemDto result = await _foodItems.Update(id, dto, ctx);
+        FoodItemDto? result = await _foodItems.Update(id, dto, ctx);
+
+        if (result == null)
+        {
+            return Ok();
+        }
 
         return new JsonResult(result);
     }

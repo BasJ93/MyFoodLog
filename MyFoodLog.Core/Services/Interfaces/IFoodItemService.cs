@@ -55,5 +55,5 @@ public interface IFoodItemService
     /// <param name="updateDto">The new values to set it to.</param>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>The updated food item.</returns>
-    Task<FoodItemDto> Update(Guid id, CreateFoodItemDto updateDto, CancellationToken ctx = default);
+    Task<FoodItemDto?> Update(Guid id, CreateFoodItemDto updateDto, CancellationToken ctx = default);
 }

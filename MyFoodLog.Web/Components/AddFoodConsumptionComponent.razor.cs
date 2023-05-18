@@ -28,7 +28,7 @@ public partial class AddFoodConsumptionComponent : ComponentBase
         {
             if (FoodLogApi != null)
             {
-                ICollection<MealTypeDto> mealTypes = await FoodLogApi.Meal_GetMealTypesAsync(CancellationToken.None) ?? new List<MealTypeDto>();
+                ICollection<MealTypeDto> mealTypes = await FoodLogApi.MealType_GetMealTypesAsync(CancellationToken.None) ?? new List<MealTypeDto>();
 
                 Meals.Clear();
 
