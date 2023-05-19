@@ -1,6 +1,7 @@
 using Material.Blazor;
 using Microsoft.AspNetCore.Components;
 using MyFoodLog.Web.API.Client.Interfaces;
+using MyFoodLog.Web.State;
 
 namespace MyFoodLog.Web.Components;
 
@@ -18,19 +19,21 @@ public partial class MealOverviewComponent : ComponentBase
     [Inject]
     private IMBToastService? ToastService { get; set; }
     
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+    
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+    
     private async Task DeleteConsumption(Guid id, CancellationToken ctx = default)
     {
         try
         {
             if (FoodLogApi != null)
             {
-                await FoodLogApi.FoodConsumption_DeleteAsync(id, "1", ctx);
-
-                // await GetDayOverview(ctx);
+                await FoodLogApi.FoodConsumption_DeleteAsync(id, "1", ctx);;
 
                 ToastService?.ShowToast(MBToastLevel.Success, $"Removed entry.", timeout: 1500);
-                
-                //await InvokeAsync(StateHasChanged);
 
                 await CollectionModified.InvokeAsync();
             }
@@ -40,6 +43,17 @@ public partial class MealOverviewComponent : ComponentBase
         }
     }
 
+    private async Task AddFoodItem(CancellationToken ctx = default)
+    {
+        if (_stateContainer != null)
+        {
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
+            _stateContainer.MealName = Meal?.Name ?? string.Empty;
+        }
+
+        NavigationService?.NavigateTo("addConsumption");
+    }
+    
     private void CalculateEnergy()
     {
         if (Meal != null)

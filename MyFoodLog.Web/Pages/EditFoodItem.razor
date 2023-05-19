@@ -1,24 +1,37 @@
-@page "/AddFoodItemPage"
+@page "/EditFoodItem"
 @using MyFoodLog.Web.Components
 @using MyFoodLog.Web.API.Client.Interfaces
+@using MyFoodLog.Web.State
 
 @code {
-
+    
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+    
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+    
     private async Task<bool> FormHandler(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
     {
-        try
+        if (_stateContainer?.SelectedFoodItem != null)
         {
-            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
+            try
+            {
+                await foodLogApi.FoodItem_UpdateFoodItemAsync(_stateContainer.SelectedFoodItem.Id, "1", createDto, ctx);
 
-            toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
-            StateHasChanged();
+                toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
 
-            return true;
+                NavigationService?.NavigateTo(_stateContainer?.PreviousPage ?? string.Empty);
+
+                return true;
+            }
+            catch (ApiException)
+            {
+            }
         }
-        catch (ApiException)
-        {
-        }
 
+        
+        
         return false;
     }
 
@@ -29,7 +42,7 @@
     <div class="mdc-layout-grid__inner">
 
         <div class="mdc-layout-grid__cell--span-12 mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-            <h3 class="mdc-typography--headline6">Add FoodItem</h3>
+            <h5 class="mdc-typography--headline5">Edit FoodItem</h5>
         </div>
 
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">

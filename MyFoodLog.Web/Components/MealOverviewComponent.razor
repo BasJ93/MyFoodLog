@@ -12,7 +12,7 @@
             <h5 class="mdc-typography--headline5">(@Meal?.Energy.ToString("0.##"))</h5>
         </div>
         <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: center;">
-            <MBIconButton Icon="add" style="margin: 32px 0;"/>
+            <MBIconButton Icon="add" @onclick="@(async () => await AddFoodItem())" style="margin: 32px 0;"/>
         </div>
     </div>
 </div>

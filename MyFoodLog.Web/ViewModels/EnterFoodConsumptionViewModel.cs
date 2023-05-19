@@ -13,6 +13,9 @@ public class EnterFoodConsumptionViewModel : ComponentBase
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
     
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+    
     protected MBDialog CreateFoodItemDialog { get; set; } = new();
 
     protected MBDialog AddFoodConsumptionDialog { get; set; } = new();
@@ -87,7 +90,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
                 _stateContainer.SelectedFoodItem = new FoodItemDto { Name = SearchInput };
             }
 
-            await CreateFoodItemDialog.ShowAsync();
+            NavigationService?.NavigateTo("createFoodItem");
         }
         else
         {
@@ -96,7 +99,7 @@ public class EnterFoodConsumptionViewModel : ComponentBase
                 _stateContainer.SelectedFoodItem = FoodItems?[index];
             }
 
-            await AddFoodConsumptionDialog.ShowAsync();
+            NavigationService?.NavigateTo("addFoodConsumption");
         }
     }
 }

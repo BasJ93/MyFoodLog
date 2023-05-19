@@ -1,7 +1,6 @@
 @page "/FoodItemOverview"
 @using MyFoodLog.Web.State
 @using MyFoodLog.Web.API.Client.Interfaces
-@using MyFoodLog.Web.Components
 
 @code {
 
@@ -13,10 +12,9 @@
 
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
-
-    private MBDialog EditFoodItemDialog { get; set; } = new();
     
-    private MBDialog CreateFoodItemDialog { get; set; } = new();
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
 
     private List<FoodItemDto>? FoodItems { get; set; } = new();
 
@@ -25,9 +23,10 @@
         if (_stateContainer != null)
         {
             _stateContainer.SelectedFoodItem = FoodItems?.Find(f => f.Id == id);
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
         }
 
-        await EditFoodItemDialog.ShowAsync();
+        NavigationService?.NavigateTo("EditFoodItem");
     }
     
     private async Task ShowAddDialog()
@@ -35,60 +34,12 @@
         if (_stateContainer != null)
         {
             _stateContainer.SelectedFoodItem = new();
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
         }
 
-        await EditFoodItemDialog.ShowAsync();
+        NavigationService?.NavigateTo("AddFoodItem");
     }
 
-    private async Task<bool> EditFoodItem(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
-    {
-        if (_stateContainer?.SelectedFoodItem != null)
-        {
-            try
-            {
-                await foodLogApi.FoodItem_UpdateFoodItemAsync(_stateContainer.SelectedFoodItem.Id, "1", createDto, ctx);
-
-                toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
-                
-                await EditFoodItemDialog.HideAsync();
-                
-                await UpdateFoodItems(ctx);
-                
-                StateHasChanged();
-
-                return true;
-            }
-            catch (ApiException)
-            {
-            }
-        }
-
-        return false;
-    }
-
-    private async Task<bool> CreateFoodItem(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
-    {
-        try
-        {
-            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
-
-            toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
-
-            await CreateFoodItemDialog.HideAsync();
-
-            await UpdateFoodItems(ctx);
-            
-            StateHasChanged();
-
-            return true;
-        }
-        catch (ApiException)
-        {
-        }
-
-        return false;
-    }
-    
     protected override async Task OnInitializedAsync()
     {
         await UpdateFoodItems(CancellationToken.None);
@@ -135,17 +86,3 @@
         </div>
     </div>
 </div>
-
-<MBDialog @ref="CreateFoodItemDialog"
-          Title="Add new item">
-    <Body>
-    <AddFoodItemComponent FormHandler="CreateFoodItem"/>
-    </Body>
-</MBDialog>
-
-<MBDialog @ref="EditFoodItemDialog"
-          Title="Edit item">
-    <Body>
-    <AddFoodItemComponent FormHandler="EditFoodItem"/>
-    </Body>
-</MBDialog>

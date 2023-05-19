@@ -5,7 +5,7 @@
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
                          Label="Product Name"
-                         TextInputStyle="MBTextInputStyle.Outlined"
+                         TextInputStyle="@MBTextInputStyle.Outlined"
                          Disabled="@NameWasProvided"
                          style="width: 100%; margin-top: 1em"/>
         </div>
@@ -15,21 +15,21 @@
                                    DecimalPlaces="2"
                                    Label="Amount"
                                    HelperText=""
-                                   TextInputStyle="MBTextInputStyle.Outlined"
+                                   TextInputStyle="@MBTextInputStyle.Outlined"
                                    style="width: 100%"/>
         </div>
 
         <!--
         TODO:
         - Put the unit of the amount in the HelperText
-        - Submit the ConsumptionDto to the backend
         -->
 
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <MBSelect @bind-Value="@AddConsumptionRequestDto.MealTypeId"
                       Items="@Meals"
-                      ItemValidation="MBItemValidation.NoSelection"
+                      ItemValidation="@MBItemValidation.NoSelection"
                       Label="Meal"
+                      Disabled="@MealWasProvided"
                       style="width: 100%"/>
         </div>
 
