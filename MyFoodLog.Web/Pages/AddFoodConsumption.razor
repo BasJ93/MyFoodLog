@@ -1,0 +1,55 @@
+@page "/addFoodConsumption"
+@using MyFoodLog.Web.Components;
+@using MyFoodLog.Web.API.Client.Interfaces
+@using MyFoodLog.Web.State
+
+@code {
+
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+    
+    [Inject]
+    protected StateContainer? StateContainer { get; set; }
+    
+    private async Task<bool> AddConsumption(IMyFoodLogApi foodLogApi, IMBToastService toastService, AddConsumptionRequestDto addConsumptionRequestDto, CancellationToken ctx)
+    {
+        try
+        {
+            await foodLogApi.FoodConsumption_CreateAsync("1", addConsumptionRequestDto, ctx);
+
+            toastService.ShowToast(MBToastLevel.Success, $"Successfully added {addConsumptionRequestDto.Amount} {StateContainer?.SelectedFoodItem?.QuantityUnit ?? string.Empty} of {addConsumptionRequestDto.Name}.", timeout: 1500); // to {Meals.First(m => m.SelectedValue == addConsumptionRequestDto.MealTypeId).Label}
+
+            return true;
+        }
+        catch (ApiException)
+        {
+        }
+
+        return false;
+    }
+
+
+    protected override void OnInitialized()
+    {
+        if (Layout != null)
+        {
+            Layout.Title = "Add Consumption";
+        }
+
+        base.OnInitialized();
+    }
+
+}
+
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
+<div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+    <div class="mdc-layout-grid__inner">
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+
+            <FoodConsumptionComponent FormHandler="AddConsumption"/>
+
+        </div>
+
+    </div>
+</div>
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>

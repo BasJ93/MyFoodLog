@@ -60,9 +60,18 @@ public sealed class FoodConsumptionController : ControllerBase
         return NotFound();
     }
 
+    /// <summary>
+    /// Update the consumption of a <see cref="MyFoodLog.Database.Models.FoodItem"/>.
+    /// </summary>
+    /// <param name="id">The id of the existing <see cref="MyFoodLog.Database.Models.FoodItemConsumption"/></param>
+    /// <param name="amount">Then new amount of consumed units.</param>
+    /// <param name="ctx">Cancellation token.</param>
     [HttpPatch("{id:guid}")]
-    public async Task<IActionResult> Update(Guid id, CancellationToken ctx)
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    public async Task<IActionResult> Update(Guid id, [FromQuery] decimal amount, CancellationToken ctx)
     {
-        throw new NotImplementedException();
+        await _foodConsumptionService.UpdateConsumption(id, amount, ctx);
+
+        return Ok();
     }
 }

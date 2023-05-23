@@ -1,11 +1,11 @@
 @namespace MyFoodLog.Web.Components
 
-<EditForm Model="@AddConsumptionRequestDto">
+<EditForm Model="@AddConsumptionRequestDto" OnSubmit="@(async () => await SubmitConsumption())">
     <div class="mdc-layout-grid__inner">
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <MBTextField @bind-Value="@AddConsumptionRequestDto.Name"
                          Label="Product Name"
-                         TextInputStyle="MBTextInputStyle.Outlined"
+                         TextInputStyle="@MBTextInputStyle.Outlined"
                          Disabled="@NameWasProvided"
                          style="width: 100%; margin-top: 1em"/>
         </div>
@@ -15,31 +15,32 @@
                                    DecimalPlaces="2"
                                    Label="Amount"
                                    HelperText=""
-                                   TextInputStyle="MBTextInputStyle.Outlined"
+                                   TextInputStyle="@MBTextInputStyle.Outlined"
                                    style="width: 100%"/>
         </div>
 
         <!--
         TODO:
         - Put the unit of the amount in the HelperText
-        - Submit the ConsumptionDto to the backend
         -->
 
+
+        <!-- TODO: Somehow, this now fails to set the value when adding a new consumption. -->
+        <!-- This fails when adding a label, for some reason.                       Label="Meal" -->
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <MBSelect @bind-Value="@AddConsumptionRequestDto.MealTypeId"
                       Items="@Meals"
-                      ItemValidation="MBItemValidation.NoSelection"
-                      Label="Meal"
+                      ItemValidation="@MBItemValidation.NoSelection"
+                      Disabled="@MealWasProvided"
+                      MenuSurfacePositioning="MBMenuSurfacePositioning.FullWidth"
                       style="width: 100%"/>
         </div>
 
         <div class="mdc-layout-grid__cell--span-10-desktop mdc-layout-grid__cell--span-7-tablet mdc-layout-grid__cell--span-3-phone"></div>
         <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: left;">
-            <MBButton Label="Add"
+            <MBButton Label="@ButtonText"
                       style="margin: 0.75em 0.25em 0.25em 0.25em;"
-                      type="submit"
-                      @onclick="@(async () => await SubmitConsumption())"/>
+                      type="submit"/>
         </div>
     </div>
-
 </EditForm>

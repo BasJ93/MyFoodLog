@@ -87,11 +87,24 @@ public class FoodConsumptionService : IFoodConsumptionService
         await _foodItemConsumption.InsertAndSave(consumption, ctx);
     }
 
-    public async Task UpdateConsumption(CancellationToken ctx)
+    /// <inheritdoc />
+    public async Task<bool> UpdateConsumption(Guid id, decimal amount, CancellationToken ctx)
     {
-        throw new NotImplementedException();
+        FoodItemConsumption? consumption = await _foodItemConsumption.ById(id, ctx);
+
+        if (consumption != null)
+        {
+            consumption.Amount = amount;
+
+            int changes = await _foodItemConsumption.UpdateAndSave(consumption, ctx);
+            
+            return changes > 0;
+        }
+
+        return false;
     }
 
+    /// <inheritdoc />
     public async Task<bool> DeleteConsumption(Guid id, CancellationToken ctx)
     {
         _logger.LogInformation("Attempting to remove food consumption entry {id}", id);

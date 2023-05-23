@@ -1,10 +1,12 @@
 @page "/FoodItemOverview"
 @using MyFoodLog.Web.State
 @using MyFoodLog.Web.API.Client.Interfaces
-@using MyFoodLog.Web.Components
 
 @code {
 
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+    
     [Inject]
     private IMBToastService? ToastService { get; set; }
 
@@ -13,10 +15,9 @@
 
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
-
-    private MBDialog EditFoodItemDialog { get; set; } = new();
     
-    private MBDialog CreateFoodItemDialog { get; set; } = new();
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
 
     private List<FoodItemDto>? FoodItems { get; set; } = new();
 
@@ -25,9 +26,10 @@
         if (_stateContainer != null)
         {
             _stateContainer.SelectedFoodItem = FoodItems?.Find(f => f.Id == id);
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
         }
 
-        await EditFoodItemDialog.ShowAsync();
+        NavigationService?.NavigateTo("EditFoodItem");
     }
     
     private async Task ShowAddDialog()
@@ -35,62 +37,19 @@
         if (_stateContainer != null)
         {
             _stateContainer.SelectedFoodItem = new();
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
         }
 
-        await EditFoodItemDialog.ShowAsync();
+        NavigationService?.NavigateTo("AddFoodItem");
     }
 
-    private async Task<bool> EditFoodItem(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
-    {
-        if (_stateContainer?.SelectedFoodItem != null)
-        {
-            try
-            {
-                await foodLogApi.FoodItem_UpdateFoodItemAsync(_stateContainer.SelectedFoodItem.Id, "1", createDto, ctx);
-
-                toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
-                
-                await EditFoodItemDialog.HideAsync();
-                
-                await UpdateFoodItems(ctx);
-                
-                StateHasChanged();
-
-                return true;
-            }
-            catch (ApiException)
-            {
-            }
-        }
-
-        return false;
-    }
-
-    private async Task<bool> CreateFoodItem(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
-    {
-        try
-        {
-            await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
-
-            toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
-
-            await CreateFoodItemDialog.HideAsync();
-
-            await UpdateFoodItems(ctx);
-            
-            StateHasChanged();
-
-            return true;
-        }
-        catch (ApiException)
-        {
-        }
-
-        return false;
-    }
-    
     protected override async Task OnInitializedAsync()
     {
+        if (Layout != null)
+        {
+            Layout.Title = "FoodItem Overview";
+        }
+        
         await UpdateFoodItems(CancellationToken.None);
 
         await base.OnInitializedAsync();
@@ -112,7 +71,6 @@
     <div class="mdc-layout-grid__inner">
 
         <div class="mdc-layout-grid__cell--span-10-desktop mdc-layout-grid__cell--span-7-tablet mdc-layout-grid__cell--span-3-phone">
-            <h3 class="mdc-typography--headline5">FoodItem Overview</h3>
         </div>
         <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: center;">
             <MBIconButton Icon="add" @onclick="@(async () => await ShowAddDialog())" style="margin: 18px 0;"/>
@@ -135,17 +93,3 @@
         </div>
     </div>
 </div>
-
-<MBDialog @ref="CreateFoodItemDialog"
-          Title="Add new item">
-    <Body>
-    <AddFoodItemComponent FormHandler="CreateFoodItem"/>
-    </Body>
-</MBDialog>
-
-<MBDialog @ref="EditFoodItemDialog"
-          Title="Edit item">
-    <Body>
-    <AddFoodItemComponent FormHandler="EditFoodItem"/>
-    </Body>
-</MBDialog>

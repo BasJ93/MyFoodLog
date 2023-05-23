@@ -77,12 +77,22 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// <exception cref="ApiException">A server side error occurred.</exception>
         System.Threading.Tasks.Task FoodConsumption_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
 
+        /// <summary>
+        /// Update the consumption of a FoodItem.
+        /// </summary>
+        /// <param name="id">The id of the existing FoodItemConsumption</param>
+        /// <param name="amount">Then new amount of consumed units.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version);
+        System.Threading.Tasks.Task FoodConsumption_UpdateAsync(System.Guid id, decimal? amount, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the consumption of a FoodItem.
+        /// </summary>
+        /// <param name="id">The id of the existing FoodItemConsumption</param>
+        /// <param name="amount">Then new amount of consumed units.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task FoodConsumption_UpdateAsync(System.Guid id, decimal? amount, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
         /// Get all known FoodItems.

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using MyFoodLog.Web.API.Client.Interfaces;
+using MyFoodLog.Web.Shared;
 using MyFoodLog.Web.Support;
 using PSC.Blazor.Components.Chartjs;
 using PSC.Blazor.Components.Chartjs.Enums;
@@ -9,6 +10,9 @@ namespace MyFoodLog.Web.ViewModels;
 
 public class MacrosViewModel : ComponentBase
 {
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+    
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
 
@@ -32,6 +36,11 @@ public class MacrosViewModel : ComponentBase
 
     protected override async Task OnInitializedAsync()
     {
+        if (Layout != null)
+        {
+            Layout.Title = "Macros";
+        }
+        
         MacrosDto macros = new();
 
         try

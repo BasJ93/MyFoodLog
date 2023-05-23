@@ -1,9 +1,19 @@
-@page "/AddFoodItemPage"
+@page "/AddFoodItem"
 @using MyFoodLog.Web.Components
 @using MyFoodLog.Web.API.Client.Interfaces
+@using MyFoodLog.Web.State
 
 @code {
 
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+    
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+    
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+    
     private async Task<bool> FormHandler(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateFoodItemDto createDto, CancellationToken ctx)
     {
         try
@@ -11,7 +21,8 @@
             await foodLogApi.FoodItem_CreateFoodItemAsync("1", createDto, ctx);
 
             toastService.ShowToast(MBToastLevel.Success, $"Successfully added {createDto.Name}.", timeout: 1500);
-            StateHasChanged();
+            
+            NavigationService?.NavigateTo(_stateContainer?.PreviousPage ?? string.Empty);
 
             return true;
         }
@@ -22,19 +33,24 @@
         return false;
     }
 
+    protected override void OnInitialized()
+    {
+        if (Layout != null)
+        {
+            Layout.Title = "Add FoodItem";
+        }
+        
+        base.OnInitialized();
+    }
+
 }
 
 <div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
 <div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
     <div class="mdc-layout-grid__inner">
-
-        <div class="mdc-layout-grid__cell--span-12 mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
-            <h3 class="mdc-typography--headline6">Add FoodItem</h3>
-        </div>
-
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
 
-            <AddFoodItemComponent FormHandler="FormHandler"/>
+            <FoodItemComponent FormHandler="FormHandler"/>
 
         </div>
         
