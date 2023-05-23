@@ -34,7 +34,8 @@
             <td class="mdc-data-table__cell">@item.Amount @item.QuantityUnit</td>
             <td class="mdc-data-table__cell">@item.Energy.ToString("0.##")</td>
             <td class="mdc-data-table__cell">
-                <MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(@item.Id))"/>
+                <MBIconButton Icon="Delete" @onclick="@(async () => await DeleteConsumption(item.Id))"/>
+                <MBIconButton Icon="Edit" @onclick="@(async () => await EditConsumption(item.Id))"/>
             </td>
         </TableRow>
 

@@ -44,6 +44,9 @@
 
 @code {
 
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+    
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
 
@@ -82,6 +85,11 @@
 
     private async Task DayItemsModified()
     {
+        if (Layout != null)
+        {
+            Layout.Title = "Diary";
+        }
+        
         await GetDayOverview();
 
         await InvokeAsync(StateHasChanged);

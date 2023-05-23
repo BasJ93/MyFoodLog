@@ -14,7 +14,14 @@ public interface IFoodConsumptionService
     /// <param name="ctx">Cancellation token.</param>
     Task AddConsumption(AddConsumptionRequestDto requestDto, CancellationToken ctx);
     
-    Task UpdateConsumption(CancellationToken ctx);
+    /// <summary>
+    /// Update the amount of food consumed in the <see cref="MyFoodLog.Database.Models.FoodItemConsumption"/>.
+    /// </summary>
+    /// <param name="id">The id of the <see cref="MyFoodLog.Database.Models.FoodItemConsumption"/></param>
+    /// <param name="amount">The new amount of consumed food.</param>
+    /// <param name="ctx">Cancellation token.</param>
+    /// <returns>A bool indicating success.</returns>
+    Task<bool> UpdateConsumption(Guid id, decimal amount, CancellationToken ctx);
 
     /// <summary>
     /// Remove a <see cref="MyFoodLog.Database.Models.FoodItemConsumption"/> from the database.

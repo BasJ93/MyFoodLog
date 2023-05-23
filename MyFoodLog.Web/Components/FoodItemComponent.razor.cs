@@ -5,7 +5,7 @@ using MyFoodLog.Web.State;
 
 namespace MyFoodLog.Web.Components;
 
-public partial class AddFoodItemComponent : ComponentBase
+public partial class FoodItemComponent : ComponentBase
 {
     [Parameter]
     public Func<IMyFoodLogApi, IMBToastService, CreateFoodItemDto, CancellationToken, Task<bool>>? FormHandler { get; set; }
@@ -22,7 +22,7 @@ public partial class AddFoodItemComponent : ComponentBase
     private string ButtonText { get; set; } = "Add";
     
     private CreateFoodItemDto CreateDto { get; } = new();
-
+    
     private async Task HandleForm(CancellationToken ctx = default)
     {
         if (FormHandler != null && FoodLogApi != null && ToastService != null)

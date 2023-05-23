@@ -42,6 +42,17 @@ public partial class MealOverviewComponent : ComponentBase
         {
         }
     }
+    
+    private async Task EditConsumption(Guid id, CancellationToken ctx = default)
+    {
+        if (_stateContainer != null)
+        {
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
+            _stateContainer.SelectedFoodConsumption = Meal?.ConsumedFood?.FirstOrDefault(c => c.Id == id);
+        }
+        
+        NavigationService?.NavigateTo("editFoodConsumption");
+    }
 
     private async Task AddFoodItem(CancellationToken ctx = default)
     {

@@ -1,10 +1,14 @@
 @inherits LayoutComponentBase
 
-<NavMenuMaterial @ref="navbar"/>
+<CascadingValue Value="this">
+    
+    <PageTitle>@Title</PageTitle>
+    
+    <NavMenuMaterial @ref="navbar"/>
 
 <div class="mdc-drawer-app-content">
     <MBTopAppBar @ref="TopAppBar"
-                 Title="MyFoodLog"
+                 Title="@Title"
                  NavIcon="menu"
                  ScrollTarget="#main-content"
                  @onclick="@SideBarToggle">
@@ -28,6 +32,8 @@
     
 </div>
 
+</CascadingValue>
+
 @code {
     public MBTopAppBar TopAppBar { get; set; } = new();
     
@@ -37,4 +43,16 @@
     {
         navbar.Toggle();
     }
+
+    public string Title
+    {
+        get => _title;
+        set
+        {
+            _title = value;
+            InvokeAsync(StateHasChanged);
+        }
+    }
+
+    private string _title  = "MyFoodLog";
 }

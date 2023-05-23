@@ -403,15 +403,25 @@ namespace MyFoodLog.Web.API.Client
             }
         }
 
+        /// <summary>
+        /// Update the consumption of a FoodItem.
+        /// </summary>
+        /// <param name="id">The id of the existing FoodItemConsumption</param>
+        /// <param name="amount">Then new amount of consumed units.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version)
+        public virtual System.Threading.Tasks.Task FoodConsumption_UpdateAsync(System.Guid id, decimal? amount, string version)
         {
-            return FoodConsumption_UpdateAsync(id, version, System.Threading.CancellationToken.None);
+            return FoodConsumption_UpdateAsync(id, amount, version, System.Threading.CancellationToken.None);
         }
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update the consumption of a FoodItem.
+        /// </summary>
+        /// <param name="id">The id of the existing FoodItemConsumption</param>
+        /// <param name="amount">Then new amount of consumed units.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        public virtual async System.Threading.Tasks.Task<FileResponse> FoodConsumption_UpdateAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken)
+        public virtual async System.Threading.Tasks.Task FoodConsumption_UpdateAsync(System.Guid id, decimal? amount, string version, System.Threading.CancellationToken cancellationToken)
         {
             if (id == null)
                 throw new System.ArgumentNullException("id");
@@ -420,9 +430,14 @@ namespace MyFoodLog.Web.API.Client
                 throw new System.ArgumentNullException("version");
 
             var urlBuilder_ = new System.Text.StringBuilder();
-            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/food-consumptions/{id}");
+            urlBuilder_.Append(BaseUrl != null ? BaseUrl.TrimEnd('/') : "").Append("/api/{version}/food-consumptions/{id}?");
             urlBuilder_.Replace("{id}", System.Uri.EscapeDataString(ConvertToString(id, System.Globalization.CultureInfo.InvariantCulture)));
             urlBuilder_.Replace("{version}", System.Uri.EscapeDataString(ConvertToString(version, System.Globalization.CultureInfo.InvariantCulture)));
+            if (amount != null)
+            {
+                urlBuilder_.Append(System.Uri.EscapeDataString("amount") + "=").Append(System.Uri.EscapeDataString(ConvertToString(amount, System.Globalization.CultureInfo.InvariantCulture))).Append("&");
+            }
+            urlBuilder_.Length--;
 
             var client_ = _httpClient;
             var disposeClient_ = false;
@@ -430,9 +445,8 @@ namespace MyFoodLog.Web.API.Client
             {
                 using (var request_ = new System.Net.Http.HttpRequestMessage())
                 {
-                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/octet-stream");
+                    request_.Content = new System.Net.Http.StringContent(string.Empty, System.Text.Encoding.UTF8, "application/json");
                     request_.Method = new System.Net.Http.HttpMethod("PATCH");
-                    request_.Headers.Accept.Add(System.Net.Http.Headers.MediaTypeWithQualityHeaderValue.Parse("application/octet-stream"));
 
                     PrepareRequest(client_, request_, urlBuilder_);
 
@@ -455,12 +469,9 @@ namespace MyFoodLog.Web.API.Client
                         ProcessResponse(client_, response_);
 
                         var status_ = (int)response_.StatusCode;
-                        if (status_ == 200 || status_ == 206)
+                        if (status_ == 200)
                         {
-                            var responseStream_ = response_.Content == null ? System.IO.Stream.Null : await response_.Content.ReadAsStreamAsync().ConfigureAwait(false);
-                            var fileResponse_ = new FileResponse(status_, headers_, responseStream_, null, response_);
-                            disposeClient_ = false; disposeResponse_ = false; // response and client are disposed by FileResponse
-                            return fileResponse_;
+                            return;
                         }
                         else
                         {
