@@ -12,24 +12,24 @@
 <div class="mdc-layout-grid__cell--span-3-desktop mdc-layout-grid__cell--span-2-tablet"></div>
 <div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
     <div class="mdc-layout-grid__inner">
-
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <div class="mdc-layout-grid__inner">
-                <div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-2-phone">
-                    <h4 class="mdc-typography--headline4">Diary</h4>
-                </div>
+                <DatePickerComponent DateChanged="DateChanged" />
                 <div class="mdc-layout-grid__cell--span-4-desktop mdc-layout-grid__cell--span-0-tablet mdc-layout-grid__cell--span-0-phone">
                     <h6 class="mdc-typography--headline6">(@TotalEnergyConsumed.ToString("0.##") kCal)</h6>
                 </div>
-                <div class="mdc-layout-grid__cell--span-0-desktop mdc-layout-grid__cell--span-3-tablet mdc-layout-grid__cell--span-1-phone">
-                    <h6 class="mdc-typography--headline6">(@TotalEnergyConsumed.ToString("0.##"))</h6>
-                </div>
-                <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: center;">
+                <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-0-tablet mdc-layout-grid__cell--span-0-phone" style="text-align: center;">
                     <MBIconButton Icon="add" style="margin: 42px 0;" @onclick="@(() => NavigationService?.NavigateTo(""))"/>
+                </div>
+                <div class="mdc-layout-grid__cell--span-0-desktop mdc-layout-grid__cell--span-7-tablet mdc-layout-grid__cell--span-3-phone">
+                    <h6 class="mdc-typography--headline6" style="margin-block: 0px;">(@TotalEnergyConsumed.ToString("0.##") kCal)</h6>
+                </div>
+                <div class="mdc-layout-grid__cell--span-0-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: center;">
+                    <MBIconButton Icon="add" style="margin-block: 0px; padding: 0px" @onclick="@(() => NavigationService?.NavigateTo(""))"/>
                 </div>
             </div>
         </div>
-        
+
         @foreach (MealDto meal in Meals)
         {
             if (meal.ConsumedFood.Any())
@@ -46,13 +46,13 @@
 
     [CascadingParameter]
     public MainLayoutMaterial? Layout { get; set; }
-    
+
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
 
     [Inject]
     private IMBToastService? ToastService { get; set; }
-    
+
     [Inject]
     private NavigationManager? NavigationService { get; set; }
 
@@ -62,18 +62,23 @@
 
     protected override async Task OnInitializedAsync()
     {
-        await GetDayOverview();
+        if (Layout != null)
+        {
+            Layout.Title = "Diary";
+        }
+
+        await GetDayOverview(DateTime.Now);
 
         await base.OnInitializedAsync();
     }
 
-    private async Task GetDayOverview(CancellationToken ctx = default)
+    private async Task GetDayOverview(DateTime date, CancellationToken ctx = default)
     {
         try
         {
             if (FoodLogApi != null)
             {
-                Meals = (await FoodLogApi.Meal_GetMealsAsync("1", ctx)).ToList();
+                Meals = (await FoodLogApi.Day_GetMealsAsync(date, "1", ctx)).ToList();
 
                 TotalEnergyConsumed = Meals.Sum(m => m.ConsumedFood.Sum(c => c.Energy));
             }
@@ -81,18 +86,20 @@
         catch (ApiException)
         {
         }
+
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task DayItemsModified()
     {
-        if (Layout != null)
-        {
-            Layout.Title = "Diary";
-        }
-        
-        await GetDayOverview();
+        await GetDayOverview(DateTime.Now);
 
         await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task DateChanged(DateTime obj)
+    {
+        await GetDayOverview(obj, CancellationToken.None);
     }
 
 }
