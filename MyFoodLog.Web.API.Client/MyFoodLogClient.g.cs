@@ -127,7 +127,7 @@ namespace MyFoodLog.Web.API.Client
         }
 
         /// <summary>
-        /// Get the macronutrient values consumed on the specified date.
+        /// Get the macronutrient values and percentages consumed on the specified date.
         /// </summary>
         /// <param name="date">The date to look for.</param>
         /// <returns>The macro values.</returns>
@@ -139,7 +139,7 @@ namespace MyFoodLog.Web.API.Client
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Get the macronutrient values consumed on the specified date.
+        /// Get the macronutrient values and percentages consumed on the specified date.
         /// </summary>
         /// <param name="date">The date to look for.</param>
         /// <returns>The macro values.</returns>

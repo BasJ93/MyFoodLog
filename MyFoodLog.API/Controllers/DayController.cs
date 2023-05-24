@@ -25,7 +25,7 @@ public sealed class DayController : ControllerBase
     }
 
     /// <summary>
-    /// Get the macronutrient values consumed on the specified date.
+    /// Get the macronutrient values and percentages consumed on the specified date.
     /// </summary>
     /// <param name="date">The date to look for.</param>
     /// <param name="ctx">Cancellation token.</param>
