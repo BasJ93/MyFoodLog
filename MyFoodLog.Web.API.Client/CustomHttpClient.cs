@@ -7,6 +7,13 @@ public sealed class CustomHttpClient : HttpClient, ICustomHttpClient
 {
     public CustomHttpClient(IConfiguration configuration)
     {
-        BaseAddress = new Uri(configuration["baseUrl"] ?? string.Empty);
+        try
+        {
+            BaseAddress = new (configuration["baseUrl"] ?? string.Empty);
+        }
+        catch (Exception)
+        {
+            BaseAddress = new(string.Empty);
+        }
     }
 }

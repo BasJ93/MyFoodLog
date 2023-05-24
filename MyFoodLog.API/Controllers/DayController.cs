@@ -2,6 +2,7 @@ using Asp.Versioning;
 using Microsoft.AspNetCore.Mvc;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Models;
+using MyFoodLog.Models.Meals;
 
 namespace MyFoodLog.API.Controllers;
 
@@ -9,7 +10,7 @@ namespace MyFoodLog.API.Controllers;
 /// Controller to interact with data about a day.
 /// </summary>
 [ApiController]
-[Route("/api/{version:apiVersion}/day")]
+[Route("/api/{version:apiVersion}/day/{date:datetime}")]
 [ApiVersion("1.0")]
 public sealed class DayController : ControllerBase
 {
@@ -26,12 +27,12 @@ public sealed class DayController : ControllerBase
     /// <summary>
     /// Get the macronutrient values consumed on the specified date.
     /// </summary>
-    /// <param name="date">The date to look for. If no date is provided, today is assumed.</param>
+    /// <param name="date">The date to look for.</param>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>The macro values.</returns>
     [Route("macros")]
     [ProducesResponseType(typeof(MacrosDto), StatusCodes.Status200OK)]
-    public async Task<IActionResult> MacrosForDay([FromQuery] DateTime date, CancellationToken ctx)
+    public async Task<IActionResult> MacrosForDay(DateTime date, CancellationToken ctx)
     {
         if (date == DateTime.MinValue)
         {
@@ -41,5 +42,18 @@ public sealed class DayController : ControllerBase
         MacrosDto dto = await _mealService.CalculateValues(date, ctx);
 
         return new JsonResult(dto);
+    }
+
+    /// <summary>
+    /// Get the meals for a given date, containing their respective food consumptions.
+    /// </summary>
+    /// <param name="date">The date to get the meals for.</param>
+    /// <param name="ctx">Cancellation token</param>
+    [HttpGet("meals")]
+    [ProducesResponseType(typeof(IEnumerable<MealDto?>), StatusCodes.Status200OK)]
+    [ProducesResponseType((StatusCodes.Status404NotFound))]
+    public async Task<IActionResult> GetMeals(DateTime date, CancellationToken ctx)
+    {
+        return new JsonResult(await _mealService.GetMealsForDay(date, ctx));
     }
 }

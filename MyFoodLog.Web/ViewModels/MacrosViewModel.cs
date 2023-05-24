@@ -40,14 +40,28 @@ public class MacrosViewModel : ComponentBase
         {
             Layout.Title = "Macros";
         }
-        
+
+        await UpdateChart(DateTime.Now, CancellationToken.None);
+
+        await base.OnInitializedAsync();
+
+        await InvokeAsync(StateHasChanged);
+    }
+    
+    protected async Task DateChanged(DateTime obj)
+    {
+        await UpdateChart(obj, CancellationToken.None);
+    }
+
+    private async Task UpdateChart(DateTime date, CancellationToken ctx = default)
+    {
         MacrosDto macros = new();
 
         try
         {
             if (FoodLogApi != null)
             {
-                macros = await FoodLogApi.Day_MacrosForDayAsync(null, "1", CancellationToken.None);
+                macros = await FoodLogApi.Day_MacrosForDayAsync(date, "1", CancellationToken.None);
             }
         }
         catch (ApiException)
@@ -73,9 +87,6 @@ public class MacrosViewModel : ComponentBase
             Data = new List<decimal> { macros.Carbohydrates, macros.Fat, macros.Protein },
             BackgroundColor = Colors.Palette1,
         });
-
-        await base.OnInitializedAsync();
-
-        await InvokeAsync(StateHasChanged);
     }
+    
 }

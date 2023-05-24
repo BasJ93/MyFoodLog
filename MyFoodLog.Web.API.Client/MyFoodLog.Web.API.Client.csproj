@@ -17,7 +17,7 @@
     </ItemGroup>
 
     <Target Name="NSwag" BeforeTargets="CoreCompile" Condition="'$(CI_BUILD)'!='True'">
-        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net60) openapi2csclient /input:http://localhost:5081/swagger/v1/swagger.json /classname:MyFoodLogApi /namespace:MyFoodLog.Web.API.Client /GenerateClientInterfaces:true /InjectHttpClient:true /UseHttpClientCreationMethod:false /GenerateClientClasses:true /output:MyFoodLogClient.g.cs /contractsoutput:Interfaces/IMyFoodLogClient.g.cs /GenerateContractsOutput:true /ContractsNamespace:MyFoodLog.Web.API.Client.Interfaces /excludedTypeNames:ExposedEntity_IncludingUserEntities_NotIncludingNotEditable /OperationGenerationMode:SingleClientFromOperationId /HttpClientType:MyFoodLog.Web.API.Client.Interfaces.ICustomHttpClient" />
+        <Exec WorkingDirectory="$(ProjectDir)" Command="$(NSwagExe_Net60) openapi2csclient /input:http://localhost:5081/swagger/v1/swagger.json /classname:MyFoodLogApi /namespace:MyFoodLog.Web.API.Client /GenerateClientInterfaces:true /InjectHttpClient:true /UseBaseUrl:false /UseHttpClientCreationMethod:false /GenerateClientClasses:true /output:MyFoodLogClient.g.cs /contractsoutput:Interfaces/IMyFoodLogClient.g.cs /GenerateContractsOutput:true /ContractsNamespace:MyFoodLog.Web.API.Client.Interfaces /excludedTypeNames:ExposedEntity_IncludingUserEntities_NotIncludingNotEditable /OperationGenerationMode:SingleClientFromOperationId /HttpClientType:MyFoodLog.Web.API.Client.Interfaces.ICustomHttpClient" />
     </Target>
     
 </Project>
