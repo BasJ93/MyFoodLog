@@ -16,9 +16,11 @@ public class MacrosViewModel : ComponentBase
     [Inject]
     private IMyFoodLogApi? FoodLogApi { get; set; }
 
-    public PieChartConfig? PieChartConfig { get; set; }
+    protected PieChartConfig? PieChartConfig { get; set; }
 
-    public Chart? MacrosPieChart { get; set; } = new();
+    protected Chart? MacrosPieChart { get; set; } = new();
+
+    protected ICollection<MacroTableRow> MacroTableRows { get; set; } = new List<MacroTableRow>();
 
     public MacrosViewModel()
     {
@@ -51,6 +53,8 @@ public class MacrosViewModel : ComponentBase
     protected async Task DateChanged(DateTime obj)
     {
         await UpdateChart(obj, CancellationToken.None);
+        
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task UpdateChart(DateTime date, CancellationToken ctx = default)
@@ -62,6 +66,13 @@ public class MacrosViewModel : ComponentBase
             if (FoodLogApi != null)
             {
                 macros = await FoodLogApi.Day_MacrosForDayAsync(date, "1", CancellationToken.None);
+                
+                MacroTableRows.Clear();
+                
+                MacroTableRows.Add(new("Carbohydrates", macros.Carbohydrates, macros.CarbohydratesPercentage, 50, 30));
+                MacroTableRows.Add(new("Fat", macros.Fat, macros.FatPercentage, 30, 20));
+                MacroTableRows.Add(new("Protein", macros.Protein, macros.ProteinPercentage, 20, 50));
+                
             }
         }
         catch (ApiException)
@@ -88,5 +99,26 @@ public class MacrosViewModel : ComponentBase
             BackgroundColor = Colors.Palette1,
         });
     }
-    
+
+    protected class MacroTableRow
+    {
+        public string Macro { get; set; }
+        
+        public decimal ConsumedValue { get; set; }
+        
+        public decimal ConsumedPercentage { get; set; }
+        
+        public decimal RecommendedPercentage { get; set; }
+        
+        public decimal WeightLossPercentage { get; set; }
+
+        public MacroTableRow(string macro, decimal consumedValue, decimal consumedPercentage, decimal recommendedPercentage, decimal weightLossPercentage)
+        {
+            Macro = macro;
+            ConsumedValue = consumedValue;
+            ConsumedPercentage = consumedPercentage;
+            RecommendedPercentage = recommendedPercentage;
+            WeightLossPercentage = weightLossPercentage;
+        }
+    }
 }

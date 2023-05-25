@@ -2,12 +2,19 @@
 @inherits MyFoodLog.Web.ViewModels.MacrosViewModel
 @using MyFoodLog.Web.Components
 
+<style>
+    table.mdc-data-table__table {
+        white-space: normal;!important;
+        width: 100%;
+    }
+</style>
+
 <div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
 <div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
     <div class="mdc-layout-grid__inner">
         <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
             <div class="mdc-layout-grid__inner">
-                <DatePickerComponent DateChanged="DateChanged" />
+                <DatePickerComponent DateChanged="DateChanged"/>
             </div>
         </div>
 
@@ -15,6 +22,29 @@
             <Chart Config="PieChartConfig" @ref="MacrosPieChart"></Chart>
         </div>
 
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <MBDataTable Context="item"
+                         Items="MacroTableRows"
+                         GetKeysFunc="m => m.Macro">
+            
+                    <TableHeader>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Macro</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Consumed amount [g]</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">%</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Recommended %</th>
+                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Weight loss %</th>
+                    </TableHeader>
+            
+                    <TableRow>
+                        <th class="mdc-data-table__cell" scope="row">@item.Macro</th>
+                        <td class="mdc-data-table__cell">@item.ConsumedValue.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell">@item.ConsumedPercentage.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell">@item.RecommendedPercentage.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell">@item.WeightLossPercentage.ToString("0.##")</td>
+                    </TableRow>
+            
+                </MBDataTable>
+        </div>
     </div>
 </div>
 <div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
