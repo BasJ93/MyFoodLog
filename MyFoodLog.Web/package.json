@@ -1,0 +1,14 @@
+{
+  "name": "myfoodlog.web",
+  "description": "NPM build steps for MyFoodLog.Web",
+  "scripts": {
+    "build-material-default": "sass --no-color --unicode --style=expanded --load-path=node_modules --no-source-map Styles/material.scss wwwroot/css/material-default-theme.css",
+    "build-min-material-default": "sass --no-color --unicode --style=compressed --load-path=node_modules --no-source-map Styles/default.scss wwwroot/css/material-default-theme.min.css",
+    "build-dark": "sass --no-color --unicode --style=expanded --load-path=node_modules --no-source-map Styles/dark-theme.scss wwwroot/css/dark-theme.css",
+    "build-min-dark": "sass --no-color --unicode --style=compressed --load-path=node_modules --no-source-map Styles/dark-theme.scss wwwroot/css/dark-theme.min.css"
+  },
+  "devDependencies": {
+    "material-components-web": "^14.0.0",
+    "sass": "^1.62.1"
+  }
+}

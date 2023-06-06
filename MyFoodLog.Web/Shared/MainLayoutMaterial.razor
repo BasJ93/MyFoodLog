@@ -1,44 +1,61 @@
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    
+
     <PageTitle>@Title</PageTitle>
-    
+
     <NavMenuMaterial @ref="navbar"/>
 
-<div class="mdc-drawer-app-content">
-    <MBTopAppBar @ref="TopAppBar"
-                 Title="@Title"
-                 NavIcon="menu"
-                 ScrollTarget="#main-content"
-                 @onclick="@SideBarToggle">
-    </MBTopAppBar>
-    
-    <MBBladeSet>
-        <PageContent>
-            <main class="main-content" id="main-content">
-                <div class="max-width-content">
-                    <div class="mdc-top-app-bar--dense-fixed-adjust">
-                        <div class="mdc-layout-grid">
-                            <div class="mdc-layout-grid__inner">
-                                @Body
+    <div class="mdc-drawer-app-content">
+        <MBTopAppBar @ref="TopAppBar"
+                     Title="@Title"
+                     NavIcon="menu"
+                     ScrollTarget="#main-content"
+                     @onclick="@SideBarToggle">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                <MBIconButton @onclick="@OpenMenuAsync" Icon="more_vert"/>
+                <div class="mdc-menu-surface--anchor">
+                    <MBMenu @ref="Menu">
+                        <MBMenuSelectionGroup @key="@Theme">
+                            <MBListItem Label="Material Default Theme" LeadingIcon="done" IsSelectedMenuItem="@(Theme == "material-default-theme")" @onclick="@(() => ThemeSetterAsync("material-default-theme"))"/>
+                            <MBListItem Label="Dark Theme" LeadingIcon="done" IsSelectedMenuItem="@(Theme == "dark-theme")" @onclick="@(() => ThemeSetterAsync("dark-theme"))"/>
+                        </MBMenuSelectionGroup>
+                    </MBMenu>
+                </div>
+            </section>
+        </MBTopAppBar>
+
+        <MBBladeSet>
+            <PageContent>
+                <main class="main-content" id="main-content">
+                    <div class="max-width-content">
+                        <div class="mdc-top-app-bar--dense-fixed-adjust">
+                            <div class="mdc-layout-grid">
+                                <div class="mdc-layout-grid__inner">
+                                    @Body
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
-        </PageContent>
-    </MBBladeSet>
-    
-</div>
+                </main>
+            </PageContent>
+        </MBBladeSet>
+
+    </div>
 
 </CascadingValue>
 
 @code {
-    public MBTopAppBar TopAppBar { get; set; } = new();
+
+    [Inject]
+    private IJSRuntime? JsRuntime { get; set; }
+
+    private MBTopAppBar TopAppBar { get; set; } = new();
+
+    private MBMenu Menu { get; set; } = new();
     
     private NavMenuMaterial navbar { get; set; } = new();
-    
+
     private void SideBarToggle()
     {
         navbar.Toggle();
@@ -54,5 +71,23 @@
         }
     }
 
-    private string _title  = "MyFoodLog";
+    private string _title = "MyFoodLog";
+
+    private string Theme { get; set; } = "material-default-theme";
+
+    private async Task ThemeSetterAsync(string theme)
+    {
+        if (JsRuntime != null)
+        {
+            await JsRuntime.InvokeAsync<object>("myfoodlog_web.themeSetter.setTheme", theme, true);
+            Theme = theme;
+            StateHasChanged();
+        }
+    }
+    
+    private async Task OpenMenuAsync()
+    {
+        await Menu.ToggleAsync();
+    }
+
 }
