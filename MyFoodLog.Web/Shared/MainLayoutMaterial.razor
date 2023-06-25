@@ -1,3 +1,4 @@
+@using Blazored.LocalStorage
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
@@ -16,10 +17,10 @@
                 <MBIconButton @onclick="@OpenMenuAsync" Icon="more_vert"/>
                 <div class="mdc-menu-surface--anchor">
                     <MBMenu @ref="Menu">
-                        <MBMenuSelectionGroup @key="@Theme">
-                            <MBListItem Label="Material Default Theme" LeadingIcon="done" IsSelectedMenuItem="@(Theme == "material-default-theme")" @onclick="@(() => ThemeSetterAsync("material-default-theme"))"/>
-                            <MBListItem Label="Dark Theme" LeadingIcon="done" IsSelectedMenuItem="@(Theme == "dark-theme")" @onclick="@(() => ThemeSetterAsync("dark-theme"))"/>
-                        </MBMenuSelectionGroup>
+                        <div style="padding: 15px">
+                        <MBSwitch @bind-Value="@DarkModeEnabled"
+                                  Label="Dark mode"/>
+                        </div>
                     </MBMenu>
                 </div>
             </section>
@@ -50,16 +51,15 @@
     [Inject]
     private IJSRuntime? JsRuntime { get; set; }
 
+    [Inject]
+    private ISyncLocalStorageService? LocalStorage { get; set; }
+    
     private MBTopAppBar TopAppBar { get; set; } = new();
 
     private MBMenu Menu { get; set; } = new();
-    
+
     private NavMenuMaterial navbar { get; set; } = new();
 
-    private void SideBarToggle()
-    {
-        navbar.Toggle();
-    }
 
     public string Title
     {
@@ -71,7 +71,25 @@
         }
     }
 
+    protected override void OnInitialized()
+    {
+        DarkModeEnabled = LocalStorage?.GetItem<bool>("darkMode") ?? false;
+    }
+
     private string _title = "MyFoodLog";
+
+    private bool _darkModeEnabled;
+
+    private bool DarkModeEnabled
+    {
+        get => _darkModeEnabled;
+        set
+        {
+            _darkModeEnabled = value;
+            LocalStorage?.SetItem("darkMode", value);
+            ThemeSetterAsync(value ? "dark-theme" : "material-default-theme");
+        }
+    }
 
     private string Theme { get; set; } = "material-default-theme";
 
@@ -84,10 +102,14 @@
             StateHasChanged();
         }
     }
-    
+
     private async Task OpenMenuAsync()
     {
         await Menu.ToggleAsync();
     }
 
+    private void SideBarToggle()
+    {
+        navbar.Toggle();
+    }
 }
