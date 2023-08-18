@@ -1,0 +1,17 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
+
+COPY ./MyFoodLog.API MyFoodLog.API
+COPY ./MyFoodLog.ClientApis MyFoodLog.ClientApis
+COPY ./MyFoodLog.Core MyFoodLog.Core
+COPY ./MyFoodLog.Database MyFoodLog.Database
+COPY ./MyFoodLog.Models MyFoodLog.Models
+
+RUN dotnet restore ./MyFoodLog.API/MyFoodLog.API.csproj
+
+RUN dotnet publish -c Release -o out ./MyFoodLog.API/MyFoodLog.API.csproj
+
+FROM mcr.microsoft.com/dotnet/aspnet:6.0
+WORKDIR /App
+COPY --from=build-env /App/out ./
+ENTRYPOINT ["dotnet", "MyFoodLog.API.dll"]

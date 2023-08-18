@@ -1,0 +1,14 @@
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+WORKDIR /App
+
+COPY ./MyFoodLog.Models MyFoodLog.Models
+COPY ./MyFoodLog.Web.API.Client MyFoodLog.Web.API.Client
+COPY ./MyFoodLog.Web MyFoodLog.Web
+
+RUN dotnet restore ./MyFoodLog.Web/MyFoodLog.Web.csproj
+
+RUN dotnet publish ./MyFoodLog.Web/MyFoodLog.Web.csproj -c Release -o out -p:CI_BUILD=True
+
+FROM nginx
+WORKDIR /usr/share/nginx/html
+COPY --from=build-env /App/out/wwwroot ./
