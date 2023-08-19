@@ -14,6 +14,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFoodLog.Models", "MyFoodL
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MyFoodLog.Web.API.Client", "MyFoodLog.Web.API.Client\MyFoodLog.Web.API.Client.csproj", "{EB3B4321-B248-434D-AFE0-443BF574875E}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionFiles", "SolutionFiles", "{69F14D6F-1A3D-4344-A140-16814CEC54AD}"
+	ProjectSection(SolutionItems) = preProject
+		WebDockerfile = WebDockerfile
+		jenkinsfile = jenkinsfile
+		ApiDockerfile = ApiDockerfile
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
