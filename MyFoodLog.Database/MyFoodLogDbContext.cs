@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using MyFoodLog.Database.Configuration;
 using MyFoodLog.Database.Models;
 
@@ -21,7 +22,6 @@ public sealed class MyFoodLogDbContext : DbContext
     
     public MyFoodLogDbContext(DbContextOptions<MyFoodLogDbContext> options) : base(options)
     {
-        //Database.EnsureCreated();
         if (Database.GetPendingMigrations().Any())
         {
             Database.Migrate();
@@ -32,11 +32,5 @@ public sealed class MyFoodLogDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         modelBuilder.ApplyConfigurationsFromAssembly(typeof(FoodItemConfiguration).Assembly);
-    }
-
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        optionsBuilder.UseSqlite("Filename=MyFoodLog.db");
-        base.OnConfiguring(optionsBuilder);
     }
 }
