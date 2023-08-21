@@ -1,0 +1,34 @@
+pipeline {
+
+    environment {
+        CI_BUILD = 'True'
+    }
+
+    stages {
+        // Get the version number from GitVersion
+        stage('GitVersion')
+        {
+            steps {
+                script {
+                    def gitVersion = sh(returnStdout: true, script: 'docker run --rm -v "$(pwd):/repo" gittools/gitversion:5.12.0-alpine.3.14-6.0 /repo -showvariable FullSemVer')
+                    echo "Output: ${gitVersion}"
+                }
+            }
+        }
+        stage('Generate docker images') {
+            steps {
+                // Build docker image for API, get the version from gitversion
+                sh 'docker build --build-arg="VERSION=${gitVersion}" --build-arg="COMMIT=${env.GIT_COMMIT}" -f ApiDocker --no-cache -t registry.basjanssen.eu/myfoodlog.api:${gitVersion} .'
+                // Build docker image for WebUI, get the version from gitversion
+                sh 'docker build --build-arg="VERSION=${gitVersion}" --build-arg="COMMIT=${env.GIT_COMMIT}" -f WebDocker --no-cache -t registry.basjanssen.eu/myfoodlog.web:${gitVersion} .'
+            }
+        }
+        // Stage to push the images
+        stage('Push docker images') {
+            steps {
+                sh 'docker push registry.basjanssen.eu/myfoodlog.api'
+                sh 'docker push registry.basjanssen.eu/myfoodlog.web'
+            }
+        }
+    }
+}

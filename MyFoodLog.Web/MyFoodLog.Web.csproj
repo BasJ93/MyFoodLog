@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
         <PackageReference Include="Material.Blazor" Version="3.3.1" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.13" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.13" PrivateAssets="all" />
@@ -15,8 +16,55 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Content Remove="package-lock.json" />
+        <Content Remove="package.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="package-lock.json" />
+        <None Include="package.json" />
+    </ItemGroup>
+    
+    <ItemGroup>
       <ProjectReference Include="..\MyFoodLog.Models\MyFoodLog.Models.csproj" />
       <ProjectReference Include="..\MyFoodLog.Web.API.Client\MyFoodLog.Web.API.Client.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+        <UpToDateCheckInput Include="@(InputStaticAssetsStyles)" Set="Styles" />
+        <UpToDateCheckOutput Include="@(OutputStaticAssetsStyles)" Set="Styles" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <InputStaticAssetsStyles Include="Styles\*.scss;" />
+        <OutputStaticAssetsStyles Include="wwwroot/css/material-default-theme.css;wwwroot/css/material-default-theme.min.css;wwwroot/css/dark-theme.css;wwwroot/css/dark-theme.min.css;" />
+        <Content Remove="@(IncludeStaticAssetsStyles)" />
+    </ItemGroup>
+    
+    <Target Name="CheckIfNpmExists" Inputs="@(InputStaticAssetsStyles)" Outputs="@(OutputStaticAssetsStyles)" BeforeTargets="PreBuildEvent">
+        <Message Importance="high" Text="npm install" />
+        <Exec Command="npm install" ContinueOnError="true">
+            <Output TaskParameter="ExitCode" PropertyName="NpmReturnCode" />
+        </Exec>
+    </Target>
+
+    <Target Name="BuildStyles" Inputs="@(InputStaticAssetsStyles)" Outputs="@(OutputStaticAssetsStyles)" BeforeTargets="PreBuildEvent" AfterTargets="CheckIfNpmExists" Condition=" '$(NpmReturnCode)' == '0' ">
+        <Message Importance="high" Text="***** mkdir wwwroot and wwwroot\css" />
+        <Exec Command="mkdir -p wwwroot\css" IgnoreExitCode="true" />
+
+        <Message Importance="high" Text="***** build material default theme" />
+        <Exec Command="npm run build-material-default" />
+
+        <Message Importance="high" Text="***** build dark theme" />
+        <Exec Command="npm run build-dark" />
+
+        <!-- Build minified themes -->
+        <Message Importance="high" Text="***** build minified material default theme" />
+        <Exec Command="npm run build-min-material-default" />
+
+        <Message Importance="high" Text="***** build minified dark theme" />
+        <Exec Command="npm run build-min-dark" />
+        
+    </Target>
+    
 </Project>

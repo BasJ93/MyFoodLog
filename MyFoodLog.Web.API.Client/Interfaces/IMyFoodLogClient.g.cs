@@ -29,7 +29,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         System.Threading.Tasks.Task<FileResponse> Barcode_SearchForBarcodeAsync(string barcode, string version, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
-        /// Get the macronutrient values consumed on the specified date.
+        /// Get the macronutrient values and percentages consumed on the specified date.
         /// </summary>
         /// <param name="date">The date to look for.</param>
         /// <returns>The macro values.</returns>
@@ -38,7 +38,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
-        /// Get the macronutrient values consumed on the specified date.
+        /// Get the macronutrient values and percentages consumed on the specified date.
         /// </summary>
         /// <param name="date">The date to look for.</param>
         /// <returns>The macro values.</returns>
@@ -283,6 +283,15 @@ namespace MyFoodLog.Web.API.Client.Interfaces
 
         [Newtonsoft.Json.JsonProperty("protein", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
         public decimal Protein { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("fatPercentage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal FatPercentage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("carbohydratesPercentage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal CarbohydratesPercentage { get; set; }
+
+        [Newtonsoft.Json.JsonProperty("proteinPercentage", Required = Newtonsoft.Json.Required.DisallowNull, NullValueHandling = Newtonsoft.Json.NullValueHandling.Ignore)]
+        public decimal ProteinPercentage { get; set; }
 
     }
 

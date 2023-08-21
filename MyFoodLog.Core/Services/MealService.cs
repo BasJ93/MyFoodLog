@@ -54,7 +54,7 @@ public sealed class MealService : IMealService
 
         foreach (MealDto? meal in meals)
         {
-            if (meal != null)
+            if (meal?.ConsumedFood != null)
             {
                 meal.Carbohydrates = meal.ConsumedFood.Sum(c => c.Carbohydrates);
                 meal.Fat = meal.ConsumedFood.Sum(c => c.Fat);
@@ -68,7 +68,14 @@ public sealed class MealService : IMealService
             Fat = meals.Sum(m => m.Fat),
             Protein = meals.Sum(m => m.Protein)
         };
-        
+
+        if (dto.Carbohydrates + dto.Fat + dto.Protein > 0)
+        {
+            dto.CarbohydratesPercentage = dto.Carbohydrates / (dto.Carbohydrates + dto.Fat + dto.Protein) * 100;
+            dto.FatPercentage = dto.Fat / (dto.Carbohydrates + dto.Fat + dto.Protein) * 100;
+            dto.ProteinPercentage = dto.Protein / (dto.Carbohydrates + dto.Fat + dto.Protein) * 100;
+        }
+
         return dto;
     }
 }

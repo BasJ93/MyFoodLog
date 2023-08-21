@@ -1,48 +1,74 @@
+@using Blazored.LocalStorage
+@using MyFoodLog.Web.Support
 @inherits LayoutComponentBase
 
 <CascadingValue Value="this">
-    
+
     <PageTitle>@Title</PageTitle>
-    
+
     <NavMenuMaterial @ref="navbar"/>
 
-<div class="mdc-drawer-app-content">
-    <MBTopAppBar @ref="TopAppBar"
-                 Title="@Title"
-                 NavIcon="menu"
-                 ScrollTarget="#main-content"
-                 @onclick="@SideBarToggle">
-    </MBTopAppBar>
-    
-    <MBBladeSet>
-        <PageContent>
-            <main class="main-content" id="main-content">
-                <div class="max-width-content">
-                    <div class="mdc-top-app-bar--dense-fixed-adjust">
-                        <div class="mdc-layout-grid">
-                            <div class="mdc-layout-grid__inner">
-                                @Body
+    <div class="mdc-drawer-app-content">
+        <MBTopAppBar @ref="TopAppBar"
+                     Title="@Title"
+                     NavIcon="menu"
+                     ScrollTarget="#main-content"
+                     @onclick="@SideBarToggle">
+            <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end" role="toolbar">
+                <MBIconButton @onclick="@OpenMenuAsync" Icon="more_vert"/>
+                <div class="mdc-menu-surface--anchor">
+                    <MBMenu @ref="Menu">
+                        <div style="padding: 15px">
+                            <MBSwitch @bind-Value="@DarkModeEnabled"
+                                      Label="Dark mode"/>
+                        </div>
+                        <div style="padding: 15px" class="app-hide-desktop">
+                            <MBSwitch @bind-Value="@ShowStableGoal"
+                                      Label="Show stable goal"/>
+                        </div>
+                        <div style="padding: 15px" class="app-hide-desktop">
+                            <MBSwitch @bind-Value="@ShowWeightLossGoal"
+                                      Label="Show weight loss goal"/>
+                        </div>
+                    </MBMenu>
+                </div>
+            </section>
+        </MBTopAppBar>
+
+        <MBBladeSet>
+            <PageContent>
+                <main class="main-content" id="main-content">
+                    <div class="max-width-content">
+                        <div class="mdc-top-app-bar--dense-fixed-adjust">
+                            <div class="mdc-layout-grid">
+                                <div class="mdc-layout-grid__inner">
+                                    @Body
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </main>
-        </PageContent>
-    </MBBladeSet>
-    
-</div>
+                </main>
+            </PageContent>
+        </MBBladeSet>
+
+    </div>
 
 </CascadingValue>
 
 @code {
-    public MBTopAppBar TopAppBar { get; set; } = new();
+
+    [Inject]
+    private IJSRuntime? JsRuntime { get; set; }
+
+    [Inject]
+    private ISyncLocalStorageService? LocalStorage { get; set; }
     
+    private MBTopAppBar TopAppBar { get; set; } = new();
+
+    private MBMenu Menu { get; set; } = new();
+
     private NavMenuMaterial navbar { get; set; } = new();
-    
-    private void SideBarToggle()
-    {
-        navbar.Toggle();
-    }
+
 
     public string Title
     {
@@ -54,5 +80,88 @@
         }
     }
 
-    private string _title  = "MyFoodLog";
+    protected override async Task OnInitializedAsync()
+    {
+        DarkModeEnabled = LocalStorage?.GetItem<bool>("darkMode") ?? false;
+
+        ShowInMacrosTable = LocalStorage?.GetItem<MacrosTableShow>("ShowInMacrosTable") ?? MacrosTableShow.All;
+        
+        StateHasChanged();
+    }
+
+    private string _title = "MyFoodLog";
+
+    private bool _darkModeEnabled;
+
+    private bool DarkModeEnabled
+    {
+        get => _darkModeEnabled;
+        set
+        {
+            _darkModeEnabled = value;
+            LocalStorage?.SetItem("darkMode", value);
+            ThemeSetterAsync(value ? "dark-theme" : "material-default-theme");
+        }
+    }
+
+    private bool ShowStableGoal
+    {
+        get => ShowInMacrosTable == MacrosTableShow.Stable;
+        set
+        {
+            if (value)
+            {
+                ShowInMacrosTable = MacrosTableShow.Stable;
+            }
+            StateHasChanged();
+        }
+    }
+    
+    private bool ShowWeightLossGoal
+    {
+        get => ShowInMacrosTable == MacrosTableShow.Loss;
+        set
+        {
+            if (value)
+            {
+                ShowInMacrosTable = MacrosTableShow.Loss;
+            }
+            StateHasChanged();
+        }
+    }
+
+    private MacrosTableShow _ShowInMarcrosTable = MacrosTableShow.All;
+    
+    public MacrosTableShow ShowInMacrosTable
+    {
+        get => _ShowInMarcrosTable;
+        set
+        {
+            _ShowInMarcrosTable = value;
+            LocalStorage?.SetItem("ShowInMacrosTable", value);
+            StateHasChanged();
+        }
+    } 
+    
+    private string Theme { get; set; } = "material-default-theme";
+
+    private async Task ThemeSetterAsync(string theme)
+    {
+        if (JsRuntime != null)
+        {
+            await JsRuntime.InvokeAsync<object>("myfoodlog_web.themeSetter.setTheme", theme, true);
+            Theme = theme;
+            StateHasChanged();
+        }
+    }
+
+    private async Task OpenMenuAsync()
+    {
+        await Menu.ToggleAsync();
+    }
+
+    private void SideBarToggle()
+    {
+        navbar.Toggle();
+    }
 }
