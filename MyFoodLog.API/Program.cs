@@ -33,7 +33,7 @@ builder.Services.AddApiVersioning();
 builder.Services.AddControllers();
 builder.Services.AddOpenFoodFacts();
 
-builder.Services.AddDatabase();
+builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddCoreServices();
 
 builder.Services.AddAutoMapper(typeof(Profiles));

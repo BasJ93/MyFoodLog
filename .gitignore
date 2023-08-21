@@ -5,6 +5,9 @@
 
 #SQLite databse
 *.db
+*.db-shm
+*.db-wal
+MyFoodLog.API/Database
 
 # User-specific files
 *.rsuser
