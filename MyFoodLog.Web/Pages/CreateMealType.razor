@@ -1,0 +1,73 @@
+@page "/CreateMealType"
+@using MyFoodLog.Web.State
+@using MyFoodLog.Web.API.Client.Interfaces
+
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
+<div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+    <EditForm Model="@CreateDto" OnSubmit="@(async () => await HandleForm())">
+        <div class="mdc-layout-grid__inner">
+            <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone" style="margin-top: 10px;">
+                <MBTextField @bind-Value="@CreateDto.Name"
+                             Label="Meal Name"
+                             TextInputStyle="MBTextInputStyle.Outlined"
+                             style="width: 100%"/>
+            </div>
+        </div>
+
+        <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: left;">
+            <MBButton Label="Add"
+                      style="margin: 0.75em 0.25em 0.25em 0.25em;"
+                      type="submit"/>
+        </div>
+    </EditForm>
+</div>
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
+
+@code {
+
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+
+    [Inject]
+    private IMyFoodLogApi? FoodLogApi { get; set; }
+    
+    [Inject]
+    private IMBToastService? ToastService { get; set; }
+    
+    private CreateMealTypeDto CreateDto { get; } = new();
+
+    private async Task<bool> HandleForm(CancellationToken ctx = default)
+    {
+        try
+        {
+            await FoodLogApi.MealType_CreateAsync("1", CreateDto, ctx);
+
+            ToastService.ShowToast(MBToastLevel.Success, $"Successfully added {CreateDto.Name}.", timeout: 1500);
+            
+            NavigationService?.NavigateTo(_stateContainer?.PreviousPage ?? string.Empty);
+
+            return true;
+        }
+        catch (ApiException)
+        {
+        }
+
+        return false;
+    }
+    
+    protected override void OnInitialized()
+    {
+        if (Layout != null)
+        {
+            Layout.Title = "Create Meal Type";
+        }
+        
+        base.OnInitialized();
+    }
+}
