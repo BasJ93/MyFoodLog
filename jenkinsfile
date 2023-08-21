@@ -22,9 +22,9 @@ pipeline {
         stage('Generate docker images') {
             steps {
                 // Build docker image for API, get the version from gitversion
-                sh "docker build --build-arg='VERSION ${gitVersion}' --build-arg 'COMMIT=${env.GIT_COMMIT}' -f ApiDocker --no-cache -t registry.basjanssen.eu/myfoodlog.api:${gitVersion} ."
+                sh "docker build . --build-arg='VERSION ${gitVersion}' --build-arg 'COMMIT=${env.GIT_COMMIT}' -f ApiDockerfile --no-cache -t registry.basjanssen.eu/myfoodlog.api:${gitVersion}"
                 // Build docker image for WebUI, get the version from gitversion
-                sh "docker build --build-arg='VERSION ${gitVersion}' --build-arg 'COMMIT=${env.GIT_COMMIT}' -f WebDocker --no-cache -t registry.basjanssen.eu/myfoodlog.web:${gitVersion} ."
+                sh "docker build . --build-arg='VERSION ${gitVersion}' --build-arg 'COMMIT=${env.GIT_COMMIT}' -f WebDockerfile --no-cache -t registry.basjanssen.eu/myfoodlog.web:${gitVersion}"
             }
         }
         // Stage to push the images
