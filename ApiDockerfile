@@ -17,6 +17,6 @@ RUN dotnet publish -c Release -o out ./MyFoodLog.API/MyFoodLog.API.csproj -p:Sou
 
 FROM mcr.microsoft.com/dotnet/aspnet:6.0
 WORKDIR /App
-MKDIR Database
+RUN mkdir Database
 COPY --from=build-env /App/out ./
 ENTRYPOINT ["dotnet", "MyFoodLog.API.dll"]
