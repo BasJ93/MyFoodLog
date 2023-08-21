@@ -1,6 +1,7 @@
 @page "/Macros"
 @inherits MyFoodLog.Web.ViewModels.MacrosViewModel
 @using MyFoodLog.Web.Components
+@using MyFoodLog.Web.Support
 
 <style>
     table.mdc-data-table__table {
@@ -32,16 +33,16 @@
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Macro</th>
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Consumed amount [g]</th>
                         <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">%</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Recommended %</th>
-                        <th class="mdc-data-table__header-cell header-bold" role="columnheader" scope="col">Weight loss %</th>
+                        <th class="mdc-data-table__header-cell header-bold @(Layout?.ShowInMacrosTable != MacrosTableShow.Loss ? "" : "app-hide-phone")" role="columnheader" scope="col">Recommended %</th>
+                        <th class="mdc-data-table__header-cell header-bold @(Layout?.ShowInMacrosTable != MacrosTableShow.Stable ? "" : "app-hide-phone")" role="columnheader" scope="col">Weight loss %</th>
                     </TableHeader>
             
                     <TableRow>
                         <th class="mdc-data-table__cell" scope="row">@item.Macro</th>
                         <td class="mdc-data-table__cell">@item.ConsumedValue.ToString("0.##")</td>
                         <td class="mdc-data-table__cell">@item.ConsumedPercentage.ToString("0.##")</td>
-                        <td class="mdc-data-table__cell">@item.RecommendedPercentage.ToString("0.##")</td>
-                        <td class="mdc-data-table__cell">@item.WeightLossPercentage.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell @(Layout?.ShowInMacrosTable != MacrosTableShow.Loss ? "" : "app-hide-phone")">@item.RecommendedPercentage.ToString("0.##")</td>
+                        <td class="mdc-data-table__cell @(Layout?.ShowInMacrosTable != MacrosTableShow.Stable ? "" : "app-hide-phone")">@item.WeightLossPercentage.ToString("0.##")</td>
                     </TableRow>
             
                 </MBDataTable>

@@ -1,4 +1,10 @@
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+
+ARG COMMIT="unknown"
+ARG VERSION="0.0.0+unknown"
+
+RUN bash -E $(curl -fsSL https://deb.nodesource.com/setup_18.x | bash - ); apt install -y nodejs
+
 WORKDIR /App
 
 COPY ./MyFoodLog.Models MyFoodLog.Models
@@ -7,7 +13,7 @@ COPY ./MyFoodLog.Web MyFoodLog.Web
 
 RUN dotnet restore ./MyFoodLog.Web/MyFoodLog.Web.csproj
 
-RUN dotnet publish ./MyFoodLog.Web/MyFoodLog.Web.csproj -c Release -o out -p:CI_BUILD=True
+RUN dotnet publish ./MyFoodLog.Web/MyFoodLog.Web.csproj -c Release -o out -p:CI_BUILD=True -p:SourceRevisionId=$COMMIT -p:Version=$VERSION
 
 FROM nginx
 WORKDIR /usr/share/nginx/html

@@ -36,13 +36,12 @@
     </ItemGroup>
 
     <ItemGroup>
-        <InputStaticAssetsStyles Include="styles\*.scss;" />
-        <OutputStaticAssetsStyles Include="wwwroot\css\dark-theme.min.css;wwwroot\css\material-default-theme.min.css;" />
-        <Content Remove="@(OutputStaticAssetsStyles)" />
-        <Content Include="@(OutputStaticAssetsStyles)" />
+        <InputStaticAssetsStyles Include="Styles\*.scss;" />
+        <OutputStaticAssetsStyles Include="wwwroot/css/material-default-theme.css;wwwroot/css/material-default-theme.min.css;wwwroot/css/dark-theme.css;wwwroot/css/dark-theme.min.css;" />
+        <Content Remove="@(IncludeStaticAssetsStyles)" />
     </ItemGroup>
     
-    <Target Name="Install npm packages" Inputs="@(InputStaticAssetsStyles)" Outputs="@(OutputStaticAssetsStyles)" BeforeTargets="PreBuildEent">
+    <Target Name="CheckIfNpmExists" Inputs="@(InputStaticAssetsStyles)" Outputs="@(OutputStaticAssetsStyles)" BeforeTargets="PreBuildEvent">
         <Message Importance="high" Text="npm install" />
         <Exec Command="npm install" ContinueOnError="true">
             <Output TaskParameter="ExitCode" PropertyName="NpmReturnCode" />
@@ -50,14 +49,20 @@
     </Target>
 
     <Target Name="BuildStyles" Inputs="@(InputStaticAssetsStyles)" Outputs="@(OutputStaticAssetsStyles)" BeforeTargets="PreBuildEvent" AfterTargets="CheckIfNpmExists" Condition=" '$(NpmReturnCode)' == '0' ">
-        <Message Importance="high" Text="***** mkdir wwwroot and wwwroot\css (M.B.W Styles)" />
-        <Exec Command="mkdir wwwroot\css" IgnoreExitCode="true" />
+        <Message Importance="high" Text="***** mkdir wwwroot and wwwroot\css" />
+        <Exec Command="mkdir -p wwwroot\css" IgnoreExitCode="true" />
 
-        <!-- Build minified themes -->
         <Message Importance="high" Text="***** build material default theme" />
-        <Exec Command="npm run build-min-material-default" />
+        <Exec Command="npm run build-material-default" />
 
         <Message Importance="high" Text="***** build dark theme" />
+        <Exec Command="npm run build-dark" />
+
+        <!-- Build minified themes -->
+        <Message Importance="high" Text="***** build minified material default theme" />
+        <Exec Command="npm run build-min-material-default" />
+
+        <Message Importance="high" Text="***** build minified dark theme" />
         <Exec Command="npm run build-min-dark" />
         
     </Target>

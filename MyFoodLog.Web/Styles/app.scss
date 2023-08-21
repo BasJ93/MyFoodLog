@@ -13,6 +13,14 @@
   }
 }
 
+@each $size in map.keys(grid-variables.$columns) {
+  @include grid-mixins.media-query_($size) {
+    .app-hide-#{$size} {
+      display: none !important;
+    }
+  }
+}
+
 @mixin app-classes() {
   /*
    * App layout styling

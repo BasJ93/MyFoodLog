@@ -18,7 +18,10 @@ builder.Services.AddBlazoredLocalStorage();
 
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
-builder.Configuration["baseUrl"] = builder.HostEnvironment.BaseAddress;
+if (string.IsNullOrEmpty(builder.Configuration["baseUrl"]) || builder.HostEnvironment.IsProduction())
+{
+    builder.Configuration["baseUrl"] = builder.HostEnvironment.BaseAddress;
+}
 
 // The custom HttpClient sets its base url based on the config file.
 builder.Services.AddScoped<ICustomHttpClient, CustomHttpClient>();
