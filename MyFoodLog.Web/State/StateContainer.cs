@@ -11,6 +11,8 @@ public class StateContainer
 
     public FoodConsumptionDto? SelectedFoodConsumption { get; set; }
     
+    public MealTypeDto? SelectedMealType { get; set; }
+    
     /// <summary>
     /// The previous url the user was on in our app.
     /// </summary>

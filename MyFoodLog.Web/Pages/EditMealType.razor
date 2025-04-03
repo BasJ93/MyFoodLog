@@ -1,15 +1,7 @@
-@page "/CreateMealType"
+@page "/EditMealType"
 @using MyFoodLog.Web.State
 @using MyFoodLog.Web.API.Client.Interfaces
 @using MyFoodLog.Web.Components
-
-<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
-
-<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
-<div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
-    <MealTypeComponent FormHandler="FormHandler"/>
-</div>
-<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
 
 @code {
 
@@ -22,15 +14,13 @@
     [Inject]
     private NavigationManager? NavigationService { get; set; }
     
-    private CreateMealTypeDto CreateDto { get; } = new();
-    
     private async Task<bool> FormHandler(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateMealTypeDto createDto, CancellationToken ctx)
     {
         if (_stateContainer?.SelectedMealType != null)
         {
             try
             {
-                await foodLogApi.MealType_CreateAsync("1", CreateDto, ctx);
+                await foodLogApi.MealType_UpdateAsync(_stateContainer.SelectedMealType.Id, "1", createDto, ctx);
 
                 toastService.ShowToast(MBToastLevel.Success, $"Successfully updated {createDto.Name}.", timeout: 1500);
 
@@ -50,9 +40,15 @@
     {
         if (Layout != null)
         {
-            Layout.Title = "Create Meal Type";
+            Layout.Title = "Edit Meal Type";
         }
         
         base.OnInitialized();
     }
 }
+
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
+<div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+    <MealTypeComponent FormHandler="FormHandler"/>
+</div>
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
