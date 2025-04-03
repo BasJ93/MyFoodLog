@@ -1,0 +1,107 @@
+@page "/MealTypesOverview"
+@using MyFoodLog.Web.State
+@using MyFoodLog.Web.API.Client.Interfaces
+
+@code {
+
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+
+    [Inject]
+    private StateContainer? _stateContainer { get; set; }
+
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+
+    [Inject]
+    private IMyFoodLogApi? FoodLogApi { get; set; }
+
+    [Inject]
+    private IMBToastService? ToastService { get; set; }
+
+    private List<MealTypeDto>? MealTypes { get; set; } = new();
+
+    private async Task ShowEditDialog(Guid id)
+    {
+        if (_stateContainer != null)
+        {
+            _stateContainer.SelectedMealType = MealTypes?.Find(f => f.Id == id);
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
+        }
+
+        //TODO: Implement edit form.
+        //NavigationService?.NavigateTo("EditFoodItem");
+    }
+    
+    private async Task ShowAddDialog()
+    {
+        if (_stateContainer != null)
+        {
+            _stateContainer.SelectedMealType = new();
+            _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
+        }
+
+        NavigationService?.NavigateTo("CreateMealType");
+    }
+    
+    private async Task UpdateMealTypes(CancellationToken ctx = default)
+    {
+        if (FoodLogApi != null)
+        {
+            MealTypes = (await FoodLogApi.MealType_GetMealTypesAsync("1", ctx)).ToList();
+            StateHasChanged();
+        }
+    }
+
+    private async Task RemoveMealType(Guid id, CancellationToken ctx = default)
+    {
+        if (FoodLogApi != null)
+        {
+            await FoodLogApi.MealType_DeleteAsync(id, "1", ctx);
+            await UpdateMealTypes(ctx);
+        }
+    }
+    
+    protected override async Task OnInitializedAsync()
+    {
+        if (Layout != null)
+        {
+            Layout.Title = "Meal Types";
+        }
+
+        await UpdateMealTypes(CancellationToken.None);
+        
+        await base.OnInitializedAsync();
+    }
+}
+
+<div class="mdc-layout-grid__cell--span-3-desktop"></div>
+<div class="mdc-layout-grid__cell--span-6-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+
+    <div class="mdc-layout-grid__inner">
+
+        <div class="mdc-layout-grid__cell--span-10-desktop mdc-layout-grid__cell--span-7-tablet mdc-layout-grid__cell--span-3-phone">
+        </div>
+        <div class="mdc-layout-grid__cell--span-2-desktop mdc-layout-grid__cell--span-1-tablet mdc-layout-grid__cell--span-1-phone" style="text-align: center;">
+            <MBIconButton Icon="add" @onclick="@(async () => await ShowAddDialog())" style="margin: 18px 0;"/>
+        </div>
+
+        <div class="mdc-layout-grid__cell--span-12-desktop mdc-layout-grid__cell--span-8-tablet mdc-layout-grid__cell--span-4-phone">
+            <MBList Items="@MealTypes"
+                    Context="mealType"
+                    ListStyle="MBListStyle.Outlined"
+                    ListType="MBListType.Regular"
+                    KeyboardInteractions="true">
+
+                <Title>@mealType.Name</Title>
+
+                <SecondaryActions>
+                    <div style="width: 7rem">
+                        <MBIconButton Icon="delete" @onclick="@(async () => await RemoveMealType(mealType.Id))"/>
+                        <MBIconButton Icon="edit" @onclick="@(async () => await ShowEditDialog(mealType.Id))"/>
+                    </div>
+                </SecondaryActions>
+            </MBList>
+        </div>
+    </div>
+</div>
