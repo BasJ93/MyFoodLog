@@ -271,11 +271,26 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         System.Threading.Tasks.Task MealType_CreateAsync(string version, CreateMealTypeDto requestDto, System.Threading.CancellationToken cancellationToken);
 
         /// <summary>
+        /// Update an existing MealType.
+        /// </summary>
+        /// <param name="id">The id of the MealType.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MealType_UpdateAsync(System.Guid id, string version, CreateMealTypeDto updateDto);
+
+        /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
+        /// <summary>
+        /// Update an existing MealType.
+        /// </summary>
+        /// <param name="id">The id of the MealType.</param>
+        /// <exception cref="ApiException">A server side error occurred.</exception>
+        System.Threading.Tasks.Task MealType_UpdateAsync(System.Guid id, string version, CreateMealTypeDto updateDto, System.Threading.CancellationToken cancellationToken);
+
+        /// <summary>
         /// Remove an existing MealType.
         /// </summary>
         /// <param name="id">The id of the MealType.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MealType_DeleteAsync(System.Guid? id, string version);
+        System.Threading.Tasks.Task MealType_DeleteAsync(System.Guid id, string version);
 
         /// <param name="cancellationToken">A cancellation token that can be used by other objects or threads to receive notice of cancellation.</param>
         /// <summary>
@@ -283,7 +298,7 @@ namespace MyFoodLog.Web.API.Client.Interfaces
         /// </summary>
         /// <param name="id">The id of the MealType.</param>
         /// <exception cref="ApiException">A server side error occurred.</exception>
-        System.Threading.Tasks.Task MealType_DeleteAsync(System.Guid? id, string version, System.Threading.CancellationToken cancellationToken);
+        System.Threading.Tasks.Task MealType_DeleteAsync(System.Guid id, string version, System.Threading.CancellationToken cancellationToken);
 
     }
 

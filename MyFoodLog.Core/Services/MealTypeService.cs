@@ -46,7 +46,7 @@ public class MealTypeService : IMealTypeService
         return _mapper.Map<MealTypeDto>(existing);
     }
 
-    public async Task<MealTypeDto?> Update(Guid id, MealTypeDto updateDto, CancellationToken ctx = default)
+    public async Task<MealTypeDto?> Update(Guid id, CreateMealTypeDto updateDto, CancellationToken ctx = default)
     {
         MealType? existing = await _mealTypeRepository.ById(id, ctx);
         if (existing == null)
@@ -54,9 +54,11 @@ public class MealTypeService : IMealTypeService
             return null;
         }
         
-        _mapper.Map(updateDto, existing);
+        //existing = _mapper.Map(updateDto, existing);
         
-        await _mealTypeRepository.Update(existing, ctx);
+        existing.Name = updateDto.Name;
+        
+        await _mealTypeRepository.UpdateAndSave(existing, ctx);
         
         return _mapper.Map<MealTypeDto>(existing);
     }

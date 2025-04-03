@@ -60,7 +60,7 @@ public sealed class MealTypeController : ControllerBase
     [HttpPatch("{id:guid}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] MealTypeDto updateDto, CancellationToken ctx = default)
+    public async Task<IActionResult> Update([FromRoute] Guid id, [FromBody] CreateMealTypeDto updateDto, CancellationToken ctx = default)
     {
         if (await _mealTypeService.Update(id, updateDto, ctx) != null)
         {

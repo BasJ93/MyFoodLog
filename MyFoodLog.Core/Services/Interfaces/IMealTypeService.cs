@@ -8,7 +8,7 @@ public interface IMealTypeService
 
     Task<MealTypeDto> Create(CreateMealTypeDto request, CancellationToken ctx = default);
     
-    Task<MealTypeDto?> Update(Guid id, MealTypeDto updateDto, CancellationToken ctx = default);
+    Task<MealTypeDto?> Update(Guid id, CreateMealTypeDto updateDto, CancellationToken ctx = default);
     
     Task<bool> Delete(Guid id, CancellationToken ctx = default);
 }

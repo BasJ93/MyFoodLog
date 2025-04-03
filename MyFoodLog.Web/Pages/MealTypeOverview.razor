@@ -28,9 +28,8 @@
             _stateContainer.SelectedMealType = MealTypes?.Find(f => f.Id == id);
             _stateContainer.PreviousPage = NavigationService?.Uri ?? string.Empty;
         }
-
-        //TODO: Implement edit form.
-        //NavigationService?.NavigateTo("EditFoodItem");
+        
+        NavigationService?.NavigateTo("EditMealType");
     }
     
     private async Task ShowAddDialog()
