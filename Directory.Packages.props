@@ -28,5 +28,6 @@
         <PackageVersion Include="NSwag.CodeGeneration.CSharp" Version="$(NSwagVersion)" />
         <PackageVersion Include="NSwag.MSBuild" Version="$(NSwagVersion)" />
         <PackageVersion Include="PSC.Blazor.Components.Chartjs" Version="8.0.8" />
+        <PackageVersion Include="Riok.Mapperly" Version="4.2.1" />
     </ItemGroup>
 </Project>

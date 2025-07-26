@@ -1,9 +1,9 @@
-using AutoMapper;
-using MyFoodLog.Models.FoodConsumption;
-using MyFoodLog.Models.FoodItem;
+using MyFoodLog.Core.Mappers;
 using MyFoodLog.Core.Services.Interfaces;
 using MyFoodLog.Database.Models;
 using MyFoodLog.Database.Repositories.Interfaces;
+using MyFoodLog.Models.FoodConsumption;
+using MyFoodLog.Models.FoodItem;
 
 namespace MyFoodLog.Core.Services;
 
@@ -12,12 +12,9 @@ public class FoodItemService : IFoodItemService
 {
     private readonly IFoodItemRepository _foodItems;
 
-    private readonly IMapper _mapper;
-
-    public FoodItemService(IFoodItemRepository foodItems, IMapper autoMapper)
+    public FoodItemService(IFoodItemRepository foodItems)
     {
         _foodItems = foodItems;
-        _mapper = autoMapper;
     }
 
     /// <inheritdoc />
@@ -25,7 +22,7 @@ public class FoodItemService : IFoodItemService
     {
         IEnumerable<FoodItem> items = await _foodItems.All(ctx);
 
-        return _mapper.Map<IEnumerable<FoodItemDto>>(items).ToList();
+        return items.Select(FoodItemMapper.ToDto).ToList();
     }
 
     /// <inheritdoc />
@@ -33,30 +30,19 @@ public class FoodItemService : IFoodItemService
     {
         FoodItem? item = await _foodItems.ById(id, ctx);
 
-        return _mapper.Map<FoodItemDto>(item);
+        return item.ToDto();
     }
 
     /// <inheritdoc />
     public async Task<FoodItemDto> Create(CreateFoodItemDto dto, CancellationToken ctx = default)
     {
-        /*bool canConvert = long.TryParse(dto.EAN13, out long ean13);
+        /*bool canConvert = long.TryParse(dto.EAN13, out long ean13);*/
         
-        FoodItem newFoodItem = new FoodItem()
-        {
-            Name = dto.Name,
-            EAN13 = canConvert ? ean13 : null,
-            Energy = dto.Energy,
-            Carbohydrates = dto.Carbohydrates,
-            Fat = dto.Fat,
-            Protein = dto.Protein,
-            QuantityUnit = dto.QuantityUnit
-        };*/
-        
-        FoodItem newFoodItem = _mapper.Map<FoodItem>(dto);
+        FoodItem newFoodItem = dto.ToModel();
         
         await _foodItems.InsertAndSave(newFoodItem, ctx);
 
-        return _mapper.Map<FoodItemDto>(newFoodItem);
+        return newFoodItem.ToDto();
     }
 
     /// <inheritdoc />
@@ -93,7 +79,7 @@ public class FoodItemService : IFoodItemService
             
         }
 
-        return _mapper.Map<List<FoodItemDto>>(matches);
+        return matches.Select(FoodItemMapper.ToDto).ToList();
     }
 
     /// <inheritdoc />
@@ -114,7 +100,7 @@ public class FoodItemService : IFoodItemService
 
             if (result == 1)
             {
-                return _mapper.Map<FoodItemDto>(item);
+                return item.ToDto();
             }
         }
 
