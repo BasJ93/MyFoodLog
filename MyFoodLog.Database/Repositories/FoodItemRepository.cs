@@ -19,7 +19,6 @@ public class FoodItemRepository: GenericCrudRepository<FoodItem>, IFoodItemRepos
     /// <inheritdoc />
     public async Task<ICollection<FoodItem>> SearchByName(string name, CancellationToken ctx = default)
     {
-        // TODO: Add missing % signs to name for the pattern
         return await Table.Where(f => !string.IsNullOrEmpty(f.Name) && EF.Functions.Like(f.Name, $"%{name}%")).ToListAsync(ctx);
     }
 

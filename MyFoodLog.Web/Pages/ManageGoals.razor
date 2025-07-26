@@ -1,0 +1,42 @@
+@page "/ManageGoals"
+@using MyFoodLog.Web.API.Client.Interfaces
+@using MyFoodLog.Web.Components
+@using MyFoodLog.Web.State
+
+@code {
+
+    [CascadingParameter]
+    public MainLayoutMaterial? Layout { get; set; }
+
+    [Inject]
+    private StateContainer? StateContainer { get; set; }
+
+    [Inject]
+    private NavigationManager? NavigationService { get; set; }
+    
+    private async Task<bool> FormHandler(IMyFoodLogApi foodLogApi, IMBToastService toastService, CreateGoalDto dto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            await foodLogApi.Goal_SetGoalAsync("1", dto, cancellationToken);
+
+            toastService.ShowToast(MBToastLevel.Success, $"Successfully updated goals.", timeout: 1500);
+
+            NavigationService?.NavigateTo(StateContainer?.PreviousPage ?? string.Empty);
+
+            return true;
+        }
+        catch (ApiException)
+        {
+        }
+
+        return false;
+    }
+
+}
+
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>
+<div class="mdc-layout-grid__cell--span-6 mdc-layout-grid__cell--span-4-tablet mdc-layout-grid__cell--span-4-phone">
+    <GoalComponent FormHandler="FormHandler"/>
+</div>
+<div class="mdc-layout-grid__cell--span-3 mdc-layout-grid__cell--span-2-tablet"></div>

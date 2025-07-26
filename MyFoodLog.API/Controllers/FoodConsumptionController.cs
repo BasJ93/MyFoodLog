@@ -31,8 +31,9 @@ public sealed class FoodConsumptionController : ControllerBase
     /// </summary>
     /// <param name="consumptionDto">Request dto.</param>
     /// <param name="ctx">Cancellation token.</param>
-    [HttpPost("")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] AddConsumptionRequestDto consumptionDto, CancellationToken ctx)
     {
         // TODO: Return the created object

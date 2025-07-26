@@ -1,10 +1,14 @@
 <MBDrawer @ref="Drawer" IsDismissible="true">
     <nav class="mdc-list">
-        <MBListItem Label="Log Consumption" @onclick="@(() => ListItemClickHandler(""))" />
-        <MBListItem Label="Diary" @onclick="@(() => ListItemClickHandler("Diary"))" />
-        <MBListItem Label="Macros" @onclick="@(() => ListItemClickHandler("Macros"))" />
-        <MBListItem Label="Food Items" @onclick="@(() => ListItemClickHandler("FoodItemOverview"))" />
-        <MBListItem Label="Meal Types" @onclick="@(() => ListItemClickHandler("MealTypesOverview"))" />
+        <MBListItem Label="Log Consumption" LeadingIcon="add" @onclick="@(() => ListItemClickHandler(""))" />
+        <MBListItem Label="Diary" LeadingIcon="today" @onclick="@(() => ListItemClickHandler("Diary"))" />
+        <MBListItem Label="Macros" LeadingIcon="pie_chart" @onclick="@(() => ListItemClickHandler("Macros"))" />
+        <MBListItem Label="Master data" @ref="MasterData" @onclick="@UnfoldMasterData" />
+        <div class="mdc-list nav-indent-1 @(MasterDataVisible ? "": "collapsed")">
+            <MBListItem Label="Food Items" LeadingIcon="fastfood" @onclick="@(() => ListItemClickHandler("FoodItemOverview"))" />
+            <MBListItem Label="Meal Types" LeadingIcon="menu_book_2" @onclick="@(() => ListItemClickHandler("MealTypesOverview"))" />
+            <MBListItem Label="Goals" LeadingIcon="nutrition" @onclick="@(() => ListItemClickHandler("ManageGoals"))"/>
+        </div>
     </nav>
 </MBDrawer>
 
@@ -14,14 +18,47 @@
 
     private MBDrawer Drawer { get; set; } = new();
 
+    private MBListItem MasterData { get; set; } = new();
+    
+    private bool MasterDataVisible { get; set; } = false;
+    
     private void ListItemClickHandler(string navigationReference)
     {
         Drawer.NotifyNavigation();
         NavigationService?.NavigateTo(navigationReference);
     }
 
+    private void UnfoldMasterData()
+    {
+        if (MasterDataVisible)
+        {
+            MasterData.LeadingIcon = "arrow_right";
+
+            MasterDataVisible = false;
+        }
+        else
+        {
+            MasterData.LeadingIcon = "arrow_drop_down";
+            
+            MasterDataVisible = true;
+        }
+        
+        StateHasChanged();
+    }
+    
     public void Toggle()
     {
         Drawer.Toggle();
+    }
+
+    protected override void OnAfterRender(bool firstRender)
+    {
+        if (firstRender)
+        {
+            MasterData.LeadingIcon = "arrow_right";
+            StateHasChanged();
+        }
+
+        base.OnAfterRender(firstRender);
     }
 }

@@ -3,6 +3,7 @@
 @use "sass:color";
 
 @use "@material/theme" with ( 
+    $primary: #382bf0,
     $background: #eee,
 );
 

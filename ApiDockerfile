@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build-env
 
 ARG COMMIT="unknown"
 ARG VERSION="0.0.0+unknown"
@@ -15,7 +15,7 @@ RUN dotnet restore ./MyFoodLog.API/MyFoodLog.API.csproj
 
 RUN dotnet publish -c Release -o out ./MyFoodLog.API/MyFoodLog.API.csproj -p:SourceRevisionId=$COMMIT -p:Version=$VERSION
 
-FROM mcr.microsoft.com/dotnet/aspnet:6.0
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /App
 RUN mkdir Database
 COPY --from=build-env /App/out ./

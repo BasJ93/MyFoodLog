@@ -22,7 +22,7 @@ public sealed class MealService : IMealService
     }
 
     /// <inheritdoc />
-    public async Task Create(CreateMealRequestDto requestDto, CancellationToken ctx = default)
+    public async Task<Guid?> Create(CreateMealRequestDto requestDto, CancellationToken ctx = default)
     {
         Meal meal = new()
         {
@@ -31,6 +31,8 @@ public sealed class MealService : IMealService
         };
 
         await _mealRepository.InsertAndSave(meal, ctx);
+
+        return meal.Id;
     }
 
     /// <inheritdoc />

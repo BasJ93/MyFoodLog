@@ -1,11 +1,11 @@
 @use "sass:color";
 
 @use "@material/theme" with (
-    $primary: #90caf9,
+    $primary: #382bf0,
     $secondary: #ffcc80,
     $error: #ef9a9a,
-    $background:#263238,
-    $surface: #37474f,
+    $background:#121212,
+    $surface: #2f2b3a,
 );
 
 @use "@material/top-app-bar";

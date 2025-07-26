@@ -42,6 +42,14 @@
     --mb-scroll-webkit-border-radius: 4px;
   }
 
+  div.nav-indent-1 {
+    padding-left: 1rem;
+  }
+  
+  div.collapsed {
+    visibility: collapse !important;
+  }
+  
   /*
         Blazor Error UI
   */

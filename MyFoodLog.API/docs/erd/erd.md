@@ -7,6 +7,7 @@ erDiagram
     Meal ||--o{ FoodItemConsumption : contains
     FoodItemConsumption ||--|| FoodItem : consumes
     User ||--o{ Exercise : has
+    User ||--|| Goal : has
 
 
 
@@ -34,6 +35,14 @@ erDiagram
         guid Id PK
         string Name
         string QuantityUnit
+        decimal Energy
+        decimal Fat
+        decimal Carbohydrates
+        decimal Protein
+    }
+    
+    Goal {
+        decimal Energy
         decimal Fat
         decimal Carbohydrates
         decimal Protein

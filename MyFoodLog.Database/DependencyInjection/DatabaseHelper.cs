@@ -22,6 +22,7 @@ public static class DatabaseHelper
         services.AddScoped<IFoodItemRepository, FoodItemRepository>();
         services.AddScoped<IMealRepository, MealRepository>();
         services.AddScoped<IMealTypeRepository, MealTypeRepository>();
+        services.AddScoped<IGoalRepository, GoalRepository>();
 
         return services;
     }

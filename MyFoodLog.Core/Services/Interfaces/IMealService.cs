@@ -5,7 +5,7 @@ namespace MyFoodLog.Core.Services.Interfaces;
 
 public interface IMealService
 {
-    Task Create(CreateMealRequestDto requestDto, CancellationToken ctx = default);
+    Task<Guid?> Create(CreateMealRequestDto requestDto, CancellationToken ctx = default);
 
     Task<IEnumerable<MealDto?>> GetMealsForDay(DateTime day, CancellationToken ctx = default);
     

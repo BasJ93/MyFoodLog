@@ -74,7 +74,7 @@ public class FoodConsumptionService : IFoodConsumptionService
         }
         
         
-        //TODO: Check if the food was already added to the meal. If so, do ???
+        // TODO: Check if the food was already added to the meal. If so, do ???
         
         FoodItemConsumption consumption = new FoodItemConsumption
         {
