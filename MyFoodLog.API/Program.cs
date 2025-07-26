@@ -1,6 +1,4 @@
-using AutoMapper;
 using MyFoodLog.ClientApis.DependencyInjection;
-using MyFoodLog.Core.AutoMapper;
 using MyFoodLog.Core.DependencyInjection;
 using MyFoodLog.Database.DependencyInjection;
 
@@ -32,8 +30,6 @@ builder.Services.AddOpenFoodFacts();
 
 builder.Services.AddDatabase(builder.Configuration);
 builder.Services.AddCoreServices();
-
-builder.Services.AddAutoMapper(typeof(Profiles));
 
 builder.Services.AddOpenApiDocument();
 

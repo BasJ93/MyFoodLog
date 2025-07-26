@@ -15,4 +15,9 @@ public class FoodItemDto
     public decimal Carbohydrates { get; set; }
 
     public decimal Protein { get; set; }
+
+    public FoodItemDto()
+    {
+        
+    }
 }
