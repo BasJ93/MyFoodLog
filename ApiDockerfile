@@ -5,6 +5,8 @@ ARG VERSION="0.0.0+unknown"
 
 WORKDIR /App
 
+COPY ./Directory.Build.props Directory.Build.props
+COPY ./Directory.Packages.props Directory.Packages.props
 COPY ./MyFoodLog.API MyFoodLog.API
 COPY ./MyFoodLog.ClientApis MyFoodLog.ClientApis
 COPY ./MyFoodLog.Core MyFoodLog.Core
