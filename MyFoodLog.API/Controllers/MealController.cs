@@ -29,14 +29,13 @@ public sealed class MealController : ControllerBase
     /// </summary>
     /// <param name="requestDto">The request dto.</param>
     /// <param name="ctx">Cancellation token.</param>
-    [HttpPost("")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CreateMealRequestDto requestDto, CancellationToken ctx)
     {
-        // TODO: Return the created object
-        await _mealService.Create(requestDto, ctx);
+        Guid? mealId = await _mealService.Create(requestDto, ctx);
 
-        return Ok();
+        return Created($"{Request.Path.Value}/{mealId}", null);
     }
 
     [HttpDelete("{id:guid}")]
@@ -49,9 +48,9 @@ public sealed class MealController : ControllerBase
     /// Get the meals for today, containing their respective food consumptions.
     /// </summary>
     /// <param name="ctx">Cancellation token</param>
-    [HttpGet("")]
+    [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<MealDto?>), StatusCodes.Status200OK)]
-    [ProducesResponseType((StatusCodes.Status404NotFound))]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetMeals(CancellationToken ctx)
     {
         return new JsonResult(await _mealService.GetMealsForToday(ctx));

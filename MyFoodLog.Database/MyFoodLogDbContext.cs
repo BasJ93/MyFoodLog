@@ -14,6 +14,8 @@ public sealed class MyFoodLogDbContext : DbContext
     public DbSet<Meal>? Meals { get; set; }
 
     public DbSet<MealType>? MealTypes { get; set; }
+    
+    public DbSet<Goal>? Goals { get; set; }
 
     public MyFoodLogDbContext()
     {

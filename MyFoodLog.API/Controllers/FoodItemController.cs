@@ -29,7 +29,7 @@ public sealed class FoodItemController : ControllerBase
     /// </summary>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>The collection of known food items.</returns>
-    [HttpGet("")]
+    [HttpGet]
     [ProducesResponseType(typeof(ICollection<FoodItemDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetAll(CancellationToken ctx)
     {
@@ -42,7 +42,7 @@ public sealed class FoodItemController : ControllerBase
     /// <param name="dto">The food item to create.</param>
     /// <param name="ctx">Cancellation token.</param>
     /// <returns>Returns the created food item.</returns>
-    [HttpPost("")]
+    [HttpPost]
     [ProducesResponseType(typeof(FoodItemDto), StatusCodes.Status200OK)]
     public async Task<IActionResult> CreateFoodItem([FromBody] CreateFoodItemDto dto, CancellationToken ctx)
     {

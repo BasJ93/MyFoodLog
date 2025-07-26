@@ -95,7 +95,7 @@ public class MacrosViewModel : ComponentBase
 
         PieChartConfig.Data.Datasets.Add(new PieDataset()
         {
-            Data = new List<decimal> { macros.CarbohydratesPercentage, macros.FatPercentage, macros.ProteinPercentage },
+            Data = new List<decimal?> { macros.CarbohydratesPercentage, macros.FatPercentage, macros.ProteinPercentage },
             BackgroundColor = Colors.Palette1,
         });
     }

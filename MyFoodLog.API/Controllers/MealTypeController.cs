@@ -28,7 +28,7 @@ public sealed class MealTypeController : ControllerBase
     /// </summary>
     /// <param name="ctx"><see cref="CancellationToken"/></param>
     /// <returns>A list of known <see cref="MyFoodLog.Database.Models.MealType"/>s.</returns>
-    [HttpGet("")]
+    [HttpGet]
     [ProducesResponseType(typeof(IEnumerable<MealTypeDto>), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetMealTypes(CancellationToken ctx = default)
     {
@@ -40,13 +40,11 @@ public sealed class MealTypeController : ControllerBase
     /// </summary>
     /// <param name="requestDto">The request model.</param>
     /// <param name="ctx"><see cref="CancellationToken"/></param>
-    [HttpPost("")]
+    [HttpPost]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status201Created)]
     public async Task<IActionResult> Create([FromBody] CreateMealTypeDto requestDto, CancellationToken ctx = default)
     {
-        // TODO: Return the created object
-
         MealTypeDto createdMealType = await _mealTypeService.Create(requestDto, ctx);
 
         return Created($"{Request.Path.Value}/{createdMealType.Id}", createdMealType);

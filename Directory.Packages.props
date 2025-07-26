@@ -1,0 +1,32 @@
+<Project>
+    <PropertyGroup>
+        <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    </PropertyGroup>
+    <PropertyGroup Label="PackageVersions">
+        <MicrosoftVersion>8.0.18</MicrosoftVersion>
+        <NSwagVersion>14.4.0</NSwagVersion>
+    </PropertyGroup>
+    <ItemGroup>
+        <PackageVersion Include="Asp.Versioning.Http" Version="8.1.0" />
+        <PackageVersion Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+        <PackageVersion Include="Blazored.LocalStorage" Version="4.5.0" />
+        <PackageVersion Include="Material.Blazor" Version="5.3.18" />
+        <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Design" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Relational" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Sqlite" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.EntityFrameworkCore.Tools" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Configuration.Abstractions" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Logging" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Microsoft.Extensions.Logging.Abstractions" Version="$(MicrosoftVersion)" />
+        <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+        <PackageVersion Include="NSwag.AspNetCore" Version="$(NSwagVersion)" />
+        <PackageVersion Include="NSwag.CodeGeneration.CSharp" Version="$(NSwagVersion)" />
+        <PackageVersion Include="NSwag.MSBuild" Version="$(NSwagVersion)" />
+        <PackageVersion Include="PSC.Blazor.Components.Chartjs" Version="8.0.8" />
+    </ItemGroup>
+</Project>

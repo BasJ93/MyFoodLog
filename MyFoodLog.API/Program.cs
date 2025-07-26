@@ -1,4 +1,4 @@
-using Hellang.Middleware.ProblemDetails;
+using AutoMapper;
 using MyFoodLog.ClientApis.DependencyInjection;
 using MyFoodLog.Core.AutoMapper;
 using MyFoodLog.Core.DependencyInjection;
@@ -6,7 +6,7 @@ using MyFoodLog.Database.DependencyInjection;
 
 string MyAllowedOrigins = "_MyAllowedOrigins";
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddLogging();
 
@@ -23,10 +23,7 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddProblemDetails(options =>
-{
-    options.IncludeExceptionDetails = (ctx, ex) => builder.Environment.IsDevelopment();
-});
+builder.Services.AddProblemDetails();
 
 builder.Services.AddApiVersioning();
 
@@ -40,14 +37,15 @@ builder.Services.AddAutoMapper(typeof(Profiles));
 
 builder.Services.AddOpenApiDocument();
 
-var app = builder.Build();
+WebApplication app = builder.Build();
+
+app.UseExceptionHandler();
+app.UseStatusCodePages();
 
 app.UseCors(MyAllowedOrigins);
 
 app.UseOpenApi();
-app.UseSwaggerUi3();
-
-app.UseProblemDetails();
+app.UseSwaggerUi();
 
 app.MapControllers();
 
