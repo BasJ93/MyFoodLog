@@ -36,7 +36,8 @@ public partial class FoodConsumptionComponent : ComponentBase
 
     private List<MBSelectElement<Guid?>> Meals { get; set; } = new();
 
-
+    private int version = 0;
+    
     protected override async Task OnInitializedAsync()
     {
         try
@@ -53,12 +54,14 @@ public partial class FoodConsumptionComponent : ComponentBase
                 {
                     Meals.Add(new MBSelectElement<Guid?> { SelectedValue = mealType.Id, Label = mealType.Name });
                 }
+
+                ++version;
             }
         }
         catch (ApiException)
         {
         }
-
+        
         await base.OnInitializedAsync();
     }
 
